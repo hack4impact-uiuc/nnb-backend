@@ -30,5 +30,6 @@ class PointsOfInterest(db.Model):
         json.dumps({'id': self.id, 'name': self.name})
 
 
+
 with app.app_context():
     db.create_all()

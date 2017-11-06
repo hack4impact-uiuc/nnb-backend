@@ -13,7 +13,7 @@ def mainpage():
 # this doesnt work 
 @app.route('/name')
 def name():
-    print(PointsOfInterest.query.all()[0].)
+    print(PointsOfInterest.query.all()[0].toJSON())
     return"HI"
 
 @app.route('/name2/<input>')
