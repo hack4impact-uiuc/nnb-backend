@@ -30,3 +30,9 @@ class PointsOfInterest(db.Model):
 
     def __repr__(self):
         return '<name {}'.format(self.name)
+
+
+def createtable():
+    commands = (
+        CREATE TABLE 
+    )
