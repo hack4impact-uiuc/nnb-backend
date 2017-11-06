@@ -26,8 +26,8 @@ class PointsOfInterest(db.Model):
     def __repr__(self):
         return '<name {}>'.format(self.name)
 
-    def toJSON(self):
-        return json.dumps({'id': self.id, 'name': self.name})
+    def toDict(self):
+        return {'id': self.id, 'name': self.name}
 
 
 
