@@ -25,12 +25,13 @@ def name2(input):
             name=input
     )
     db.session.add(result)
+    db.session.commit()
     return"HI"
     
 
 @app.route('/getall')
 def getall():
 
-    PointsOfInterest.query.all()
+    db.session.query.all()
     return"HI"
     

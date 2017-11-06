@@ -11,7 +11,6 @@ POSTGRES = {
     'port': '5432',
 }
 
-SQLALCHEMY_DATABASE_URI = 'postgresql://%(user)s:\
-%(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
+SQLALCHEMY_DATABASE_URI = 'postgresql://nbb:password@127.0.0.1:5432/nbb_db'
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False
