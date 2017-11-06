@@ -11,11 +11,6 @@ app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 
-# import and register blueprints
-# from api.views import main
-# app.register_blueprint(main.mod)
-
-# db = SQLAlchemy()
 
 # this doesn't work 
 class PointsOfInterest(db.Model):
@@ -29,7 +24,7 @@ class PointsOfInterest(db.Model):
         self.name = name
 
     def __repr__(self):
-        return '<name {}>'.format(self.name)
+        return '<name {}>.format(self.name)
 
 
 
