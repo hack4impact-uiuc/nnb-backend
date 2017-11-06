@@ -3,6 +3,9 @@ from flask import Blueprint, request
 from api.models import PointsOfInterest
 from .. import db
 import json
+from api.utils import serializeList
+from flask import jsonify
+
 
 mod = Blueprint('main', __name__)
 
@@ -13,8 +16,8 @@ def mainpage():
 # this doesnt work 
 @app.route('/name')
 def name():
-    print(PointsOfInterest.query.all()[0].toJSON())
-    return "HI"
+    print(serializeList(PointsOfInterest.query.all()))
+    return jsonify(serializeList(PointsOfInterest.query.all()))
 
 @app.route('/name2/<input>')
 def name2(input):
