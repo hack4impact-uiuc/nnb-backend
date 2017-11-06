@@ -27,7 +27,7 @@ class PointsOfInterest(db.Model):
         return '<name {}>'.format(self.name)
 
     def toJSON(self):
-        json.dumps({'id': self.id, 'name': self.name})
+        return json.dumps({'id': self.id, 'name': self.name})
 
 
 

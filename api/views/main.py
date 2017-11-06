@@ -14,7 +14,7 @@ def mainpage():
 @app.route('/name')
 def name():
     print(PointsOfInterest.query.all()[0].toJSON())
-    return"HI"
+    return "HI"
 
 @app.route('/name2/<input>')
 def name2(input):
