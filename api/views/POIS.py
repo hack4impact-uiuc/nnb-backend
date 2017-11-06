@@ -1,6 +1,7 @@
 from api import app
 from flask import Blueprint, request
-
+from .. import db
+from api.models import PointsOfInterest
 
 mod = Blueprint('POIS', __name__)
 

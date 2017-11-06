@@ -19,20 +19,5 @@ app.register_blueprint(stories.mod)
 from api.views import POIS
 app.register_blueprint(POIS.mod)
 
-@app.route('/name2/<input>')
-def name2(input):
-    result = PointsOfInterest(
-            name=input
-    )
-    db.session.add(result)
-    db.session.commit()
-    return"HI"
-    
 
-@app.route('/getall')
-def getall():
-
-    r = (PointsOfInterest.query.all())
-    print(r)
-    return"HI"
     
