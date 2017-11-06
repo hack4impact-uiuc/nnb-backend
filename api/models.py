@@ -5,14 +5,14 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-
+import json
 
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 
 
-# this doesn't work 
+# this doesn't work
 class PointsOfInterest(db.Model):
     """Points of Interest"""
     __tablename__ = "points_of_interests"
@@ -24,8 +24,10 @@ class PointsOfInterest(db.Model):
         self.name = name
 
     def __repr__(self):
-        return '<name {}>'.format(self.name) 
+        return '<name {}>'.format(self.name)
 
+    def toJSON(self):
+        json.dumps({'id': self.id, 'name': self.name})
 
 
 with app.app_context():

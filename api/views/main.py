@@ -2,17 +2,18 @@ from api import app
 from flask import Blueprint, request
 from api.models import PointsOfInterest
 from .. import db
+import json
 
 mod = Blueprint('main', __name__)
 
 @app.route('/')
 def mainpage():
-    return '<h1>NNB Home Page</h1>'
+    return '<h1>NNB API Home Page</h1>'
 
 # this doesnt work 
 @app.route('/name')
 def name():
-    PointsOfInterest.query.all()
+    print(PointsOfInterest.query.all()[0].)
     return"HI"
 
 @app.route('/name2/<input>')
