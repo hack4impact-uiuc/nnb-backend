@@ -29,4 +29,9 @@ class PointsOfInterest(db.Model):
         self.name = name
 
     def __repr__(self):
-        return '<name {}'.format(self.name)
+        return '<name {}>'.format(self.name)
+
+
+
+with app.app_context():
+    db.create_all()

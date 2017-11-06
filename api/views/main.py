@@ -10,7 +10,7 @@ mod = Blueprint('main', __name__)
 # import os
 
 # uri = os.environ.get('DATABASE_URL', 'postgresql://nbb:password@127.0.0.1:5432/nbb_db')
-# engine = create_engine(uri, convert_unicode=True)
+# engine = create_enggine(uri, convert_unicode=True)
 # db_session = scoped_session(sessionmaker(autocommit=False,
 # 					 autoflush=False,
 # 					 bind=engine))

@@ -32,6 +32,7 @@ def name2(input):
 @app.route('/getall')
 def getall():
 
-    db.session.query.all()
+    r = (PointsOfInterest.query.all())
+    print(r)
     return"HI"
     
