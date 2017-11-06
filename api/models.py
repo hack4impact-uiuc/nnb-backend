@@ -52,7 +52,7 @@ class maps(db.Model):
         self.image_url = image_url
         self.year = year
 
-
+class 
 
 with app.app_context():
     db.create_all()
