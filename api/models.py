@@ -11,7 +11,6 @@ app.config.from_object('config')
 db = SQLAlchemy(app)
 
 
-
 class PointsOfInterest(db.Model):
     """Points of Interest"""
     __tablename__ = "points_of_interests"
@@ -41,6 +40,7 @@ class PointsOfInterest(db.Model):
     def toDict(self):
         return {'id': self.id, 'name': self.name}
 
+
 class maps(db.Model):
     __tablename__ = "maps"
 
@@ -52,6 +52,13 @@ class maps(db.Model):
     def __init__(self, image_url, year):
         self.image_url = image_url
         self.year = year
+
+    def __repr__(self):
+        return '<map {}>'.format(self.year)
+
+    def toDict(self):
+        return {'year': self.year, 'image_url': self.image_url}
+
 
 class content(db.Model):
     __tablename__ = "content"
@@ -66,6 +73,14 @@ class content(db.Model):
         self.content_url = content_url
         self.caption = caption
         self.poi_id = poi_id
+    
+    def __repr__(self):
+        return '<content {}>'.format(self.caption)
+
+    def toDict(self):
+        return {'id': self.id, 'poi-link': self.poi_id, 'content_url':
+                self.content_url, 'caption': self.caption}
+
 
 class story_names(db.Model):
     __tablename__ = 'story_names'
