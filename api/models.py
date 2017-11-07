@@ -105,6 +105,7 @@ class story_names(db.Model):
 class stories(db.Model):
     __tablename__ = 'stories'
 
+    # add id?
     story_uuid = db.Column(db.Integer, db.ForeignKey("story_name.id"), nullale=False)
     poi_id = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
 
@@ -127,6 +128,7 @@ class additional_links(db.Model):
     poi_id = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
 
     def __init__(self, url, poi_id):
+        #add self.id = id?
         self.url = url
         self.poi_id = poi_id
 
