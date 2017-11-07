@@ -24,6 +24,7 @@ class PointsOfInterest(db.Model):
     x_coord = db.Column(db.Float, nullable=False)
     y_coord = db.Column(db.Float, nullable=False)
     years = db.relationship('Maps', backref='poi', Lazy=True)
+    content = db.relationship('Content', backref='poi', Lazy=True)
 
     def __init__(self, id, name, data, eventinfo, year, x_coord, y_coord):
         self.id = id
@@ -52,7 +53,54 @@ class maps(db.Model):
         self.image_url = image_url
         self.year = year
 
-class 
+class content(db.Model):
+    __tablename__ = "content"
+
+    id = db.Column(db.Integer, unique=True, primary_key=True)
+    content_url = db.Column(db.String, nullable=True)
+    caption = db.Column(db.String, nullable=True)
+    poi_id = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
+
+    def __init__(self, id, content_url, caption, poi_id):
+        self.id = id
+        self.content_url = content_url
+        self.caption = caption
+        self.poi_id = poi_id
+
+class story_names(db.Model):
+    __tablename__ = 'story_names'
+
+    id = db.Column(db.Integer, unique=True, primary_key=True)
+    story_name = db.Column(db.String, nullable=0)
+    story_id = db.relationship('Stories', backref='story_name', lazy=True)
+
+    def __init__(self, story_name, story_id):
+        self.id = id
+        self.story_name = story_name
+        self.story_id = story_id
+
+class stories(db.Model):
+    __tablename__ = 'stories'
+
+    story_uuid = db.Column(db.Integer, db.ForeignKey("story_name.id"), nullale=False)
+    poi_id = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
+
+
+    def __init__(self, story_uuid, poi_id):
+        self.story_uuid = story_uuid
+        self.poi_id = poi_id
+
+class additional_links(db.Model):
+    __tablename__ = 'additional_links'
+
+    id = db.Column(db.Integer, unique=True, primary_key=True)
+    url = db.Column(db.String)
+    poi_id = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
+
+    def __init__(self, url, poi_id):
+        self.url = url
+        self.poi_id = poi_id
+
 
 with app.app_context():
     db.create_all()
