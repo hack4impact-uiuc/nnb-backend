@@ -13,7 +13,7 @@ db = SQLAlchemy(app)
 
 class PointsOfInterest(db.Model):
     """Points of Interest"""
-    __tablename__ = "points_of_interests"
+    __tablename__ = "poi"
 
     id = db.Column(db.Integer, unique=True, primary_key=True)
     name = db.Column(db.String, nullable=False)
