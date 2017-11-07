@@ -22,8 +22,8 @@ class PointsOfInterest(db.Model):
     year = db.Column(db.Integer, nullable=False)
     x_coord = db.Column(db.Float, nullable=False)
     y_coord = db.Column(db.Float, nullable=False)
-    years = db.relationship('Maps', backref='poi', Lazy=True)
-    content = db.relationship('Content', backref='poi', Lazy=True)
+    years = db.relationship('Maps', backref='poi', lazy=True)
+    content = db.relationship('Content', backref='poi', lazy=True)
 
     def __init__(self, id, name, data, eventinfo, year, x_coord, y_coord):
         self.id = id
@@ -43,13 +43,15 @@ class PointsOfInterest(db.Model):
 
 class maps(db.Model):
     __tablename__ = "maps"
-
+    
+    id = db.Column(db.Integer, unique=True, primary_key=True)
     image_url = db.Column(db.String, nullable=False)
     year = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
 
     # Not sure if I did the foreign key stuff correctly ^^^
 
     def __init__(self, image_url, year):
+        self.id = id
         self.image_url = image_url
         self.year = year
 
@@ -105,11 +107,12 @@ class story_names(db.Model):
 class stories(db.Model):
     __tablename__ = 'stories'
 
-    # add id?
+    id = db.Column(db.Integer, unique=True, primary_key=True)
     story_uuid = db.Column(db.Integer, db.ForeignKey("story_name.id"), nullale=False)
     poi_id = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
 
     def __init__(self, story_uuid, poi_id):
+        self.id = id
         self.story_uuid = story_uuid
         self.poi_id = poi_id
     
@@ -128,7 +131,7 @@ class additional_links(db.Model):
     poi_id = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
 
     def __init__(self, url, poi_id):
-        #add self.id = id?
+        self.id = id
         self.url = url
         self.poi_id = poi_id
 
