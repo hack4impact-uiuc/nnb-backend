@@ -108,7 +108,7 @@ class stories(db.Model):
     __tablename__ = 'stories'
 
     id = db.Column(db.Integer, unique=True, primary_key=True)
-    story_uuid = db.Column(db.Integer, db.ForeignKey("story_name.id"), nullable=False)
+    story_uuid = db.Column(db.Integer, db.ForeignKey("story_names.id"), nullable=False)
     poi_id = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
 
     def __init__(self, story_uuid, poi_id):
