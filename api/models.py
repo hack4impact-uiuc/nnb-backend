@@ -94,16 +94,30 @@ class story_names(db.Model):
         self.story_name = story_name
         self.story_id = story_id
 
+    def __repr__(self):
+        return '<story_names {}>'.format(self.story_name)
+
+    def toDict(self):
+        return {'id': self.id, 'story_name': self.story_name, 
+                'story_id': self.story_id}
+
+
 class stories(db.Model):
     __tablename__ = 'stories'
 
     story_uuid = db.Column(db.Integer, db.ForeignKey("story_name.id"), nullale=False)
     poi_id = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
 
-
     def __init__(self, story_uuid, poi_id):
         self.story_uuid = story_uuid
         self.poi_id = poi_id
+    
+    def __repr__(self):
+        return '<stories {}>'.format(self.story_uuid)
+
+    def toDict(self):
+        return {'story_uuid': self.story_uuid, 'poi_id': self.poi_id}
+
 
 class additional_links(db.Model):
     __tablename__ = 'additional_links'
@@ -115,6 +129,12 @@ class additional_links(db.Model):
     def __init__(self, url, poi_id):
         self.url = url
         self.poi_id = poi_id
+
+    def __repr__(self):
+        return '<additional_links poi_id = {}>'.format(self.poi_id)
+
+    def toDict(self):
+        return {'url': self.url, 'poi_id': self.poi_id}
 
 
 with app.app_context():
