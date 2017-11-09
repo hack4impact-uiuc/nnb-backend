@@ -24,8 +24,9 @@ def stories_get(inputStoryName):
 def story_point():
     if request.method == 'POST':
         json_dict = json.loads(request.data)
-        updated_story = Stories.query.filter(Stories.id==json_dict['input_story_uuid'])
-        updated_story.poi_id.append(PointsOfInterest.query.filter(PointsOfInterest.id=json_dict['input_poi_id']))
+        new_story = Stories()
+        new_story.append(StoryNames.query.filter(StoryNames.id==json_dict['input_story_uuid']))
+        new_story.append(PointsOfInterest.query.filter(PointsOfInterest.id==json_dict['input_poi_id']))
         db.session.add(new_story)
         db.session.commit()
         return "new story poi added to existing story"
