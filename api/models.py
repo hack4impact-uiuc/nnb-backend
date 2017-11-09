@@ -26,15 +26,6 @@ class PointsOfInterest(db.Model):
     # years = db.relationship('Maps', backref='poi', lazy=True)
     # content = db.relationship('Content', backref='poi', lazy=True)
 
-    def __init__(self, id, name, data, eventinfo, year, x_coord, y_coord):
-        self.id = id
-        self.name = name
-        self.data = data
-        self.eventinfo = eventinfo
-        self.year = year
-        self.x_coord = x_coord
-        self.y_coord = y_coord
-
     def __repr__(self):
         return '<name {}>'.format(self.name)
 
