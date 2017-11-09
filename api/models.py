@@ -40,7 +40,7 @@ class Maps(db.Model):
     
     id = db.Column(db.Integer, unique=True, primary_key=True)
     image_url = db.Column(db.String, nullable=False)
-    year = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
+    year = db.Column(db.Integer,  nullable=False)
 
 
     def __repr__(self):
