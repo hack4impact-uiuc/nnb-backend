@@ -41,10 +41,6 @@ class Maps(db.Model):
     image_url = db.Column(db.String, nullable=False)
     year = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
 
-    def __init__(self, image_url, year):
-        self.id = id
-        self.image_url = image_url
-        self.year = year
 
     def __repr__(self):
         return '<map {}>'.format(self.year)
@@ -61,11 +57,6 @@ class Content(db.Model):
     caption = db.Column(db.String, nullable=True)
     poi_id = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
 
-    def __init__(self,content_url, caption, poi_id):
-        self.id = id
-        self.content_url = content_url
-        self.caption = caption
-        self.poi_id = poi_id
     
     def __repr__(self):
         return '<content {}>'.format(self.caption)
@@ -82,11 +73,6 @@ class StoryNames(db.Model):
     story_name = db.Column(db.String, nullable=0)
     story_id = db.relationship('Stories', backref='story_name', lazy=True)
 
-    def __init__(self, id, story_name, story_id):
-        self.id = id
-        self.story_name = story_name
-        self.story_id = story_id
-
     def __repr__(self):
         return '<story_names {}>'.format(self.story_name)
 
@@ -100,11 +86,6 @@ class Stories(db.Model):
     id = db.Column(db.Integer, unique=True, primary_key=True)
     story_uuid = db.Column(db.Integer, db.ForeignKey("story_names.id"), nullable=False)
     poi_id = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
-
-    def __init__(self, id, story_uuid, poi_id):
-        self.id = id
-        self.story_uuid = story_uuid
-        self.poi_id = poi_id
     
     def __repr__(self):
         return '<stories {}>'.format(self.story_uuid)
@@ -119,11 +100,6 @@ class AdditionalLinks(db.Model):
     id = db.Column (db.Integer, unique=True, primary_key=True)
     url = db.Column(db.String)
     poi_id = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
-
-    # def __init__(self,id, url, poi_id):
-    #     self.id = id
-    #     self.url = url
-    #     self.poi_id = poi_id
 
     def __repr__(self):
         return '<additional_links poi_id = {}>'.format(self.poi_id)

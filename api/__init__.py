@@ -18,6 +18,3 @@ app.register_blueprint(stories.mod)
 
 from api.views import POIS
 app.register_blueprint(POIS.mod)
-
-
-    
