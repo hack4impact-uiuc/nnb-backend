@@ -14,30 +14,46 @@ mod = Blueprint('years', __name__)
 
 @app.route('/years', methods=['GET'])
 def years():
-    return jsonify(serializeList((Maps.query.all())))
+    try:
+        return jsonify(serializeList((Maps.query.all())))
+    except Exception as ex:
+        return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
 
 @app.route('/years/<input>/poi', methods=['GET'])
 def years2(input):
-    return jsonify(serializeList((PointsOfInterest.query.filter(poi.year==input))))
+    try:
+        return jsonify(serializeList((PointsOfInterest.query.filter(poi.year==input))))
+    except Exception as ex:
+        return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
 
 @app.route('/maps', methods=['POST'])
 def years3():
     if request.method == 'GET':
-        return jsonify(serializeList((Maps.query.filter(maps.year==input))))
+        try:
+            return jsonify(serializeList((Maps.query.filter(maps.year==input))))
+        except Exception as ex:
+            return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
+
     if request.method == 'POST':
-        json_dict = json.loads(request.data)
-        result = Maps(
-            image_url = json_dict['image_url'],
-            year = (int)(json_dict['year'])
-        )
-        if Maps.query.filter(Maps.year == json_dict['year']).count():
-            Maps.query.filter(Maps.year == json_dict['year']).delete()
+        try:
+            json_dict = json.loads(request.data)
+            result = Maps(
+                image_url = json_dict['image_url'],
+                year = (int)(json_dict['year'])
+            )
+            if Maps.query.filter(Maps.year == json_dict['year']).count():
+                Maps.query.filter(Maps.year == json_dict['year']).delete()
+                db.session.commit()
+            db.session.add(result)
             db.session.commit()
-        db.session.add(result)
-        db.session.commit()
-        return "SUCEEDED"
+            return jsonify({"Status:": "Succeded"})
+        except Exception as ex:
+            return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
      
 @app.route('/maps/<input>', methods=['GET'])
 def years4(input):
- if request.method == 'GET':
-        return jsonify(serializeList((Maps.query.filter(Maps.year==input))))
+    if request.method == 'GET':
+        try:
+            return jsonify(serializeList((Maps.query.filter(Maps.year==input))))
+        except Exception as ex:
+            return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
