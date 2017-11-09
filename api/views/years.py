@@ -13,28 +13,34 @@ import uuid
 mod = Blueprint('years', __name__)
 
 @app.route('/years', methods=['GET'])
-def years():
-    try:
-        return jsonify(serializeList((Maps.query.all())))
-    except Exception as ex:
-        return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
+def getallyears():
+    if request.method = 'GET':
+        try:
+            return jsonify(serializeList((Maps.query.all())))
+        except Exception as ex:
+            return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
+    else:
+        return jsonify({"Status: ": "Failed", "Message: ": "Endpoint, /years, needs a GET request"})
 
 @app.route('/years/<input>/poi', methods=['GET'])
-def years2(input):
-    try:
-        return jsonify(serializeList((PointsOfInterest.query.filter(poi.year==input))))
-    except Exception as ex:
-        return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
+def getpoiforyear(input):
+    if request.method = 'GET':
+        try:
+            return jsonify(serializeList((PointsOfInterest.query.filter(poi.year==input))))
+        except Exception as ex:
+            return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
+    else:
+        return jsonify({"Status: ": "Failed", "Message: ": "Endpoint, /years/<input>/poi, needs a GET request"})
 
-@app.route('/maps', methods=['POST'])
-def years3():
+@app.route('/maps', methods=['GET', 'POST'])
+def getmapsforyear():
     if request.method == 'GET':
         try:
             return jsonify(serializeList((Maps.query.filter(maps.year==input))))
         except Exception as ex:
             return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
 
-    if request.method == 'POST':
+    elif request.method == 'POST':
         try:
             json_dict = json.loads(request.data)
             result = Maps(
@@ -49,6 +55,8 @@ def years3():
             return jsonify({"Status:": "Succeded"})
         except Exception as ex:
             return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
+    else:
+        return jsonify({"Status: ": "Failed", "Message: ": "Endpoint, /maps, needs a GET or POST request"})
      
 @app.route('/maps/<input>', methods=['GET'])
 def years4(input):
@@ -57,3 +65,5 @@ def years4(input):
             return jsonify(serializeList((Maps.query.filter(Maps.year==input))))
         except Exception as ex:
             return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
+    else:
+        return jsonify({"Status: ": "Failed", "Message: ": "Endpoint, /maps/<input>, needs a GET request"})

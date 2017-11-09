@@ -12,17 +12,20 @@ import uuid
 
 mod = Blueprint('POIS', __name__)
 
-@app.route('/poi/<poi_id>', methods=['GET', 'POST'])
+@app.route('/poi/<poi_id>', methods=['GET'])
 def poiID(poi_id):
-    try:
-        return jsonify(serializeList((PointsOfInterest.query.filter(PointsOfInterest.id==poi_id))) + 
-        serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id)) + 
-        serializeList((Content.query.filter(AdditionalLinks.poi_id==poi_id))))
-    except Exception as ex:
-        return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
+    if request.method == 'GET':
+        try:
+            return jsonify(serializeList((PointsOfInterest.query.filter(PointsOfInterest.id==poi_id))) + 
+            serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id)) + 
+            serializeList((Content.query.filter(AdditionalLinks.poi_id==poi_id))))
+        except Exception as ex:
+            return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
+    else:
+        return jsonify({"Status: ": "Failed", "Message: ": "Endpoint, /poi/<poi_id, needs a GET request"})
         
 
-@app.route('/poi/', methods=['GET', 'POST'])
+@app.route('/poi', methods=['GET', 'POST'])
 def poi():
     if request.method == "GET":
         try:
@@ -61,5 +64,5 @@ def poi():
         except Exception as ex:
             return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})        
     else:        
-        return jsonify({"Status: ": "Failed", "Message: ": "Enpoint, /poi/, needs a GET or PULL request"})
+        return jsonify({"Status: ": "Failed", "Message: ": "Endpoint, /poi, needs a GET or PULL request"})
     
