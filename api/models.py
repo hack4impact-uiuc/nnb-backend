@@ -23,6 +23,7 @@ class PointsOfInterest(db.Model):
     year = db.Column(db.Integer, nullable=False)
     x_coord = db.Column(db.Float, nullable=False)
     y_coord = db.Column(db.Float, nullable=False)
+    stories = db.relationship('Stories', backref='poi', lazy=True)
     # years = db.relationship('Maps', backref='poi', lazy=True)
     # content = db.relationship('Content', backref='poi', lazy=True)
 
@@ -71,7 +72,7 @@ class StoryNames(db.Model):
 
     id = db.Column(db.Integer, unique=True, primary_key=True)
     story_name = db.Column(db.String, nullable=0)
-    story_id = db.relationship('Stories', backref='story_name', lazy=True)
+    story_id = db.relationship('Stories', backref='story_name')
 
     def __repr__(self):
         return '<story_names {}>'.format(self.story_name)
@@ -84,14 +85,15 @@ class Stories(db.Model):
     __tablename__ = 'stories'
 
     id = db.Column(db.Integer, unique=True, primary_key=True)
-    story_uuid = db.Column(db.Integer, db.ForeignKey("story_names.id"), nullable=False)
-    poi_id = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
+    story_names_id = db.Column(db.Integer, db.ForeignKey("story_names.id"), nullable=True)
+    poi_id = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=True)
     
     def __repr__(self):
-        return '<stories {}>'.format(self.story_uuid)
+        return '<stories {}>'.format(self.id)
 
     def toDict(self):
-        return {'story_uuid': self.story_uuid, 'poi_id': self.poi_id}
+        # return {'story_uuid': self.story_uuid, 'poi_id': self.poi_id}
+        return {'id':self.id}
 
 
 class AdditionalLinks(db.Model):
