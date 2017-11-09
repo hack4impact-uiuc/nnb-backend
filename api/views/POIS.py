@@ -49,5 +49,5 @@ def poi():
             )
             db.session.add(result)
             db.session.commit()
-        return "SUCEEDED"
+        return "SUCEEDED" 
     

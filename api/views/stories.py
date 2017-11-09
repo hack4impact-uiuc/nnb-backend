@@ -25,13 +25,16 @@ def story_point():
     if request.method == 'POST':
         json_dict = json.loads(request.data)
         new_story = Stories()
-        new_story.append(StoryNames.query.filter(StoryNames.id==json_dict['input_story_uuid']))
-        new_story.append(PointsOfInterest.query.filter(PointsOfInterest.id==json_dict['input_poi_id']))
-        db.session.add(new_story)
-        db.session.commit()
+        try:
+            new_story.story_id.append(StoryNames.query.filter(StoryNames.id==json_dict['input_story_uuid'])[0])
+            new_story.poi_id.append(PointsOfInterest.query.filter(PointsOfInterest.id==json_dict['input_poi_id'])[0])
+            db.session.add(new_story)
+            db.session.commit()
+        except Exception as ex:
+            return jsonify({'status':'failed','message':ex.message})
         return "new story poi added to existing story"
     else:
-        return jsonify({"status":"failed", "message":"POST request only"})
+        return jsonify({"status": "failed", "message": "POST request only"})
 
 #adds a new story
 @app.route('/story', methods=["POST"])
