@@ -25,10 +25,13 @@ def story_point():
     if request.method == 'POST':
         json_dict = json.loads(request.data)
         new_story = Stories()
+        db.session.add(new_story)
+        db.session.commit()
         try:
-            new_story.story_id.append(StoryNames.query.filter(StoryNames.id==json_dict['input_story_uuid'])[0])
-            new_story.poi_id.append(PointsOfInterest.query.filter(PointsOfInterest.id==json_dict['input_poi_id'])[0])
-            db.session.add(new_story)
+            storynames = StoryNames.query.filter(StoryNames.id==json_dict['input_story_name_id'])[0]
+            storynames.story_id.append(new_story)
+            poi = PointsOfInterest.query.filter(PointsOfInterest.id==json_dict['input_poi_id'])[0]
+            poi.stories.append(new_story)
             db.session.commit()
         except Exception as ex:
             return jsonify({'status':'failed','message':ex.message})
