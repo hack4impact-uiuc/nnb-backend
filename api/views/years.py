@@ -1,7 +1,7 @@
 from api import app
 from flask import Blueprint, request
 from .. import db
-from api.models import PointsOfInterest, AdditionalLinks, Content
+from api.models import PointsOfInterest, AdditionalLinks, Content,Maps
 import json
 from flask import jsonify
 from api.utils import serializeList
@@ -20,8 +20,8 @@ def years():
 def years2(input):
     return jsonify(serializeList((PointsOfInterest.query.filter(poi.year==input))))
 
-@app.route('/years/<input>/maps', methods=['GET', 'POST'])
-def years3(input):
+@app.route('/maps', methods=['POST'])
+def years3():
     if request.method == 'GET':
         return jsonify(serializeList((Maps.query.filter(maps.year==input))))
     if request.method == 'POST':
@@ -37,3 +37,7 @@ def years3(input):
         db.session.commit()
         return "SUCEEDED"
      
+@app.route('/maps/<input>', methods=['GET'])
+def years4(input):
+ if request.method == 'GET':
+        return jsonify(serializeList((Maps.query.filter(Maps.year==input))))
