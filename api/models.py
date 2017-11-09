@@ -71,7 +71,7 @@ class StoryNames(db.Model):
 
     id = db.Column(db.Integer, unique=True, primary_key=True)
     story_name = db.Column(db.String, nullable=0)
-    story_id = db.relationship('Stories', backref='story_name', lazy=True)
+    # story_id = db.relationship('Stories', backref='story_name', lazy=True)
 
     def __repr__(self):
         return '<story_names {}>'.format(self.story_name)
@@ -84,7 +84,7 @@ class Stories(db.Model):
     __tablename__ = 'stories'
 
     id = db.Column(db.Integer, unique=True, primary_key=True)
-    story_uuid = db.Column(db.Integer, db.ForeignKey("story_names.id"), nullable=False)
+    story_id = db.Column(db.Integer, db.ForeignKey("story_names.id"), nullable=False)
     poi_id = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
     
     def __repr__(self):

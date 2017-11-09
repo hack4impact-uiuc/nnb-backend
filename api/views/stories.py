@@ -19,16 +19,14 @@ def stories():
 def stories_get(inputStoryName):
     return jsonify(serializeList((Stories.query.filter(func.lower(StoryNames.story_name)==func.lower(inputStoryName)))))
 
-#adds a POI to an existing story
+#adds a POI to an existing story, POI must exist!!!!
 @app.route('/story_poi/', methods=['POST'])
 def story_point():
     if request.method == 'POST':
         json_dict = json.loads(request.data)
-        story_added = Stories(
-            story_uuid = input_story_uuid,
-            poi_id = input_poi_id
-        )
-        db.session.add(story_added)
+        updated_story = Stories.query.filter(Stories.id==json_dict['input_story_uuid'])
+        updated_story.poi_id.append(PointsOfInterest(id=json_dict['input_poi_id']))
+        db.session.add(new_story)
         db.session.commit()
         return "new story poi added to existing story"
 
