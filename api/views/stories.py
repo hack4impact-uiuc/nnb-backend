@@ -29,17 +29,16 @@ def story_point():
         db.session.add(new_story)
         db.session.commit()
         return "new story poi added to existing story"
+    else:
+        return jsonify({"status":"failed", "message":"POST request only"})
 
 #adds a new story
-
 @app.route('/story', methods=["POST"])
 def new_story():
     json_dict = json.loads(request.data)
     story_added = StoryNames(
-        id = 1,
-        story_name =  json_dict['story_name'],
-        story_id = json_dict['story_id'],
+        story_name = json_dict['story_name'],
     )
     db.session.add(story_added)
     db.session.commit()
-    return "new story added"
+    return "new story added" 
