@@ -12,11 +12,11 @@ import uuid
 
 mod = Blueprint('POIS', __name__)
 
-@app.route('/poi/<poiuuid>', methods=['GET', 'POST'])
-def poiID(poiuuid):
-    return jsonify(serializeList((PointsOfInterest.query.filter(PointsOfInterest.id==poiuuid)))
-    + serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poiuuid))
-    + serializeList((Content.query.filter(AdditionalLinks.poi_id==poiuuid))))
+@app.route('/poi/<poi_id>', methods=['GET', 'POST'])
+def poiID(poi_id):
+    return jsonify(serializeList((PointsOfInterest.query.filter(PointsOfInterest.id==poi_id)))
+    + serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id))
+    + serializeList((Content.query.filter(AdditionalLinks.poi_id==poi_id))))
 
 @app.route('/poi/', methods=['GET', 'POST'])
 def poi():
@@ -30,15 +30,14 @@ def poi():
             eventinfo = json_dict['info'],
             year = (int)(json_dict['year']),
             x_coord = (int)(json_dict['x_coor']),
-            y_coord = (int)(json_dict['y_coor']),
-            id=(json_dict['id'])
+            y_coord = (int)(json_dict['y_coor']), 
         )
         db.session.add(result)
         db.session.commit()
         for link in json_dict['additional_links']:
             result = AdditionalLinks(
                 url = (link['link']),
-                poi_id=(int)(json_dict['id'])
+                poi_id=result.id
             )
             db.session.add(result)
             db.session.commit()
@@ -46,7 +45,7 @@ def poi():
             result = Content(
                 content_url = (link['content_url']),
                 caption = (link['caption']),
-                poi_id=(int)(json_dict['id'])
+                poi_id=result.id
             )
             db.session.add(result)
             db.session.commit()
