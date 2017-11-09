@@ -25,13 +25,13 @@ def story_point():
     if request.method == 'POST':
         json_dict = json.loads(request.data)
         new_story = Stories()
-        db.session.add(new_story)
-        db.session.commit()
         try:
             storynames = StoryNames.query.filter(StoryNames.id==json_dict['input_story_name_id'])[0]
-            storynames.story_id.append(new_story)
+            storynames.story_id.append(Stories()) #add new Stories() to storynames
+            db.session.commit()
+            #get poi and add the same story to it
             poi = PointsOfInterest.query.filter(PointsOfInterest.id==json_dict['input_poi_id'])[0]
-            poi.stories.append(new_story)
+            poi.stories.append(storynames.story_id[-1]) #gets last index, which is the Stories() that was just added
             db.session.commit()
         except Exception as ex:
             return jsonify({'status':'failed','message':ex.message})
