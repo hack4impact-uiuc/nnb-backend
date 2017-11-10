@@ -46,21 +46,6 @@ def poi():
             db.session.add(result)
             db.session.commit()
 
-        for link in json_dict['content']:
-            result = Content(
-                content_url = (link['content_url']),
-                caption = (link['caption']),
-                poi_id=result.id
-            )
-            db.session.add(result)
-            db.session.commit()
-            for link in json_dict['additional_links']:
-                result = AdditionalLinks(
-                    url = (link['link']),
-                    poi_id=result.id
-                )
-                db.session.add(result)
-                db.session.commit()
             for link in json_dict['content']:
                 result = Content(
                     content_url = (link['content_url']),
@@ -69,7 +54,22 @@ def poi():
                 )
                 db.session.add(result)
                 db.session.commit()
-            return jsonify({"Status:": "Succeded"})
+                for link in json_dict['additional_links']:
+                    result = AdditionalLinks(
+                        url = (link['link']),
+                        poi_id=result.id
+                    )
+                    db.session.add(result)
+                    db.session.commit()
+                for link in json_dict['content']:
+                    result = Content(
+                        content_url = (link['content_url']),
+                        caption = (link['caption']),
+                        poi_id=result.id
+                    )
+                    db.session.add(result)
+                    db.session.commit()
+                return jsonify({"Status:": "Succeded"})
         except Exception as ex:
             return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})        
     else:        

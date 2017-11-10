@@ -24,7 +24,7 @@ def getallyears():
 
 @app.route('/years/<input>/poi', methods=['GET'])
 def getpoiforyear(input):
-    if request.method = 'GET':
+    if request.method == 'GET':
         try:
             return jsonify(serializeList((PointsOfInterest.query.filter(poi.year==input))))
         except Exception as ex:
