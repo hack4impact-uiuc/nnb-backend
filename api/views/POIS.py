@@ -27,6 +27,7 @@ def poiID(poi_id):
 
 @app.route('/poi', methods=['GET', 'POST'])
 def poi():
+    print(request.method == "POST")
     if request.method == "GET":
         try:
             return jsonify(serializeList((PointsOfInterest.query.all())))
@@ -69,9 +70,8 @@ def poi():
                     )
                     db.session.add(result)
                     db.session.commit()
-                return jsonify({"Status:": "Succeded"})
+            return jsonify({"Status:": "Succeeded"})
         except Exception as ex:
-            return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})        
-    else:        
-        return jsonify({"Status: ": "Failed", "Message: ": "Endpoint, /poi, needs a GET or PULL request"})
+            return jsonify({"Status: ": "Failed", "Message:": str(ex)})            
+    return jsonify({"Status: ": "Failed", "Message: ": "Endpoint, /poi, needs a GET or PULL request"})
     
