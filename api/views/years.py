@@ -14,7 +14,7 @@ mod = Blueprint('years', __name__)
 
 @app.route('/years', methods=['GET'])
 def getallyears():
-    if request.method = 'GET':
+    if request.method == 'GET':
         try:
             return jsonify(serializeList((Maps.query.all())))
         except Exception as ex:
