@@ -27,6 +27,7 @@ def poiID(poi_id):
 
 @app.route('/poi', methods=['GET', 'POST'])
 def poi():
+    print(request.method == "POST")
     if request.method == "GET":
         try:
             return jsonify(serializeList((PointsOfInterest.query.all())))
@@ -46,21 +47,6 @@ def poi():
             db.session.add(result)
             db.session.commit()
 
-        for link in json_dict['content']:
-            result = Content(
-                content_url = (link['content_url']),
-                caption = (link['caption']),
-                poi_id=result.id
-            )
-            db.session.add(result)
-            db.session.commit()
-            for link in json_dict['additional_links']:
-                result = AdditionalLinks(
-                    url = (link['link']),
-                    poi_id=result.id
-                )
-                db.session.add(result)
-                db.session.commit()
             for link in json_dict['content']:
                 result = Content(
                     content_url = (link['content_url']),
@@ -69,9 +55,23 @@ def poi():
                 )
                 db.session.add(result)
                 db.session.commit()
-            return jsonify({"Status:": "Succeded"})
+                for link in json_dict['additional_links']:
+                    result = AdditionalLinks(
+                        url = (link['link']),
+                        poi_id=result.id
+                    )
+                    db.session.add(result)
+                    db.session.commit()
+                for link in json_dict['content']:
+                    result = Content(
+                        content_url = (link['content_url']),
+                        caption = (link['caption']),
+                        poi_id=result.id
+                    )
+                    db.session.add(result)
+                    db.session.commit()
+            return jsonify({"Status:": "Succeeded"})
         except Exception as ex:
-            return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})        
-    else:        
-        return jsonify({"Status: ": "Failed", "Message: ": "Endpoint, /poi, needs a GET or PULL request"})
+            return jsonify({"Status: ": "Failed", "Message:": str(ex)})            
+    return jsonify({"Status: ": "Failed", "Message: ": "Endpoint, /poi, needs a GET or PULL request"})
     

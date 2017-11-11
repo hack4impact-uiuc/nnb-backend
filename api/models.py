@@ -1,15 +1,13 @@
 from sqlalchemy.dialects.postgresql import JSON
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 import json
 from sqlalchemy import func
-
-app = Flask(__name__)
-app.config.from_object('config')
-db = SQLAlchemy(app)
+from api import db
+ 
+# app = Flask(__name__)
+# app.config.from_object('config')
+# db = SQLAlchemy(app)
 
 
 class PointsOfInterest(db.Model):
@@ -110,5 +108,5 @@ class AdditionalLinks(db.Model):
         return {'url': self.url, 'poi_id': self.poi_id}
 
 
-with app.app_context():
-    db.create_all()
+# with app.app_context():
+#     db.create_all()
