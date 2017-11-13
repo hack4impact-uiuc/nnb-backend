@@ -20,7 +20,7 @@ def poiID(poi_id):
             serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id)) + 
             serializeList((Content.query.filter(AdditionalLinks.poi_id==poi_id))))
         except Exception as ex:
-            return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
+            return jsonify({"Status: ": "Failed", "Message:": str(ex)})
     else:
         return jsonify({"Status: ": "Failed", "Message: ": "Endpoint, /poi/<poi_id, needs a GET request"})
         
@@ -32,7 +32,7 @@ def poi():
         try:
             return jsonify(serializeList((PointsOfInterest.query.all())))
         except Exception as ex:
-            return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
+            return jsonify({"Status: ": "Failed", "Message:": str(ex)})
     elif request.method == "POST":
         try:
             json_dict = json.loads(request.data)

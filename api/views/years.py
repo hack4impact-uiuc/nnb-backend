@@ -18,7 +18,7 @@ def getallyears():
         try:
             return jsonify(serializeList((Maps.query.all())))
         except Exception as ex:
-            return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
+            return jsonify({"Status: ": "Failed", "Message:": str(ex)})
     else:
         return jsonify({"Status: ": "Failed", "Message: ": "Endpoint, /years, needs a GET request"})
 
@@ -28,7 +28,7 @@ def getpoiforyear(input):
         try:
             return jsonify(serializeList((PointsOfInterest.query.filter(poi.year==input))))
         except Exception as ex:
-            return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
+            return jsonify({"Status: ": "Failed", "Message:": str(ex)})
     else:
         return jsonify({"Status: ": "Failed", "Message: ": "Endpoint, /years/<input>/poi, needs a GET request"})
 
@@ -38,7 +38,7 @@ def getmapsforyear():
         try:
             return jsonify(serializeList((Maps.query.filter(maps.year==input))))
         except Exception as ex:
-            return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
+            return jsonify({"Status: ": "Failed", "Message:": str(ex)})
 
     elif request.method == 'POST':
         try:
@@ -54,7 +54,7 @@ def getmapsforyear():
             db.session.commit()
             return jsonify({"Status:": "Succeded"})
         except Exception as ex:
-            return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
+            return jsonify({"Status: ": "Failed", "Message:": str(ex)})
     else:
         return jsonify({"Status: ": "Failed", "Message: ": "Endpoint, /maps, needs a GET or POST request"})
      
@@ -64,6 +64,6 @@ def years4(input):
         try:
             return jsonify(serializeList((Maps.query.filter(Maps.year==input))))
         except Exception as ex:
-            return jsonify({"Status: ": "Failed", "Message:": str(ex.message)})
+            return jsonify({"Status: ": "Failed", "Message:": str(ex)})
     else:
         return jsonify({"Status: ": "Failed", "Message: ": "Endpoint, /maps/<input>, needs a GET request"})
