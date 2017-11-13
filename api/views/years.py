@@ -36,7 +36,7 @@ def getpoiforyear(input):
 def getmapsforyear():
     if request.method == 'GET':
         try:
-            return jsonify(serializeList((Maps.query.filter(maps.year==input))))
+            return jsonify(serializeList((Maps.query.all())))
         except Exception as ex:
             return jsonify({"Status: ": "Failed", "Message:": str(ex)})
 
