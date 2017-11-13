@@ -2,16 +2,70 @@
 
 ## /maps
 
-### GET
-Returns Json with all the maps
+### GET Request Returns:
+```
+[
+  {
+    "image_url": "url.com", 
+    "year": 2016
+  },
+  {
+    "image_url": "url2.com",
+    "year": 2015
+  } 
+]
+```
 
-### POST
+### POST Request Input Body:
 ```
 {
   "image_url": "enter url here",
   "year": "enter year here"
 }
 ```
+### POST Response:
+```
+{
+  "Status:": "Succeded"
+}
+```
+## /maps/input
+
+### GET Request Returns:
+```
+[
+  {
+    "image_url": "url.com", 
+    "year": 2016
+  }
+]
+```
+Note: You can only have one map url per year
+
+## /years
+
+### GET Request Returns: 
+```
+[
+  {
+    "image_url": "url.com", 
+    "year": 2016
+  },
+  {
+    "image_url": "url2.com",
+    "year": 2015
+  } 
+]
+```
+Same as GET Request for maps
+
+## /years/input/poi
+```
+{
+
+}
+
+
 
 ## /poi
 
