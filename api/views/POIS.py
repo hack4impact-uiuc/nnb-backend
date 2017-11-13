@@ -16,9 +16,10 @@ mod = Blueprint('POIS', __name__)
 def poiID(poi_id):
     if request.method == 'GET':
         try:
-            return jsonify(serializeList((PointsOfInterest.query.filter(PointsOfInterest.id==poi_id))) + 
-            serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id)) + 
-            serializeList((Content.query.filter(AdditionalLinks.poi_id==poi_id))))
+            print("hello")
+            list = serializeList((PointsOfInterest.query.filter(PointsOfInterest.id==poi_id))) + serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id)) + serializeList((Content.query.filter(AdditionalLinks.poi_id==poi_id)))
+            dict = {'Status': 'success', 'content': list}
+            return jsonify(dict)
         except Exception as ex:
             return jsonify({"Status: ": "Failed", "Message:": str(ex)})
     else:

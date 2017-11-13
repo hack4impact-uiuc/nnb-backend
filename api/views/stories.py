@@ -1,7 +1,7 @@
 from api import app
 from flask import Blueprint, request
 from .. import db
-from api.models import PointsOfInterest,StoryNames, Stories
+from api.models import PointsOfInterest, StoryNames, Stories
 import json
 from flask import jsonify
 from api.utils import serializeList
@@ -23,6 +23,7 @@ def stories_get(inputStoryName):
 def story_point():
     if request.method == "POST":
         json_dict = json.loads(request.data)
+        
         try:
             storynames = StoryNames.query.get(json_dict["input_story_name_id"]) #check if it is empty later
             storynames.story_id.append(Stories()) #add new Stories() to storynames
@@ -34,7 +35,7 @@ def story_point():
             db.session.commit()
         except Exception as ex:
             return jsonify({"status": "failed", "message": str(ex)})
-        return "new story poi added to existing story"
+        return jsonify({"status": "success", "message": "new story poi added to existing story"})
     else:
         return jsonify({"status": "failed", "message": "POST request only"})
 
