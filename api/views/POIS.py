@@ -4,7 +4,7 @@ from .. import db
 from api.models import PointsOfInterest, AdditionalLinks, Content
 import json
 from flask import jsonify
-from api.utils import serializeList
+from api.utils import serializeList, serializePOI
 from sqlalchemy import func
 import time
 from datetime import date
@@ -16,8 +16,10 @@ mod = Blueprint('POIS', __name__)
 def poiID(poi_id):
     if request.method == 'GET':
         try:
-            list = serializeList((PointsOfInterest.query.filter(PointsOfInterest.id==poi_id))) + serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id)) + serializeList((Content.query.filter(AdditionalLinks.poi_id==poi_id)))
-            dict = {'status': 'success', 'content': list}
+            dict2 = PointsOfInterest.query.get(poi_id).toDict()
+            dict2["additional_links"] = serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id))
+            dict2["content"] = serializeList((Content.query.filter(Content.poi_id==poi_id)))
+            dict = {'status': 'success', 'data': dict2}
             return jsonify(dict)
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})
@@ -30,7 +32,7 @@ def poi():
     print(request.method == "POST")
     if request.method == "GET":
         try:
-            return jsonify({'status':'success', 'content': serializeList((PointsOfInterest.query.all()))})
+            return jsonify({'status':'success', 'data': serializePOI((PointsOfInterest.query.all()))})
         except Exception as ex:
             return jsonify({"Status: ": "Failed", "Message:": str(ex)})
     elif request.method == "POST":
