@@ -82,6 +82,13 @@ This might walk you through some remote branch push settings, just follow what i
 
 Then go to this repo on Github, refresh the page, and you should see an option to create a pull request from your branch.
 
+## To Deploy
+Until I implement a better way to do this, we will have to comment out ```SQLALCHEMY_DATABASE_URI = 'postgresql://nbb:password@127.0.0.1:5432/nbb_db'``` and uncomment ```SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')``` in config.py \n
+Then commit it and: 
+```
+git push heroku master
+```
+
 ## Code Reviews
 It is recommended to:
 1) Keep PRs small and manageable
