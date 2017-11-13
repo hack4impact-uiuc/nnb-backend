@@ -64,7 +64,7 @@ Same as GET Request for maps
 {
 
 }
-
+```
 
 
 ## /poi
