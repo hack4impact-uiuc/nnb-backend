@@ -26,7 +26,7 @@ def getallyears():
 def getpoiforyear(input):
     if request.method == 'GET':
         try:
-            return jsonify(sesrializeList((PointsOfInterest.query.filter(poi.year==input))))
+            return jsonify(serializeList((PointsOfInterest.query.filter(poi.year==input))))
         except Exception as ex:
             return jsonify({"Status: ": "Failed", "Message:": str(ex)})
     else:
