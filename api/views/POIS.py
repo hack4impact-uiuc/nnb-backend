@@ -59,7 +59,7 @@ def poi():
                 db.session.commit()
                 for link in json_dict['additional_links']:
                     result = AdditionalLinks(
-                        url = (link['link']),
+                        url = (link['url']),
                         poi_id=result.id
                     )
                     db.session.add(result)
