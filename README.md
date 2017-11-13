@@ -81,7 +81,15 @@ git push
 This might walk you through some remote branch push settings, just follow what it says. It should only happen the first time you push to a new branch
 
 Then go to this repo on Github, refresh the page, and you should see an option to create a pull request from your branch.
-
+## Database Schema Changes
+The Database Schema is described in ```models.py```. For any changes you make, you need to let everyone know about it. First, create migration files for your changes:
+```
+$ python manage.py db migrate 
+```
+This will be reflected in ```/migrations```. Don't worry about what is added, but you must add and commit those files for everyone else to use. Then, upgrade the database and let everyone know to do to.
+```
+$ python manage.py db upgrade
+```
 ## To Deploy
 Until I implement a better way to do this, we will have to comment out ```SQLALCHEMY_DATABASE_URI = 'postgresql://nbb:password@127.0.0.1:5432/nbb_db'``` and uncomment ```SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')``` in config.py \n
 Then commit it and: 
