@@ -16,14 +16,13 @@ mod = Blueprint('POIS', __name__)
 def poiID(poi_id):
     if request.method == 'GET':
         try:
-            print("hello")
             list = serializeList((PointsOfInterest.query.filter(PointsOfInterest.id==poi_id))) + serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id)) + serializeList((Content.query.filter(AdditionalLinks.poi_id==poi_id)))
-            dict = {'Status': 'success', 'content': list}
+            dict = {'status': 'success', 'content': list}
             return jsonify(dict)
         except Exception as ex:
-            return jsonify({"Status: ": "Failed", "Message:": str(ex)})
+            return jsonify({"status: ": "failed", "message:": str(ex)})
     else:
-        return jsonify({"Status: ": "Failed", "Message: ": "Endpoint, /poi/<poi_id, needs a GET request"})
+        return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi/<poi_id, needs a GET request"})
         
 
 @app.route('/poi', methods=['GET', 'POST'])
@@ -31,7 +30,7 @@ def poi():
     print(request.method == "POST")
     if request.method == "GET":
         try:
-            return jsonify(serializeList((PointsOfInterest.query.all())))
+            return jsonify({'status':'success', 'content': serializeList((PointsOfInterest.query.all()))})
         except Exception as ex:
             return jsonify({"Status: ": "Failed", "Message:": str(ex)})
     elif request.method == "POST":
