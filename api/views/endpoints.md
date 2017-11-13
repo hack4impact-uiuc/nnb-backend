@@ -67,7 +67,7 @@ Same as GET Request for maps
 ```
 
 
-## /poi
+## ```/poi```
 
 ### POST
 ```
@@ -79,7 +79,6 @@ Same as GET Request for maps
   "info": "Enter info here",
   "x_coor": "Enter x coordinate here",
   "y_coor": "Enter y coordinate here",
-  "id": "67",
   "additional_links": [
   {
     "url": "Enter link here"
@@ -100,8 +99,61 @@ Same as GET Request for maps
   ]
 }
 ```
-
-## /story
+### GET 
+```javascript
+{
+  "data": [
+    {
+      "data": {
+        "additional_links": [], 
+        "content": [], 
+        "data": "Thu, 20 May 1999 00:00:00 GMT", 
+        "eventinfo": "hello", 
+        "id": 1, 
+        "name": "Shreyas", 
+        "x_coord": 23.0, 
+        "y_coord": 32.0, 
+        "year": 1999
+      }, 
+      "status": "success"
+    }, 
+    {
+      "data": {
+        "additional_links": [], 
+        "content": [], 
+        "data": "Wed, 22 Jul 1998 00:00:00 GMT", 
+        "eventinfo": "i was born", 
+        "id": 2, 
+        "name": "Aria", 
+        "x_coord": 23.0, 
+        "y_coord": 32.0, 
+        "year": 1998
+      }, 
+      "status": "success"
+    },
+    {
+      "data": {
+        "additional_links": [
+          {
+            "poi_id": 2, 
+            "url": "google.com"
+          }
+        ], 
+        "content": [], 
+        "data": "Wed, 22 Jul 1998 00:00:00 GMT", 
+        "eventinfo": "i was born", 
+        "id": 2, 
+        "name": "Aria", 
+        "x_coord": 23.0, 
+        "y_coord": 32.0, 
+        "year": 1998
+      }, 
+      "status": "success"
+      }
+   ]
+}
+```
+## ```/story```
 
 ### POST
 ```
