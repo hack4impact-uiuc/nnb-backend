@@ -57,21 +57,14 @@ def poi():
                 )
                 db.session.add(result)
                 db.session.commit()
-                for link in json_dict['additional_links']:
-                    result = AdditionalLinks(
-                        url=(link['url']),
-                        poi_id=result.id
-                    )
-                    db.session.add(result)
-                    db.session.commit()
-                for link in json_dict['content']:
-                    result = Content(
-                        content_url = (link['content_url']),
-                        caption = (link['caption']),
-                        poi_id=result.id
-                    )
-                    db.session.add(result)
-                    db.session.commit()
+            for link in json_dict['additional_links']:
+                result = AdditionalLinks(
+                    url=(link['url']),
+                    poi_id=result.id
+                )
+                db.session.add(result)
+                db.session.commit()
+
             return jsonify({"status:": "success"})
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})            
