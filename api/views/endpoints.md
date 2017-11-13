@@ -117,40 +117,35 @@ Same as GET Request for maps
       }, 
       "status": "success"
     }, 
-    {
-      "data": {
-        "additional_links": [], 
-        "content": [], 
-        "data": "Wed, 22 Jul 1998 00:00:00 GMT", 
-        "eventinfo": "i was born", 
-        "id": 2, 
-        "name": "Aria", 
-        "x_coord": 23.0, 
-        "y_coord": 32.0, 
-        "year": 1998
-      }, 
-      "status": "success"
-    },
-    {
       "data": {
         "additional_links": [
           {
-            "poi_id": 2, 
-            "url": "google.com"
+            "poi_id": 9, 
+            "url": "gmail.com"
+          }, 
+          {
+            "poi_id": 9, 
+            "url": "2ndone.com"
           }
         ], 
-        "content": [], 
+        "content": [
+          {
+            "caption": "Those cats tho", 
+            "content_url": "cats.com", 
+            "id": 4, 
+            "poi-link": 9
+          }
+        ], 
         "data": "Wed, 22 Jul 1998 00:00:00 GMT", 
         "eventinfo": "i was born", 
-        "id": 2, 
-        "name": "Aria", 
+        "id": 9, 
+        "name": "Alvin", 
         "x_coord": 23.0, 
         "y_coord": 32.0, 
         "year": 1998
-      }, 
-      "status": "success"
       }
-   ]
+  ],
+  "status": "success"
 }
 ```
 ## ```/story```
