@@ -29,7 +29,7 @@ class PointsOfInterest(db.Model):
         return '<name {}>'.format(self.name)
 
     def toDict(self):
-        return {'id': self.id, 'name': self.name, 'data': self.data}
+        return {'id': self.id, 'name': self.name, 'data': self.data, 'eventinfo': self.eventinfo, 'year': self.year, 'x_coord': self.x_coord, 'y_coord': self.y_coord}
 
 
 
