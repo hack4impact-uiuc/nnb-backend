@@ -1,6 +1,6 @@
 # Endpoint Json Documentation
 
-## /maps
+## ```/maps```
 
 ### GET Request Returns:
 ```
@@ -29,7 +29,7 @@
   "Status:": "Succeded"
 }
 ```
-## /maps/input
+## ```/maps/input```
 
 ### GET Request Returns:
 ```
@@ -42,7 +42,7 @@
 ```
 Note: You can only have one map url per year
 
-## /years
+## ```/years```
 
 ### GET Request Returns: 
 ```
@@ -59,7 +59,7 @@ Note: You can only have one map url per year
 ```
 Same as GET Request for maps
 
-## /years/input/poi
+## ```/years/input/poi```
 ```
 {
 
@@ -82,10 +82,10 @@ Same as GET Request for maps
   "id": "67",
   "additional_links": [
   {
-    "link": "Enter link here"
+    "url": "Enter link here"
   },
   {
-    "link": "Enter link here"
+    "url": "Enter link here"
   }
   ],
   "content": [
