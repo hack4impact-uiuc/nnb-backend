@@ -14,7 +14,7 @@ def stories():
     try:
         return jsonify({'status': 'success', 'data': serializeList(StoryNames.query.all())})
     except Exception as ex:
-        return jsonify({'status': 'failed', 'message': ex})
+        return jsonify({'status': 'failed', 'message': str(ex)})
 
 # Returns all POIS for a specific Story
 @app.route('/stories/<inputStoryName>', methods=['GET'])
@@ -22,14 +22,14 @@ def stories_get(inputStoryName):
     try:
         return jsonify({'status': 'success', 'data': serializeList((Stories.query.filter(func.lower(StoryNames.story_name)==func.lower(inputStoryName))))})
     except Exception as ex:
-        return jsonify({'status': 'failed', 'message': ex})
+        return jsonify({'status': 'failed', 'message': str(ex)})
 
 # adds a POI to an existing story, POI must exist!!!!
 @app.route('/story_poi', methods=['POST'])
 def story_point():
     if request.method == "POST":
-        json_dict = json.loads(request.data)
         try:
+            json_dict = json.loads(request.data)
             storynames = StoryNames.query.get(json_dict["input_story_name_id"]) #check if it is empty later
             storynames.story_id.append(Stories()) #add new Stories() to storynames
             
@@ -56,4 +56,4 @@ def new_story():
         db.session.commit()
         return jsonify({'status': 'success', 'message': 'Added new Story'})
     except Exception as ex:
-        return jsonify({'status':'failed','message':ex})
+        return jsonify({'status': 'failed', 'message': str(ex)})

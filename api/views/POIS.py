@@ -32,9 +32,9 @@ def poi():
     print(request.method == "POST")
     if request.method == "GET":
         try:
-            return jsonify({'status':'success', 'data': serializePOI((PointsOfInterest.query.all()))})
+            return jsonify({'status': 'success', 'data': serializePOI((PointsOfInterest.query.all()))})
         except Exception as ex:
-            return jsonify({"Status: ": "Failed", "Message:": str(ex)})
+            return jsonify({"status: ": "failed", "message:": str(ex)})
     elif request.method == "POST":
         try:
             json_dict = json.loads(request.data)
@@ -59,7 +59,7 @@ def poi():
                 db.session.commit()
                 for link in json_dict['additional_links']:
                     result = AdditionalLinks(
-                        url = (link['url']),
+                        url=(link['url']),
                         poi_id=result.id
                     )
                     db.session.add(result)
@@ -72,8 +72,8 @@ def poi():
                     )
                     db.session.add(result)
                     db.session.commit()
-            return jsonify({"Status:": "Succeeded"})
+            return jsonify({"status:": "success"})
         except Exception as ex:
-            return jsonify({"Status: ": "Failed", "Message:": str(ex)})            
-    return jsonify({"Status: ": "Failed", "Message: ": "Endpoint, /poi, needs a GET or PULL request"})
+            return jsonify({"status: ": "failed", "message:": str(ex)})            
+    return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a GET or PULL request"})
     
