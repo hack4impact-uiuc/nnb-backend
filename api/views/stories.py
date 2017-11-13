@@ -19,7 +19,7 @@ def stories_get(inputStoryName):
     return jsonify(serializeList((Stories.query.filter(func.lower(StoryNames.story_name)==func.lower(inputStoryName)))))
 
 #adds a POI to an existing story, POI must exist!!!!
-@app.route('/story_poi/', methods=['POST'])
+@app.route('/story_poi', methods=['POST'])
 def story_point():
     if request.method == "POST":
         json_dict = json.loads(request.data)
