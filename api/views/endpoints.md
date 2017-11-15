@@ -4,16 +4,19 @@
 
 ### GET Request Returns:
 ```
-[
-  {
-    "image_url": "url.com", 
-    "year": 2016
-  },
-  {
-    "image_url": "url2.com",
-    "year": 2015
-  } 
-]
+{
+  "data": [
+    {
+      "image_url": "google.com", 
+      "year": 2005
+    }, 
+    {
+      "image_url": "facebook.com", 
+      "year": 2000
+    }
+  ], 
+  "status": "success"
+}
 ```
 
 ### POST Request Input Body:
@@ -23,22 +26,26 @@
   "year": "enter year here"
 }
 ```
-### POST Response:
+### POST Request Returns:
 ```
 {
-  "Status:": "Succeded"
+    "message": "successfully added maps and year",
+    "status:": "success"
 }
 ```
 ## ```/maps/input```
 
 ### GET Request Returns:
 ```
-[
-  {
-    "image_url": "url.com", 
-    "year": 2016
-  }
-]
+{
+  "data": [
+    {
+      "image_url": "google.com", 
+      "year": 2005
+    }
+  ], 
+  "status": "success"
+}
 ```
 Note: You can only have one map url per year
 
@@ -46,30 +53,65 @@ Note: You can only have one map url per year
 
 ### GET Request Returns: 
 ```
-[
-  {
-    "image_url": "url.com", 
-    "year": 2016
-  },
-  {
-    "image_url": "url2.com",
-    "year": 2015
-  } 
-]
+{
+  "data": [
+    {
+      "image_url": "google.com", 
+      "year": 2005
+    }, 
+    {
+      "image_url": "facebook.com", 
+      "year": 2000
+    }
+  ], 
+  "status": "success"
+}
 ```
 Same as GET Request for maps
 
 ## ```/years/input/poi```
+Input is a year
+### GET Request Returns:
 ```
 {
-
+    "data": [
+        {
+            "data": "Fri, 22 Jul 2005 00:00:00 GMT",
+            "eventinfo": "I was born",
+            "id": 7,
+            "name": "Shreyas",
+            "x_coord": 23,
+            "y_coord": 32,
+            "year": 2005
+        },
+        {
+            "data": "Fri, 22 Jul 2005 00:00:00 GMT",
+            "eventinfo": "i was born",
+            "id": 10,
+            "name": "Aria",
+            "x_coord": 23,
+            "y_coord": 32,
+            "year": 2005
+        },
+        {
+            "data": "Fri, 22 Jul 2005 00:00:00 GMT",
+            "eventinfo": "i was born",
+            "id": 11,
+            "name": "Tim",
+            "x_coord": 23,
+            "y_coord": 32,
+            "year": 2005
+        }
+    ],
+    "status": "success"
 }
 ```
+Returns all POIs for a given year
 
 
 ## ```/poi```
 
-### POST
+### POST Request Input Body:
 ```
 {
   "name": "Enter name here",
@@ -99,8 +141,15 @@ Same as GET Request for maps
   ]
 }
 ```
-### GET 
-```javascript
+### POST Request Returns:
+```
+{
+    "status:": "success"
+}
+```
+
+### GET Request Returns:
+```
 {
   "data": [
     {
@@ -148,11 +197,106 @@ Same as GET Request for maps
   "status": "success"
 }
 ```
+
+## ```/poi/input```
+### GET Request Returns:
+Input is POI ID
+```
+{
+  "data": {
+    "additional_links": [
+      {
+        "poi_id": 1, 
+        "url": "4"
+      }
+    ], 
+    "content": [
+      {
+        "caption": "this is my caption", 
+        "content_url": "google.com", 
+        "id": 1, 
+        "poi_link": 1
+      }
+    ], 
+    "data": "Wed, 22 Jul 1998 00:00:00 GMT", 
+    "event_info": "i was born", 
+    "id": 1, 
+    "name": "Aria", 
+    "x_coord": 23.0, 
+    "y_coord": 32.0, 
+    "year": 1998
+  }, 
+  "status": "success"
+}
+```
+
 ## ```/story```
 
-### POST
+### POST Request Input Body:
 ```
 {
   "story_name": "Enter story name here"
+}
+```
+### POST Request Output:
+```
+{
+    "message": "Added new Story",
+    "status": "success"
+}
+```
+## ```/stories```
+
+### GET Request Output:
+```
+{
+  "data": [
+    {
+      "id": 1, 
+      "story_name": "Civil Rights Movement"
+    }, 
+    {
+      "id": 2, 
+      "story_name": "Civil War"
+    }
+  ], 
+  "status": "success"
+}
+```
+## ```/story_poi```
+
+### POST Request:
+```
+{
+  "input_story_name_id": "1",
+  "input_poi_id": "1"
+}
+```
+### POST Output:
+```
+{
+    "message": "new story poi added to existing story",
+    "status": "success"
+}
+```
+
+## ```/stories/input```
+Input is a story ID
+### GET Request Output:
+```
+{
+  "pois": [
+    {
+      "data": "Wed, 22 Jul 1998 00:00:00 GMT", 
+      "event_info": "i was born", 
+      "id": 1, 
+      "name": "Aria", 
+      "x_coord": 23.0, 
+      "y_coord": 32.0, 
+      "year": 1998
+    }
+  ], 
+  "story_name": "Civil Rights Movement", 
+  "story_name_id": "1"
 }
 ```
