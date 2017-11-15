@@ -62,9 +62,39 @@ Same as GET Request for maps
 ## ```/years/input/poi```
 ```
 {
-
+    "data": [
+        {
+            "data": "Fri, 22 Jul 2005 00:00:00 GMT",
+            "eventinfo": "I was born",
+            "id": 7,
+            "name": "Shreyas",
+            "x_coord": 23,
+            "y_coord": 32,
+            "year": 2005
+        },
+        {
+            "data": "Fri, 22 Jul 2005 00:00:00 GMT",
+            "eventinfo": "i was born",
+            "id": 10,
+            "name": "Aria",
+            "x_coord": 23,
+            "y_coord": 32,
+            "year": 2005
+        },
+        {
+            "data": "Fri, 22 Jul 2005 00:00:00 GMT",
+            "eventinfo": "i was born",
+            "id": 11,
+            "name": "Tim",
+            "x_coord": 23,
+            "y_coord": 32,
+            "year": 2005
+        }
+    ],
+    "status": "success"
 }
 ```
+Returns all POIs for a given year
 
 
 ## ```/poi```
@@ -100,7 +130,7 @@ Same as GET Request for maps
 }
 ```
 ### GET 
-```javascript
+```
 {
   "data": [
     {
@@ -150,9 +180,16 @@ Same as GET Request for maps
 ```
 ## ```/story```
 
-### POST
+### POST Request Input Body:
 ```
 {
   "story_name": "Enter story name here"
+}
+```
+### POST Request Output:
+```
+{
+    "message": "Added new Story",
+    "status": "success"
 }
 ```
