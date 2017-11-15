@@ -40,7 +40,6 @@ def story_point():
             json_dict = json.loads(request.data)
             storynames = StoryNames.query.get(json_dict["input_story_name_id"]) #check if it is empty later
             storynames.story_id.append(Stories()) #add new Stories() to storynames
-            
             db.session.commit()
             # get poi and add the same story to it
             poi = PointsOfInterest.query.get(json_dict["input_poi_id"])
