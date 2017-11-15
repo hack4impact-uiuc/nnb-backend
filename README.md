@@ -51,6 +51,44 @@ python run.py
 
 The API should be at http://127.0.0.1:5000/ for you to experience its beauty LOL 
 
+## Database Schema Changes
+The Database Schema is described in ```models.py```. For any changes you make, you MUST let everyone know about it. First, create migration files for your changes:
+```
+$ python manage.py db migrate 
+```
+This will be reflected in ```/migrations```. Then, upgrade the database and let everyone know to do to.
+```
+$ python manage.py db upgrade
+```
+Everyone will have to follow this same process whenever someone pushes new changes to ```models.py```. Migration files will not be pushed into the main repo due to versioning complaints.
+## Heroku Deployment
+You must have a Heroku Account and have the Heroku CLI installed on your computer. First, create an application in your Heroku dashboard, click on the "Deploy" tab and find the ```git remote add ....``` and run that command in your repository. While you're still in your Heroku Dashboard, click add "Heroku Postgres". This will add a Postgres Database to your app(we will connect it later).\n
+Then, login into heroku in your command line:
+```
+$ heroku login
+```
+To double check whether you have the postgres add-on:
+```
+$ heroku addons
+```
+And you should get something with ```heroku-postgresql (postgresql-metric-75135)```\n
+We will then connect the Heroku Postgres Database to the App in Heroku. Until I implement a better way to do this, we will have to comment out ```SQLALCHEMY_DATABASE_URI = 'postgresql://nbb:password@127.0.0.1:5432/nbb_db'``` and uncomment ```SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')``` in config.py \n
+Then commit it and push it to heroku: 
+```
+$ git commit config.py -m "changing database uri for heroku deployment"
+$ git push heroku master
+```
+After pushing your app to heroku, you need to migrate and update heroku postgres:
+```
+$ heroku run bash
+$ python manage.py db init
+$ python manage.py db migrate
+$ python manage.py db upgrade
+```
+A pretty neat command to go into the heroku postgres CLI is:
+```
+$ heroku pg:psql
+```
 ## Git Flow 
 Before you start making changes, make sure you have the most recently updated version of `master`:
 ```
@@ -81,23 +119,6 @@ git push
 This might walk you through some remote branch push settings, just follow what it says. It should only happen the first time you push to a new branch
 
 Then go to this repo on Github, refresh the page, and you should see an option to create a pull request from your branch.
-## Database Schema Changes
-The Database Schema is described in ```models.py```. For any changes you make, you MUST let everyone know about it. First, create migration files for your changes:
-```
-$ python manage.py db migrate 
-```
-This will be reflected in ```/migrations```. Then, upgrade the database and let everyone know to do to.
-```
-$ python manage.py db upgrade
-```
-Everyone will have to follow this same process whenever someone pushes new changes to ```models.py```. Migration files will not be pushed into the main repo due to versioning complaints.
-## To Deploy
-Until I implement a better way to do this, we will have to comment out ```SQLALCHEMY_DATABASE_URI = 'postgresql://nbb:password@127.0.0.1:5432/nbb_db'``` and uncomment ```SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')``` in config.py \n
-Then commit it and: 
-```
-git push heroku master
-```
-
 ## Code Reviews
 It is recommended to:
 1) Keep PRs small and manageable
