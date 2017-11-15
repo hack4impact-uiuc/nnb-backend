@@ -90,7 +90,7 @@ class Stories(db.Model):
 
     def toDict(self):
         # return {'story_uuid': self.story_uuid, 'poi_id': self.poi_id}
-        return {'id':self.id}
+        return {'id':self.id,'story_names_id': self.story_names_id, 'poi_id': self.poi_id}
 
 
 class AdditionalLinks(db.Model):

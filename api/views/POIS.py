@@ -12,7 +12,7 @@ import uuid
 
 mod = Blueprint('POIS', __name__)
 
-@app.route('/poi/<poi_id>', methods=['GET'])
+@app.route('/poi/<poi_id>', methods=['GET', 'DELETE'])
 def poiID(poi_id):
     if request.method == 'GET':
         try:
@@ -21,6 +21,15 @@ def poiID(poi_id):
             dict2["content"] = serializeList((Content.query.filter(Content.poi_id==poi_id)))
             dict = {'status': 'success', 'data': dict2}
             return jsonify(dict)
+        except Exception as ex:
+            return jsonify({"status: ": "failed", "message:": str(ex)})
+    elif request.method == 'DELETE':
+        # THIS DOESNT WORK - FOREIGN KEY CONSTRAINT
+        try:
+            obj = PointsOfInterest.query.get(poi_id)
+            db.session.delete(obj)
+            db.session.commit()
+            return jsonify({'status':'success', 'message': 'deleted '+ poi_id + " from database"})
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})
     else:

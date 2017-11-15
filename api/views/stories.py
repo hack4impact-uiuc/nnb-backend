@@ -16,11 +16,19 @@ def stories():
     except Exception as ex:
         return jsonify({'status': 'failed', 'message': str(ex)})
 
-# Returns all POIS for a specific Story
-@app.route('/stories/<inputStoryName>', methods=['GET'])
-def stories_get(inputStoryName):
+# Returns all POIS for a specific Story Name
+@app.route('/stories/<id>', methods=['GET'])
+def stories_get(id):
     try:
-        return jsonify({'status': 'success', 'data': serializeList((Stories.query.filter(func.lower(StoryNames.story_name)==func.lower(inputStoryName))))})
+        arry = []
+        stories = StoryNames.query.get(id).story_id
+        if stories is None:
+            return jsonify({'status':'failed','message':'Story Name with ' + id + " doesn't exist"})
+        for story in stories:
+            arry.append(PointsOfInterest.query.get(story.poi_id))
+        ret_dict = {'story_name_id': id, 'story_name': StoryNames.query.get(id).story_name, 'pois': serializeList(arry)}
+        return jsonify(ret_dict)
+        # return jsonify({'status': 'success', 'data': serializeList((Stories.query.filter(func.lower(StoryNames.story_name)==func.lower(inputStoryName))))})
     except Exception as ex:
         return jsonify({'status': 'failed', 'message': str(ex)})
 
@@ -35,7 +43,7 @@ def story_point():
             
             db.session.commit()
             # get poi and add the same story to it
-            poi = PointsOfInterest.query.filter(PointsOfInterest.id==json_dict["input_poi_id"])[0]
+            poi = PointsOfInterest.query.get(json_dict["input_poi_id"])
             poi.stories.append(storynames.story_id[-1]) # gets last index, which is the Stories() that was just added
             db.session.commit()
         except Exception as ex:
