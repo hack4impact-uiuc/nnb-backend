@@ -9,12 +9,26 @@ from sqlalchemy import func
 mod = Blueprint('stories', __name__)
 
 # Returns all story names aka stories
-@app.route('/stories', methods=['GET'])
+@app.route('/stories', methods=['GET', 'POST'])
 def stories():
-    try:
-        return jsonify({'status': 'success', 'data': serializeList(StoryNames.query.all())})
-    except Exception as ex:
-        return jsonify({'status': 'failed', 'message': str(ex)})
+    if request.method == 'GET':
+        try:
+            return jsonify({'status': 'success', 'data': serializeList(StoryNames.query.all())})
+        except Exception as ex:
+            return jsonify({'status': 'failed', 'message': str(ex)})
+    elif request.method == 'POST':
+        try:
+            json_dict = json.loads(request.data)
+            story_added = StoryNames(
+                story_name=json_dict['story_name'],
+            )
+            db.session.add(story_added)
+            db.session.commit()
+            return jsonify({'status': 'success', 'message': 'Added new Story'})
+        except Exception as ex:
+            return jsonify({'status': 'failed', 'message': str(ex)})
+    else:
+        return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
 
 # Returns all POIS for a specific Story Name aka story
 @app.route('/stories/<id>', methods=['GET'])
@@ -51,7 +65,10 @@ def story_point():
     else:
         return jsonify({"status": "failed", "message": "POST request only"})
 
+
+#Added this functionality to the /stories endpoint, so no need for it
 #adds a new story name aka story
+'''
 @app.route('/story', methods=["POST"])
 def new_story():
     try:
@@ -64,3 +81,4 @@ def new_story():
         return jsonify({'status': 'success', 'message': 'Added new Story'})
     except Exception as ex:
         return jsonify({'status': 'failed', 'message': str(ex)})
+'''
