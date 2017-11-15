@@ -61,8 +61,11 @@ This will be reflected in ```/migrations```. Then, upgrade the database and let 
 $ python manage.py db upgrade
 ```
 Everyone will have to follow this same process whenever someone pushes new changes to ```models.py```. Migration files will not be pushed into the main repo due to versioning complaints.
+## Conventions
+- **Controllers**, which describe API endpoints will be defined under ``api/views/*``. We will be using [Flask Blueprints](http://flask.pocoo.org/docs/0.12/blueprints/) for easier collaborations in view controllers. Be sure to know how to use them. <br>
+- The **Database** Structure will be defined under ``api/models.py``
 ## Heroku Deployment
-You must have a Heroku Account and have the Heroku CLI installed on your computer. First, create an application in your Heroku dashboard, click on the "Deploy" tab and find the ```git remote add ....``` and run that command in your repository. While you're still in your Heroku Dashboard, click add "Heroku Postgres". This will add a Postgres Database to your app(we will connect it later).\n
+You must have a Heroku Account and have the Heroku CLI installed on your computer. First, create an application in your Heroku dashboard, click on the "Deploy" tab and find the ```git remote add ....``` and run that command in your repository. While you're still in your Heroku Dashboard, click add "Heroku Postgres". This will add a Postgres Database to your app(we will connect it later).<br>
 Then, login into heroku in your command line:
 ```
 $ heroku login
@@ -89,6 +92,7 @@ A pretty neat command to go into the heroku postgres CLI is:
 ```
 $ heroku pg:psql
 ```
+Finally, open up your live app by clicking the "Open App" button on the top-right corner of your Heroku dashboard!
 ## Git Flow 
 Before you start making changes, make sure you have the most recently updated version of `master`:
 ```
@@ -139,9 +143,7 @@ Reviewers, set this to indicate the PR is ready to be merged, but let the pull r
 
 PRs can't be merged without at least one reviewer approving your changes. If waiting on your reviewer becomes a blocker, bug them about it!
 
-## Conventions
-- **Controllers**, which describe API endpoints will be defined under ``api/views/*``. We will be using [Flask Blueprints](http://flask.pocoo.org/docs/0.12/blueprints/) for easier collaborations in view controllers. Be sure to know how to use them. <br>
-- The **Database** Structure will be defined under ``api/models.py``
+
 
 ## MISC
 
