@@ -8,7 +8,7 @@ from api.utils import serializeList
 from sqlalchemy import func
 mod = Blueprint('stories', __name__)
 
-# Returns all story names
+# Returns all story names aka stories
 @app.route('/stories', methods=['GET'])
 def stories():
     try:
@@ -16,7 +16,7 @@ def stories():
     except Exception as ex:
         return jsonify({'status': 'failed', 'message': str(ex)})
 
-# Returns all POIS for a specific Story Name
+# Returns all POIS for a specific Story Name aka story
 @app.route('/stories/<id>', methods=['GET'])
 def stories_get(id):
     try:
@@ -32,7 +32,7 @@ def stories_get(id):
     except Exception as ex:
         return jsonify({'status': 'failed', 'message': str(ex)})
 
-# adds a POI to an existing story, POI must exist!!!!
+# adds a POI to an existing story name aka story, POI must exist!!!!
 @app.route('/story_poi', methods=['POST'])
 def story_point():
     if request.method == "POST":
@@ -52,7 +52,7 @@ def story_point():
     else:
         return jsonify({"status": "failed", "message": "POST request only"})
 
-#adds a new story
+#adds a new story name aka story
 @app.route('/story', methods=["POST"])
 def new_story():
     try:
