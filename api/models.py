@@ -29,7 +29,7 @@ class PointsOfInterest(db.Model):
         return '<name {}>'.format(self.name)
 
     def toDict(self):
-        return {'id': self.id, 'name': self.name, 'data': self.data, 'eventinfo': self.eventinfo, 'year': self.year, 'x_coord': self.x_coord, 'y_coord': self.y_coord}
+        return {'id': self.id, 'name': self.name, 'data': self.data, 'event_info': self.eventinfo, 'year': self.year, 'x_coord': self.x_coord, 'y_coord': self.y_coord}
 
 
 class Maps(db.Model):
@@ -53,14 +53,13 @@ class Content(db.Model):
     id = db.Column(db.Integer, unique=True, primary_key=True)
     content_url = db.Column(db.String, nullable=True)
     caption = db.Column(db.String, nullable=True)
-    poi_id = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
+    poi_id = db.Column(db.Integer, db.ForeignKey('poi.id', ondelete='SET NULL'), nullable=True)
 
-    
     def __repr__(self):
         return '<content {}>'.format(self.caption)
 
     def toDict(self):
-        return {'id': self.id, 'poi-link': self.poi_id, 'content_url':
+        return {'id': self.id, 'poi_link': self.poi_id, 'content_url':
                 self.content_url, 'caption': self.caption}
 
 
@@ -82,8 +81,8 @@ class Stories(db.Model):
     __tablename__ = 'stories'
 
     id = db.Column(db.Integer, unique=True, primary_key=True)
-    story_names_id = db.Column(db.Integer, db.ForeignKey("story_names.id"), nullable=True)
-    poi_id = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=True)
+    story_names_id = db.Column(db.Integer, db.ForeignKey("story_names.id", ondelete='SET NULL'), nullable=True)
+    poi_id = db.Column(db.Integer, db.ForeignKey('poi.id', ondelete='SET NULL'), nullable=True)
     
     def __repr__(self):
         return '<stories {}>'.format(self.id)
@@ -98,7 +97,7 @@ class AdditionalLinks(db.Model):
 
     id = db.Column (db.Integer, unique=True, primary_key=True)
     url = db.Column(db.String)
-    poi_id = db.Column(db.Integer, db.ForeignKey('poi.id'), nullable=False)
+    poi_id = db.Column(db.Integer, db.ForeignKey('poi.id', ondelete='SET NULL'), nullable=False)
 
     def __repr__(self):
         return '<additional_links poi_id = {}>'.format(self.poi_id)
