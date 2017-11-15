@@ -62,7 +62,8 @@ def getmapsforyear():
 def years4(input):
     if request.method == 'GET':
         try:
-            return jsonify(serializeList((Maps.query.filter(Maps.year==input))))
+            return jsonify({'status': 'success', 'data': serializeList((Maps.query.filter(Maps.year==input)))})
+            #return jsonify(serializeList((Maps.query.filter(Maps.year==input))))
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})
     else:
