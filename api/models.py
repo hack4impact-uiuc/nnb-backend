@@ -32,10 +32,9 @@ class PointsOfInterest(db.Model):
         return {'id': self.id, 'name': self.name, 'data': self.data, 'eventinfo': self.eventinfo, 'year': self.year, 'x_coord': self.x_coord, 'y_coord': self.y_coord}
 
 
-
 class Maps(db.Model):
     __tablename__ = "maps"
-    
+
     id = db.Column(db.Integer, unique=True, primary_key=True)
     image_url = db.Column(db.String, nullable=False)
     year = db.Column(db.Integer,  nullable=False)

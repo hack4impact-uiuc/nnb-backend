@@ -48,19 +48,19 @@ def poi():
             )
             db.session.add(result)
             db.session.commit()
-
+            new_poi_id = result.id
             for link in json_dict['content']:
                 result = Content(
-                    content_url = (link['content_url']),
-                    caption = (link['caption']),
-                    poi_id=result.id
+                    content_url=(link['content_url']),
+                    caption=(link['caption']),
+                    poi_id=new_poi_id
                 )
                 db.session.add(result)
                 db.session.commit()
             for link in json_dict['additional_links']:
                 result = AdditionalLinks(
                     url=(link['url']),
-                    poi_id=result.id
+                    poi_id=new_poi_id
                 )
                 db.session.add(result)
                 db.session.commit()
