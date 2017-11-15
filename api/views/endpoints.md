@@ -230,8 +230,7 @@ Input is POI ID
 }
 ```
 
-## ```/story```
-
+## ```/stories```
 ### POST Request Input Body:
 ```
 {
@@ -245,8 +244,6 @@ Input is POI ID
     "status": "success"
 }
 ```
-## ```/stories```
-
 ### GET Request Output:
 ```
 {
