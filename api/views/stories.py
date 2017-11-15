@@ -66,8 +66,9 @@ def story_point():
         return jsonify({"status": "failed", "message": "POST request only"})
 
 
-#Added this functionality to the /stories endpoint
+#Added this functionality to the /stories endpoint, so no need for it
 #adds a new story name aka story
+'''
 @app.route('/story', methods=["POST"])
 def new_story():
     try:
@@ -80,3 +81,4 @@ def new_story():
         return jsonify({'status': 'success', 'message': 'Added new Story'})
     except Exception as ex:
         return jsonify({'status': 'failed', 'message': str(ex)})
+'''
