@@ -2,8 +2,8 @@ import json
 from api.models import PointsOfInterest, AdditionalLinks, Content
 
 def serializeList(items):
-    if not items:
-        return None
+    if not items or items is None:
+        return []
     return [x.toDict() for x in items]
 
 def serializePOI(items):

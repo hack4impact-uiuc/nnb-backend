@@ -97,7 +97,7 @@ class AdditionalLinks(db.Model):
 
     id = db.Column (db.Integer, unique=True, primary_key=True)
     url = db.Column(db.String)
-    poi_id = db.Column(db.Integer, db.ForeignKey('poi.id', ondelete='SET NULL'), nullable=False)
+    poi_id = db.Column(db.Integer, db.ForeignKey('poi.id', ondelete='SET NULL'), nullable=True)
 
     def __repr__(self):
         return '<additional_links poi_id = {}>'.format(self.poi_id)

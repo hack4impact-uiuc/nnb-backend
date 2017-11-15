@@ -16,7 +16,10 @@ mod = Blueprint('POIS', __name__)
 def poiID(poi_id):
     if request.method == 'GET':
         try:
-            dict2 = PointsOfInterest.query.get(poi_id).toDict()
+            poi = PointsOfInterest.query.get(poi_id)
+            if poi is None:
+                return jsonify({'status': 'failed', 'message': '<poi '+ poi_id + "> does not exist"})
+            dict2 = poi.toDict()
             dict2["additional_links"] = serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id))
             dict2["content"] = serializeList((Content.query.filter(Content.poi_id==poi_id)))
             dict = {'status': 'success', 'data': dict2}
