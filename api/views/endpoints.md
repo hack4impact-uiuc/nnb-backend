@@ -26,7 +26,8 @@
 ### POST Response:
 ```
 {
-  "Status:": "Succeded"
+    "message": "successfully added maps and year",
+    "status:": "success"
 }
 ```
 ## ```/maps/input```
@@ -46,16 +47,19 @@ Note: You can only have one map url per year
 
 ### GET Request Returns: 
 ```
-[
-  {
-    "image_url": "url.com", 
-    "year": 2016
-  },
-  {
-    "image_url": "url2.com",
-    "year": 2015
-  } 
-]
+{
+  "data": [
+    {
+      "image_url": "google.com", 
+      "year": 2005
+    }, 
+    {
+      "image_url": "facebook.com", 
+      "year": 2000
+    }
+  ], 
+  "status": "success"
+}
 ```
 Same as GET Request for maps
 
@@ -191,5 +195,60 @@ Returns all POIs for a given year
 {
     "message": "Added new Story",
     "status": "success"
+}
+```
+## ```/stories```
+
+### GET Request Output:
+```
+{
+  "data": [
+    {
+      "id": 1, 
+      "story_name": "Civil Rights Movement"
+    }, 
+    {
+      "id": 2, 
+      "story_name": "Civil War"
+    }
+  ], 
+  "status": "success"
+}
+```
+## ```/story_poi```
+
+### POST Request:
+```
+{
+  "input_story_name_id": "1",
+  "input_poi_id": "1"
+}
+```
+### POST Output:
+```
+{
+    "message": "new story poi added to existing story",
+    "status": "success"
+}
+```
+
+## ```/stories/input```
+
+### GET Request Output:
+```
+{
+  "pois": [
+    {
+      "data": "Wed, 22 Jul 1998 00:00:00 GMT", 
+      "event_info": "i was born", 
+      "id": 1, 
+      "name": "Aria", 
+      "x_coord": 23.0, 
+      "y_coord": 32.0, 
+      "year": 1998
+    }
+  ], 
+  "story_name": "Civil Rights Movement", 
+  "story_name_id": "1"
 }
 ```
