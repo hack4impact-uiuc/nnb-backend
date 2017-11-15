@@ -1,6 +1,6 @@
 # Endpoint Json Documentation
 
-## /maps
+## ```/maps```
 
 ### GET Request Returns:
 ```
@@ -29,7 +29,7 @@
   "Status:": "Succeded"
 }
 ```
-## /maps/input
+## ```/maps/input```
 
 ### GET Request Returns:
 ```
@@ -42,7 +42,7 @@
 ```
 Note: You can only have one map url per year
 
-## /years
+## ```/years```
 
 ### GET Request Returns: 
 ```
@@ -59,15 +59,15 @@ Note: You can only have one map url per year
 ```
 Same as GET Request for maps
 
-## /years/input/poi
+## ```/years/input/poi```
 ```
 {
 
 }
+```
 
 
-
-## /poi
+## ```/poi```
 
 ### POST
 ```
@@ -79,13 +79,12 @@ Same as GET Request for maps
   "info": "Enter info here",
   "x_coor": "Enter x coordinate here",
   "y_coor": "Enter y coordinate here",
-  "id": "67",
   "additional_links": [
   {
-    "link": "Enter link here"
+    "url": "Enter link here"
   },
   {
-    "link": "Enter link here"
+    "url": "Enter link here"
   }
   ],
   "content": [
@@ -100,8 +99,56 @@ Same as GET Request for maps
   ]
 }
 ```
-
-## /story
+### GET 
+```javascript
+{
+  "data": [
+    {
+      "data": {
+        "additional_links": [], 
+        "content": [], 
+        "data": "Thu, 20 May 1999 00:00:00 GMT", 
+        "eventinfo": "hello", 
+        "id": 1, 
+        "name": "Shreyas", 
+        "x_coord": 23.0, 
+        "y_coord": 32.0, 
+        "year": 1999
+      }, 
+      "status": "success"
+    }, 
+      "data": {
+        "additional_links": [
+          {
+            "poi_id": 9, 
+            "url": "gmail.com"
+          }, 
+          {
+            "poi_id": 9, 
+            "url": "2ndone.com"
+          }
+        ], 
+        "content": [
+          {
+            "caption": "Those cats tho", 
+            "content_url": "cats.com", 
+            "id": 4, 
+            "poi-link": 9
+          }
+        ], 
+        "data": "Wed, 22 Jul 1998 00:00:00 GMT", 
+        "eventinfo": "i was born", 
+        "id": 9, 
+        "name": "Alvin", 
+        "x_coord": 23.0, 
+        "y_coord": 32.0, 
+        "year": 1998
+      }
+  ],
+  "status": "success"
+}
+```
+## ```/story```
 
 ### POST
 ```
