@@ -22,14 +22,18 @@ def handle_invalid_usage(error):
 def poiID(poi_id):
     if request.method == 'GET':
         try:
-            poi = PointsOfInterest.query.get(poi_id)
-            if poi is None:
-                raise InvalidUsage('Error: <poi ' + poi_id + '> does not exist', status_code=404)
-            dict2 = poi.toDict()
-            dict2["additional_links"] = serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id))
-            dict2["content"] = serializeList((Content.query.filter(Content.poi_id==poi_id)))
-            dict = {'status': 'success', 'data': dict2}
-            return jsonify(dict)
+            #year = request.args['year']
+            if year:
+                return jsonify({'status': 'success', 'data': serializeList((PointsOfInterest.query.filter(PointsOfInterest.year==input)))})
+            else:
+                poi = PointsOfInterest.query.get(poi_id)
+                if poi is None:
+                    raise InvalidUsage('Error: <poi ' + poi_id + '> does not exist', status_code=404)
+                dict2 = poi.toDict()
+                dict2["additional_links"] = serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id))
+                dict2["content"] = serializeList((Content.query.filter(Content.poi_id==poi_id)))
+                dict = {'status': 'success', 'data': dict2}
+                return jsonify(dict)
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
     elif request.method == 'DELETE':
