@@ -1,7 +1,7 @@
 from api import app
 from flask import Blueprint, request
 from .. import db
-from api.models import PointsOfInterest, AdditionalLinks, Content
+from api.models import PointsOfInterest, AdditionalLinks, Content, InvalidUsage
 import json
 from flask import jsonify
 from api.utils import serializeList, serializePOI
@@ -12,20 +12,26 @@ import uuid
 
 mod = Blueprint('POIS', __name__)
 
+@app.errorhandler(InvalidUsage)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+
 @app.route('/poi/<poi_id>', methods=['GET', 'DELETE'])
 def poiID(poi_id):
     if request.method == 'GET':
         try:
             poi = PointsOfInterest.query.get(poi_id)
             if poi is None:
-                return jsonify({'status': 'failed', 'message': '<poi '+ poi_id + "> does not exist"})
+                raise InvalidUsage('Error: <poi ' + poi_id + '> does not exist', status_code=404)
             dict2 = poi.toDict()
             dict2["additional_links"] = serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id))
             dict2["content"] = serializeList((Content.query.filter(Content.poi_id==poi_id)))
             dict = {'status': 'success', 'data': dict2}
             return jsonify(dict)
         except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
     elif request.method == 'DELETE':
         # THIS DOESNT WORK - FOREIGN KEY CONSTRAINT
         try:
@@ -34,9 +40,9 @@ def poiID(poi_id):
             db.session.commit()
             return jsonify({'status':'success', 'message': 'deleted '+ poi_id + " from database"})
         except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
-        return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi/<poi_id, needs a GET request"})
+        raise InvalidUsage('Error: Endpoint, /poi/<poi_id, needs a GET request', status_code=404)
         
 
 @app.route('/poi', methods=['GET', 'POST'])
@@ -46,7 +52,7 @@ def poi():
         try:
             return jsonify({'status': 'success', 'data': serializePOI((PointsOfInterest.query.all()))})
         except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
     elif request.method == "POST":
         try:
             json_dict = json.loads(request.data)
@@ -79,6 +85,6 @@ def poi():
 
             return jsonify({"status:": "success"})
         except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})            
-    return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a GET or PULL request"})
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
+    raise InvalidUsage('Error: Endpoint, /poi, needs a GET or PULL request', status_code=404)
     
