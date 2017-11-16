@@ -12,7 +12,7 @@ import uuid
 
 mod = Blueprint('POIS', __name__)
 
-@app.route('/poi/<poi_id>', methods=['GET', 'DELETE'])
+@app.route('/pois/<poi_id>', methods=['GET', 'DELETE'])
 def poiID(poi_id):
     if request.method == 'GET':
         try:
@@ -39,7 +39,7 @@ def poiID(poi_id):
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi/<poi_id, needs a GET request"})
         
 
-@app.route('/poi', methods=['GET', 'POST'])
+@app.route('/pois', methods=['GET', 'POST'])
 def poi():
     print(request.method == "POST")
     if request.method == "GET":

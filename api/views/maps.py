@@ -12,25 +12,6 @@ import uuid
 
 mod = Blueprint('years', __name__)
 
-@app.route('/years', methods=['GET'])
-def getallyears():
-    if request.method == 'GET':
-        try:
-            return jsonify({'status': 'success', 'data': serializeList((Maps.query.all()))})
-        except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})
-    else:
-        return jsonify({"status: ": "failed", "message: ": "Endpoint, /years, needs a GET request"})
-
-@app.route('/years/<input>/poi', methods=['GET'])
-def getpoiforyear(input):
-    if request.method == 'GET':
-        try:
-            return jsonify({'status': 'success', 'data': serializeList((PointsOfInterest.query.filter(PointsOfInterest.year==input)))})
-        except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})
-    else:
-        return jsonify({"status: ": "failed", "message: ": "Endpoint, /years/<input>/poi, needs a GET request"})
 
 @app.route('/maps', methods=['GET', 'POST'])
 def getmapsforyear():
