@@ -25,14 +25,14 @@ $ psql -h localhost
 Always remember to use the same virtual environement!!!! This is a good practice for any python development. <br>
 First, install virtualenv, create and activate the environment called **venv**, and install the python package dependencies:
 ```bash
-pip3 install virtualenv
+$ pip3 install virtualenv
 $ virtualenv -p python3 venv
 $ source venv/bin/activate
-$ pip install -r requirements.txt
+(venv)$ pip install -r requirements.txt
 ```
 To deactivate when you're using it:
 ```
-$ deactivate venv
+(venv)$ deactivate venv
 ```
 After installing Postgres, in your CLI create a user and database and grant privileges:
 ```
@@ -46,11 +46,13 @@ $ psql
 ## Run Development Server
 To run the server, make sure you are in the root directory:
 ```
-python run.py
+(venv)$ python run.py
 ```
 
 The API should be at http://127.0.0.1:5000/ for you to experience its beauty LOL 
-
+## Conventions
+- **Controllers**, which describe API endpoints will be defined under ``api/views/*``. We will be using [Flask Blueprints](http://flask.pocoo.org/docs/0.12/blueprints/) for easier collaborations in view controllers. Be sure to know how to use them. <br>
+- The **Database** Structure will be defined under ``api/models.py``. Look at the Database Schema Section to know how to update your database. We are using [SQLAlchemy](http://docs.sqlalchemy.org/en/latest/) as our ORM, which allows us to create, query, and filter through the database easily. 
 ## Database Schema Changes
 The Database Schema is described in ```models.py```. For any changes you make, you MUST let everyone know about it. First, create migration files for your changes:
 ```
@@ -60,10 +62,16 @@ This will be reflected in ```/migrations```. Then, upgrade the database and let 
 ```
 $ python manage.py db upgrade
 ```
-Everyone will have to follow this same process whenever someone pushes new changes to ```models.py```. Migration files will not be pushed into the main repo due to versioning complaints.
-## Conventions
-- **Controllers**, which describe API endpoints will be defined under ``api/views/*``. We will be using [Flask Blueprints](http://flask.pocoo.org/docs/0.12/blueprints/) for easier collaborations in view controllers. Be sure to know how to use them. <br>
-- The **Database** Structure will be defined under ``api/models.py``
+Everyone will have to follow this same process whenever someone pushes new changes to ```models.py```. Migration files will not be pushed into the main repo due to versioning complaints. <br>
+If you are getting errors when you migrate, remove the migrations folder, go into the postgres CLI, connect to the database, and Drop the ```alembic_version``` table.
+```
+$ rm -rf migrations/
+$ psql
+# \connect nbb_db
+# DROP TABLE alembic_version;
+# \q
+```
+
 ## Heroku Deployment
 You must have a Heroku Account and have the Heroku CLI installed on your computer. First, create an application in your Heroku dashboard, click on the "Deploy" tab and find the ```git remote add ....``` and run that command in your repository. While you're still in your Heroku Dashboard, click add "Heroku Postgres". This will add a Postgres Database to your app(we will connect it later).<br>
 Then, login into heroku in your command line:
@@ -74,8 +82,15 @@ To double check whether you have the postgres add-on:
 ```
 $ heroku addons
 ```
-And you should get something with ```heroku-postgresql (postgresql-metric-75135)```\n
-We will then connect the Heroku Postgres Database to the App in Heroku. Until I implement a better way to do this, we will have to comment out ```SQLALCHEMY_DATABASE_URI = 'postgresql://nbb:password@127.0.0.1:5432/nbb_db'``` and uncomment ```SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')``` in config.py \n
+And you should get something with ```heroku-postgresql (postgresql-metric-75135)```<br>
+We will then connect the Heroku Postgres Database to the App in Heroku. Until I implement a better way to do this, we will have to comment out in config.py <br>
+```
+SQLALCHEMY_DATABASE_URI = 'postgresql://nbb:password@127.0.0.1:5432/nbb_db'
+```
+and uncomment 
+```
+SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+``` 
 Then commit it and push it to heroku: 
 ```
 $ git commit config.py -m "changing database uri for heroku deployment"
@@ -84,9 +99,9 @@ $ git push heroku master
 After pushing your app to heroku, you need to migrate and update heroku postgres:
 ```
 $ heroku run bash
-$ python manage.py db init
-$ python manage.py db migrate
-$ python manage.py db upgrade
+~ $ python manage.py db init
+~ $ python manage.py db migrate
+~ $ python manage.py db upgrade
 ```
 A pretty neat command to go into the heroku postgres CLI is:
 ```
@@ -142,8 +157,6 @@ Reviewers, set this to indicate the PR is currently being reviewed.
 Reviewers, set this to indicate the PR is ready to be merged, but let the pull requester do the merging.
 
 PRs can't be merged without at least one reviewer approving your changes. If waiting on your reviewer becomes a blocker, bug them about it!
-
-
 
 ## MISC
 
