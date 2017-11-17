@@ -59,7 +59,7 @@ Say we have a Person Table with an attribute of "name"(String).
 # import Person and db
 >>> from api.models import Person
 >>> from api import db
-...
+
 # add a Person with name "Tim" and another with name "Tim2"– yes, I'm that narcissistic haha
 >>> person1 = Person(name="Tim")
 >>> person2 = Person(name="Tim2")
