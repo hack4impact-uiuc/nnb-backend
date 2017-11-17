@@ -1,6 +1,6 @@
 # Endpoint Json Documentation
 
-## ```/maps```
+## <a name="maps"></a>```/maps```
 
 ### GET Request Returns:
 ```
@@ -33,8 +33,8 @@
     "status:": "success"
 }
 ```
-## ```/maps/input```
-
+##<a name="maps_year"></a> ```/maps/input```
+input is year
 ### GET Request Returns:
 ```
 {
@@ -122,22 +122,22 @@ Returns all POIs for a given year
   "x_coor": "Enter x coordinate here",
   "y_coor": "Enter y coordinate here",
   "additional_links": [
-  {
-    "url": "Enter link here"
-  },
-  {
-    "url": "Enter link here"
-  }
+    {
+      "url": "Enter link here"
+    },
+    {
+      "url": "Enter link here"
+    }
   ],
   "content": [
-  {
-    "content_url": "Enter content url here"
-    "caption": "Enter caption here"
-  },
-  {
-    "content_url": "Enter content url here"
-    "caption": "Enter caption here"
-  }
+    {
+      "content_url": "Enter content url here",
+      "caption": "Enter caption here"
+    },
+    {
+      "content_url": "Enter content url here",
+      "caption": "Enter caption here"
+    }
   ]
 }
 ```
