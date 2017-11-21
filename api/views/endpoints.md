@@ -60,48 +60,6 @@
 Note: You can only have one map url per year
 
 
-##  Years
-
-**Endpoint**
-
-    /years/input/poi
-Input is a year
-### GET Request Returns:
-```
-{
-    "data": [
-        {
-            "data": "Fri, 22 Jul 2005 00:00:00 GMT",
-            "eventinfo": "I was born",
-            "id": 7,
-            "name": "Shreyas",
-            "x_coord": 23,
-            "y_coord": 32,
-            "year": 2005
-        },
-        {
-            "data": "Fri, 22 Jul 2005 00:00:00 GMT",
-            "eventinfo": "i was born",
-            "id": 10,
-            "name": "Aria",
-            "x_coord": 23,
-            "y_coord": 32,
-            "year": 2005
-        },
-        {
-            "data": "Fri, 22 Jul 2005 00:00:00 GMT",
-            "eventinfo": "i was born",
-            "id": 11,
-            "name": "Tim",
-            "x_coord": 23,
-            "y_coord": 32,
-            "year": 2005
-        }
-    ],
-    "status": "success"
-}
-```
-Returns all POIs for a given year
 
 
 ## POIs
@@ -187,8 +145,10 @@ Returns all POIs for a given year
 
 ***Endpoint***
 
-    /poi/<input>
-Input is POI ID
+    GET /poi/<poi_ID>
+
+Note: Adding "year" parameter to GET request will return POIs for a certain year
+
 ***Response***
 
     {
@@ -256,40 +216,40 @@ Input is POI ID
       "status": "success"
     }
 
-/stories/add
+    POST /stories/add
 
-### POST Request:
-```
-{
-  "input_story_name_id": "1",
-  "input_poi_id": "1"
-}
-```
-### POST Output:
-```
-{
-    "message": "new story poi added to existing story",
-    "status": "success"
-}
-```
+***Input***
 
-## ```/stories/input```
-Input is a story ID
-### GET Request Output:
-```
-{
-  "pois": [
+|   Name   |  Type  | Description | Example |
+|:--------:|:------:|:-----------:|:-----------:|
+| input_story_name_id | string |   **Required** | 1
+| input_poi_id | string |   **Required** | 5
+
+***Response***
+
     {
-      "data": "Wed, 22 Jul 1998 00:00:00 GMT", 
-      "event_info": "i was born", 
-      "id": 1, 
-      "name": "Aria", 
-      "x_coord": 23.0, 
-      "y_coord": 32.0, 
-      "year": 1998
+        "message": "new story poi added to existing story",
+        "status": "success"
     }
-  ], 
-  "story_name": "Civil Rights Movement", 
-  "story_name_id": "1"
-}
-```
+
+
+    GET /stories/<story_ID>
+    
+***Response***
+
+    {
+      "pois": [
+        {
+          "data": "Wed, 22 Jul 1998 00:00:00 GMT", 
+          "event_info": "i was born", 
+          "id": 1, 
+          "name": "Aria", 
+          "x_coord": 23.0, 
+          "y_coord": 32.0, 
+          "year": 1998
+        }
+      ], 
+      "story_name": "Civil Rights Movement", 
+      "story_name_id": "1"
+    }
+
