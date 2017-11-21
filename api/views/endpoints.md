@@ -216,6 +216,8 @@ Note: Adding "year" parameter to GET request will return POIs for a certain year
       "status": "success"
     }
 
+***Endpoint***
+
     POST /stories/add
 
 ***Input***
@@ -232,6 +234,7 @@ Note: Adding "year" parameter to GET request will return POIs for a certain year
         "status": "success"
     }
 
+***Endpoint***
 
     GET /stories/<story_ID>
     
