@@ -42,7 +42,6 @@ $ psql
 # GRANT ALL PRIVILEGES ON DATABASE nbb_db TO nbb;
 ```
 
-
 ## Run Development Server
 To run the server, make sure you are in the root directory:
 ```
@@ -53,6 +52,74 @@ The API should be at http://127.0.0.1:5000/ for you to experience its beauty LOL
 ## Conventions
 - **Controllers**, which describe API endpoints will be defined under ``api/views/*``. We will be using [Flask Blueprints](http://flask.pocoo.org/docs/0.12/blueprints/) for easier collaborations in view controllers. Be sure to know how to use them. <br>
 - The **Database** Structure will be defined under ``api/models.py``. Look at the Database Schema Section to know how to update your database. We are using [SQLAlchemy](http://docs.sqlalchemy.org/en/latest/) as our ORM, which allows us to create, query, and filter through the database easily. 
+## SQLAlchemy Examples
+Here are some ways to use SQLAlchemy to query, add, and delete from your database. <br>
+Say we have a Person Table with an attribute of "name"(String).
+```python
+# import Person and db
+>>> from api.models import Person
+>>> from api import db
+
+# add a Person with name "Tim" and another with name "Tim2"– yes, I'm that narcissistic haha
+>>> person1 = Person(name="Tim")
+>>> person2 = Person(name="Tim2")
+>>> db.session.add(person1)
+>>> db.session.add(person2)
+>>> db.session.commit()
+
+# get Person with id 1
+>>> person1 = Person.query.get(1)
+>>> person1.name # person1 is a Python object so you can access its attributes like python class variables!
+Tim
+
+# get all Persons
+>>> Person.query.all()
+[<Person Tim>,<Person Tim2>] # this depends on how __repr__() is defined for Person, but it will be a list of Person
+
+# filter based on certain attributes
+>>> Person.query.filter(Person.name=="Tim") # returns list of Person that has a name "Tim"
+[<Person Tim>]
+
+# deleting a Person
+>>> p = Person.query.get(1) # get the object you want to delete
+>>> db.session.delete(obj   # delete it
+>>> db.session.commit()        
+>>> Person.query.all()
+[<Person Tim2>]
+# If you had any Foreign Keys linked to Person, you must set make sure to define whether you want
+# it to cascade or SET NULL when you define your model
+
+# Relationships – say there was an Email Table with a foreign key in Email with "email"(String) attribute
+# that was linked to Person and Person had an attribute "emails = db.relationship('Email', backref='person')"
+>>> email1 = Email(email="tim@gmail.com")
+>>> email2 = Email(email="tim.ko@gmail.com")
+>>> p = Person.query.get(2)
+>>> p.emails.append(email1)
+>>> p.emails.append(email2)
+>>> p.emails
+[<email tim@gmail.com>,<email tim.ko@gmail.com>]
+```
+### Adding Dummy data 
+Eventually, you would want to make POST requests to certain endpoints that would add entries to the database. You can add dummy data through the python CLI. Make sure you're in the right virtualenv. 
+```
+(venv)$ python
+```
+You will be at the head directory. Import the Objects you need from ```models.py``` and your database
+```python
+>>> from api.models import Person
+>>> from api import db
+```
+Then, make a new Person Object and add it to the database.
+```python
+>>> p = Person(name="Tim")
+>>> db.session.add(p)
+```
+Once you add it, you need save(commit) the change
+```python
+>>> db.session.commit()
+```
+
+
 ## Database Schema Changes
 The Database Schema is described in ```models.py```. For any changes you make, you MUST let everyone know about it. First, create migration files for your changes:
 ```
@@ -71,6 +138,7 @@ $ psql
 # DROP TABLE alembic_version;
 # \q
 ```
+
 
 ## Heroku Deployment
 You must have a Heroku Account and have the Heroku CLI installed on your computer. First, create an application in your Heroku dashboard, click on the "Deploy" tab and find the ```git remote add ....``` and run that command in your repository. While you're still in your Heroku Dashboard, click add "Heroku Postgres". This will add a Postgres Database to your app(we will connect it later).<br>
