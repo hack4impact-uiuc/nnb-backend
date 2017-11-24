@@ -11,6 +11,7 @@ from datetime import date
 
 mod = Blueprint('auth', __name__)
 
+# sign up and get token
 @app.route('/signup', methods=['POST'])
 def register():
     return jsonify({'status':'success', 'token':'136458476182639'})

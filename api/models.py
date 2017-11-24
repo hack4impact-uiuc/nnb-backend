@@ -67,7 +67,7 @@ class StoryNames(db.Model):
     __tablename__ = 'story_names'
 
     id = db.Column(db.Integer, unique=True, primary_key=True)
-    story_name = db.Column(db.String, nullable=0)
+    story_name = db.Column(db.String, nullable=True)
     story_id = db.relationship('Stories', backref='story_name')
 
     def __repr__(self):
@@ -104,6 +104,20 @@ class AdditionalLinks(db.Model):
 
     def toDict(self):
         return {'url': self.url, 'poi_id': self.poi_id}
+
+class Users(db.Model):
+    __tablename__ = 'users'
+
+    id = db.Column (db.Integer, unique=True, primary_key=True)
+    email = db.Column(db.String,nullable=False)
+    password = db.Column(db.String,nullable=False)
+    token = db.Column(db.String,nullable=False) # auto generate it?
+
+    def __repr__(self):
+        return '<users name={}>'.format(self.email)
+
+    def toDict(self):
+        return {'email':self.email,'token':self.token}
 
 
 # with app.app_context():
