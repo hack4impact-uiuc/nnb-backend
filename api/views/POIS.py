@@ -14,7 +14,7 @@ from flask_login import LoginManager, login_required, login_user, logout_user
 
 mod = Blueprint('POIS', __name__)
 
-@app.route('/poi/<poi_id>', methods=['GET', 'DELETE']) 
+@app.route('/poi/<poi_id>', methods=['GET']) 
 def poiID(poi_id):
     if request.method == 'GET':
         try:
@@ -28,7 +28,14 @@ def poiID(poi_id):
             return jsonify(dict)
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})
-    elif request.method == 'DELETE':
+    else:
+        return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi/<poi_id, needs a GET or POST request"})
+
+
+@app.route('/poi/<poi_id>', methods=['DELETE']) 
+@login_required
+def poiID(poi_id):
+    if request.method == 'DELETE':
         try:
             obj = PointsOfInterest.query.get(poi_id)
             db.session.delete(obj)
@@ -38,7 +45,8 @@ def poiID(poi_id):
             return jsonify({"status: ": "failed", "message:": str(ex)})
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi/<poi_id, needs a GET or POST request"})
-     
+
+
 @app.route('/poi', methods=['GET']) 
 def poi_get():
     if request.method == "GET":
