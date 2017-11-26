@@ -1,7 +1,7 @@
 from api import app
 from flask import Blueprint, request
 from .. import db
-from api.models import PointsOfInterest, AdditionalLinks, Content
+from api.models import PointsOfInterest, AdditionalLinks, Content, User
 import json
 from flask import jsonify
 from api.utils import serializeList, serializePOI
@@ -9,9 +9,24 @@ from sqlalchemy import func
 import time
 from datetime import date
 import uuid
+from flask_httpauth import HTTPBasicAuth
+from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user 
 
 mod = Blueprint('POIS', __name__)
 
+# auth = HTTPBasicAuth()
+
+# @auth.verify_password
+# def verify_password(username, password):
+#     if username in users:
+#         return User.verify_password( User.query.filter(User.username==username).first().get(password) , password)
+#     return False
+
+
+# @auth.login_required
+# @login_manager.login_required
+
+@login_required
 @app.route('/poi/<poi_id>', methods=['GET', 'DELETE'])
 def poiID(poi_id):
     if request.method == 'GET':
@@ -37,17 +52,20 @@ def poiID(poi_id):
             return jsonify({"status: ": "failed", "message:": str(ex)})
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi/<poi_id, needs a GET request"})
-        
 
-@app.route('/poi', methods=['GET', 'POST'])
-def poi():
-    print(request.method == "POST")
+@login_required       
+@app.route('/poi', methods=['GET'])
+def poi_get():
     if request.method == "GET":
         try:
             return jsonify({'status': 'success', 'data': serializePOI((PointsOfInterest.query.all()))})
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})
-    elif request.method == "POST":
+
+@login_required
+@app.route('/poi', methods=['POST'])
+def poi():
+    if request.method == "POST":
         try:
             json_dict = json.loads(request.data)
             result = PointsOfInterest(
@@ -59,7 +77,7 @@ def poi():
                 y_coord = (int)(json_dict['y_coor']), 
             )
             db.session.add(result)
-            db.session.commit()
+            # db.session.commit()
             new_poi_id = result.id
             for link in json_dict['content']:
                 result = Content(
@@ -68,15 +86,15 @@ def poi():
                     poi_id=new_poi_id
                 )
                 db.session.add(result)
-                db.session.commit()
+                # db.session.commit()
             for link in json_dict['additional_links']:
                 result = AdditionalLinks(
                     url=(link['url']),
                     poi_id=new_poi_id
                 )
                 db.session.add(result)
-                db.session.commit()
-
+                # db.session.commit()
+            db.session.commit()
             return jsonify({"status:": "success"})
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})            

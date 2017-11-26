@@ -4,10 +4,25 @@ from flask import Flask
 import json
 from sqlalchemy import func
 from api import db
+from passlib.apps import custom_app_context as pwd_context
  
 # app = Flask(__name__)
 # app.config.from_object('config')
 # db = SQLAlchemy(app)
+
+class User(db.Model):
+    """Points of Interest"""
+    __tablename__ = "users"
+    id = db.Column(db.Integer, unique=True,  primary_key = True)
+    username = db.Column(db.String(32), index = True)
+    password_hash = db.Column(db.String(128))
+    is_active = False
+
+    def hash_password(self, password):
+        self.password_hash = pwd_context.encrypt(password)
+
+    def verify_password(self, password):
+        return pwd_context.verify(password, self.password_hash)
 
 
 class PointsOfInterest(db.Model):

@@ -6,9 +6,12 @@ import json
 from flask import jsonify
 from api.utils import serializeList
 from sqlalchemy import func
+from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user 
+
 mod = Blueprint('stories', __name__)
 
 # Returns all story names aka stories
+@login_required
 @app.route('/stories', methods=['GET', 'POST'])
 def stories():
     if request.method == 'GET':
@@ -31,6 +34,7 @@ def stories():
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
 
 # Returns all POIS for a specific Story Name aka story
+@login_required
 @app.route('/stories/<id>', methods=['GET'])
 def stories_get(id):
     try:
@@ -47,6 +51,7 @@ def stories_get(id):
         return jsonify({'status': 'failed', 'message': str(ex)})
 
 # adds a POI to an existing story name aka story, POI must exist!!!!
+@login_required
 @app.route('/story_poi', methods=['POST'])
 def story_point():
     if request.method == "POST":
