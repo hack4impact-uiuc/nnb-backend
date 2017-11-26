@@ -63,7 +63,6 @@ def poi():
                 y_coord = (int)(json_dict['y_coor']), 
             )
             db.session.add(result)
-            # db.session.commit()
             new_poi_id = result.id
             for link in json_dict['content']:
                 result = Content(
@@ -82,5 +81,5 @@ def poi():
             return jsonify({"status:": "success"})
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})            
-    return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a GET or POST request"})
+    return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a gGET or POST request"})
     
