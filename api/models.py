@@ -109,7 +109,7 @@ class Users(db.Model):
     __tablename__ = 'users'
 
     id = db.Column (db.Integer, unique=True, primary_key=True)
-    email = db.Column(db.String,nullable=False)
+    email = db.Column(db.String,nullable=False,unique=True)
     password = db.Column(db.String,nullable=False)
     token = db.Column(db.String,nullable=False) # auto generate it?
 
