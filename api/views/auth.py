@@ -8,7 +8,6 @@ from flask import jsonify
 import requests
 import time
 from datetime import date
-
 mod = Blueprint('auth', __name__)
 
 # sign up and get token - might be redundant
@@ -54,7 +53,7 @@ def auth():
             return jsonify({'status': 'failed', 'message': str(ex)})
     return jsonify({'status':'failed','message':"couldn't create/get user"})
 
-# logout provided account info with token
+# logout provided account info with token ---- Probably dont need this because front end can handle logouts
 @app.route('/logout',methods=['POST'])
 def logout():    
     return jsonify({'status':'success','message':'successfully logged out'})
