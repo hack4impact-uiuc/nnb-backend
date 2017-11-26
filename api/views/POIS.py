@@ -28,15 +28,14 @@ def poiID(poi_id):
             return jsonify(dict)
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})
-    # elif request.method == 'DELETE':
-    #     # THIS DOESNT WORK - FOREIGN KEY CONSTRAINT
-    #     try:
-    #         obj = PointsOfInterest.query.get(poi_id)
-    #         db.session.delete(obj)
-    #         db.session.commit()
-    #         return jsonify({'status':'success', 'message': 'deleted '+ poi_id + " from database"})
-    #     except Exception as ex:
-    #         return jsonify({"status: ": "failed", "message:": str(ex)})
+    elif request.method == 'DELETE':
+        try:
+            obj = PointsOfInterest.query.get(poi_id)
+            db.session.delete(obj)
+            db.session.commit()
+            return jsonify({'status':'success', 'message': 'deleted '+ poi_id + " from database"})
+        except Exception as ex:
+            return jsonify({"status: ": "failed", "message:": str(ex)})
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi/<poi_id, needs a GET or POST request"})
      
