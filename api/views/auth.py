@@ -8,6 +8,7 @@ from flask import jsonify
 import requests
 import time
 from datetime import date
+
 mod = Blueprint('auth', __name__)
 
 # sign up and get token - might be redundant
