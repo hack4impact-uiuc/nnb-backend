@@ -10,24 +10,11 @@ import time
 from datetime import date
 import uuid
 from flask_httpauth import HTTPBasicAuth
-from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user 
+from flask_login import LoginManager, login_required, login_user, logout_user 
 
 mod = Blueprint('POIS', __name__)
 
-# auth = HTTPBasicAuth()
-
-# @auth.verify_password
-# def verify_password(username, password):
-#     if username in users:
-#         return User.verify_password( User.query.filter(User.username==username).first().get(password) , password)
-#     return False
-
-
-# @auth.login_required
-# @login_manager.login_required
-
-@login_required
-@app.route('/poi/<poi_id>', methods=['GET', 'DELETE'])
+@app.route('/poi/<poi_id>', methods=['GET', 'DELETE']) 
 def poiID(poi_id):
     if request.method == 'GET':
         try:
@@ -41,20 +28,19 @@ def poiID(poi_id):
             return jsonify(dict)
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})
-    elif request.method == 'DELETE':
-        # THIS DOESNT WORK - FOREIGN KEY CONSTRAINT
-        try:
-            obj = PointsOfInterest.query.get(poi_id)
-            db.session.delete(obj)
-            db.session.commit()
-            return jsonify({'status':'success', 'message': 'deleted '+ poi_id + " from database"})
-        except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})
+    # elif request.method == 'DELETE':
+    #     # THIS DOESNT WORK - FOREIGN KEY CONSTRAINT
+    #     try:
+    #         obj = PointsOfInterest.query.get(poi_id)
+    #         db.session.delete(obj)
+    #         db.session.commit()
+    #         return jsonify({'status':'success', 'message': 'deleted '+ poi_id + " from database"})
+    #     except Exception as ex:
+    #         return jsonify({"status: ": "failed", "message:": str(ex)})
     else:
-        return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi/<poi_id, needs a GET request"})
-
-@login_required       
-@app.route('/poi', methods=['GET'])
+        return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi/<poi_id, needs a GET or POST request"})
+     
+@app.route('/poi', methods=['GET']) 
 def poi_get():
     if request.method == "GET":
         try:
@@ -62,8 +48,8 @@ def poi_get():
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})
 
-@login_required
 @app.route('/poi', methods=['POST'])
+@login_required
 def poi():
     if request.method == "POST":
         try:
@@ -86,17 +72,15 @@ def poi():
                     poi_id=new_poi_id
                 )
                 db.session.add(result)
-                # db.session.commit()
             for link in json_dict['additional_links']:
                 result = AdditionalLinks(
                     url=(link['url']),
                     poi_id=new_poi_id
                 )
                 db.session.add(result)
-                # db.session.commit()
             db.session.commit()
             return jsonify({"status:": "success"})
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})            
-    return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a GET or PULL request"})
+    return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a GET or POST request"})
     

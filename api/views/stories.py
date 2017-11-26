@@ -6,20 +6,25 @@ import json
 from flask import jsonify
 from api.utils import serializeList
 from sqlalchemy import func
-from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user 
+from flask_login import LoginManager, login_required, login_user, logout_user 
 
 mod = Blueprint('stories', __name__)
 
 # Returns all story names aka stories
-@login_required
-@app.route('/stories', methods=['GET', 'POST'])
+@app.route('/stories', methods=['GET'])
 def stories():
     if request.method == 'GET':
         try:
             return jsonify({'status': 'success', 'data': serializeList(StoryNames.query.all())})
         except Exception as ex:
             return jsonify({'status': 'failed', 'message': str(ex)})
-    elif request.method == 'POST':
+    else:
+        return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
+
+@app.route('/stories', methods=['POST'])
+@login_required
+def stories_post():
+    if request.method == 'POST':
         try:
             json_dict = json.loads(request.data)
             story_added = StoryNames(
@@ -34,7 +39,6 @@ def stories():
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
 
 # Returns all POIS for a specific Story Name aka story
-@login_required
 @app.route('/stories/<id>', methods=['GET'])
 def stories_get(id):
     try:
@@ -51,8 +55,8 @@ def stories_get(id):
         return jsonify({'status': 'failed', 'message': str(ex)})
 
 # adds a POI to an existing story name aka story, POI must exist!!!!
-@login_required
 @app.route('/story_poi', methods=['POST'])
+@login_required  
 def story_point():
     if request.method == "POST":
         try:

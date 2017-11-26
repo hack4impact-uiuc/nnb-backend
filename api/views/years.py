@@ -9,12 +9,10 @@ from sqlalchemy import func
 import time
 from datetime import date
 import uuid
-from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user 
-
+from flask_login import LoginManager, login_required, login_user, logout_user 
 
 mod = Blueprint('years', __name__)
 
-@login_required
 @app.route('/years', methods=['GET'])
 def getallyears():
     if request.method == 'GET':
@@ -25,7 +23,6 @@ def getallyears():
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /years, needs a GET request"})
 
-@login_required
 @app.route('/years/<input>/poi', methods=['GET'])
 def getpoiforyear(input):
     if request.method == 'GET':
@@ -36,16 +33,21 @@ def getpoiforyear(input):
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /years/<input>/poi, needs a GET request"})
 
+@app.route('/maps', methods=['GET'])
 @login_required
-@app.route('/maps', methods=['GET', 'POST'])
 def getmapsforyear():
     if request.method == 'GET':
         try:
             return jsonify({'status': 'success', 'data': serializeList((Maps.query.all()))})
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})
+    else:
+        return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
 
-    elif request.method == 'POST':
+
+@app.route('/maps', methods=['POST'])
+def addmapforyear():
+    if request.method == 'POST':
         try:
             json_dict = json.loads(request.data)
             result = Maps(
@@ -62,8 +64,8 @@ def getmapsforyear():
             return jsonify({"status: ": "failed", "message:": str(ex)})
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
+     
 
-@login_required  
 @app.route('/maps/<input>', methods=['GET'])
 def years4(input):
     if request.method == 'GET':
