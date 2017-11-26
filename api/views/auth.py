@@ -19,24 +19,18 @@ def new_user():
     json_dict = json.loads(request.data)
     username = json_dict['username']
     if User.query.filter_by(username = username).first() is not None:
-        return jsonify({'status':'failed', 'username': json_dict['username']})
-    user = User(username = username, password_hash=pwd_context.encrypt(json_dict['password']))
-    db.session.add(user)
-    db.session.commit()
-    login_user(user)
-    return jsonify({'status':'success', 'username': user.username})
-
-@app.route('/user', methods = ['POST'])
-def user():
-    json_dict = json.loads(request.data)
-    if username in User.query.all():
         if User.query.filter(User.username==json_dict['username']).first().verify_password(json_dict['password']):
             user = User.query.filter(User.username==json_dict['username']).first()
             login_user(user)
             db.session.commit()
             return jsonify({'status':'success', 'username': json_dict['username']})
-    return jsonify({'status':'failed', 'username': json_dict['username']})
-
+        else:
+            return jsonify({'status':'failed', 'username': json_dict['username']})
+    user = User(username = username, password_hash=pwd_context.encrypt(json_dict['password']))
+    db.session.add(user)
+    db.session.commit()
+    login_user(user)
+    return jsonify({'status':'success', 'username': user.username})
 
 @login_required
 @app.route('/logout', methods = ['POST'])
