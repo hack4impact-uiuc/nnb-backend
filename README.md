@@ -41,7 +41,7 @@ $ psql
 # create database nbb_db owner nbb encoding 'utf-8';
 # GRANT ALL PRIVILEGES ON DATABASE nbb_db TO nbb;
 ```
-
+We created a database called **nbb_db** and a user called **nbb**
 ## Run Development Server
 To run the server, make sure you are in the root directory:
 ```
@@ -138,7 +138,11 @@ $ psql
 # DROP TABLE alembic_version;
 # \q
 ```
-
+You may have to sometimes delete the entire database and reset. You don't have to but it's easier this way :)
+```
+$ psql
+# DROP DATABASE nbb_db;
+```
 
 ## Heroku Deployment
 You must have a Heroku Account and have the Heroku CLI installed on your computer. First, create an application in your Heroku dashboard, click on the "Deploy" tab and find the ```git remote add ....``` and run that command in your repository. While you're still in your Heroku Dashboard, click add "Heroku Postgres". This will add a Postgres Database to your app(we will connect it later).<br>
