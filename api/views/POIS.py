@@ -38,6 +38,9 @@ def poi_delete(poi_id):
     if request.method == 'DELETE':
         try:
             obj = PointsOfInterest.query.get(poi_id)
+            for s in obj.stories:
+                db.session.delete(s)
+                db.session.commit()
             db.session.delete(obj)
             db.session.commit()
             return jsonify({'status':'success', 'message': 'deleted '+ poi_id + " from database"})

@@ -36,7 +36,7 @@ class PointsOfInterest(db.Model):
 
     id = db.Column(db.Integer, unique=True, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    data = db.Column(db.Date, nullable=False)
+    date = db.Column(db.Date, nullable=False)
     eventinfo = db.Column(db.String, nullable=False)
     year = db.Column(db.Integer, nullable=False)
     x_coord = db.Column(db.Float, nullable=False)
