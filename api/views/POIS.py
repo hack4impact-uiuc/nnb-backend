@@ -32,9 +32,9 @@ def poiID(poi_id):
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi/<poi_id, needs a GET or POST request"})
 
 
-@app.route('/poi/<poi_id>', methods=['DELETE']) 
 @login_required
-def poiID(poi_id):
+@app.route('/poi/<poi_id>', methods=['DELETE']) 
+def poi_delete(poi_id):
     if request.method == 'DELETE':
         try:
             obj = PointsOfInterest.query.get(poi_id)
@@ -55,8 +55,8 @@ def poi_get():
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})
 
-@app.route('/poi', methods=['POST'])
 @login_required
+@app.route('/poi', methods=['POST'])
 def poi():
     if request.method == "POST":
         try:
@@ -89,4 +89,3 @@ def poi():
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})            
     return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a gGET or POST request"})
-    

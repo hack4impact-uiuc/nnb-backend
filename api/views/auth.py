@@ -26,15 +26,15 @@ def new_user():
             return jsonify({'status':'success', 'username': json_dict['username']})
         else:
             return jsonify({'status':'failed', 'username': json_dict['username']})
-    user = User(username = username, password_hash=pwd_context.encrypt(json_dict['password']))
-    db.session.add(user)
-    db.session.commit()
-    login_user(user)
-    return jsonify({'status':'success', 'username': user.username})
+    # user = User(username = username, password_hash=pwd_context.encrypt(json_dict['password']))
+    # db.session.add(user)
+    # db.session.commit()
+    # login_user(user)
+    return jsonify({'status':'failed', 'message': 'Wrong username and/or password'})
 
 @login_required
 @app.route('/logout', methods = ['POST'])
 def logout():
     logout_user()
     db.session.commit()
-    return jsonify({'status':'suceeded', 'message': "logged out"})
+    return jsonify({'status': 'suceeded', 'message': "logged out"})
