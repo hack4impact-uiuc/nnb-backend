@@ -4,11 +4,31 @@ from flask import Flask
 import json
 from sqlalchemy import func
 from api import db
- 
-# app = Flask(__name__)
-# app.config.from_object('config')
-# db = SQLAlchemy(app)
+from passlib.apps import custom_app_context as pwd_context
 
+class User(db.Model):
+    """Points of Interest"""
+    __tablename__ = "users"
+    id = db.Column(db.Integer, unique=True,  primary_key = True)
+    username = db.Column(db.String(32), index = True)
+    password_hash = db.Column(db.String(128))
+    def is_active(self):
+        return True
+ 
+    def is_anonymous(self):
+        return False
+    
+    def get_id(self):
+        return str(self.id)
+
+    def hash_password(self, password):
+        self.password_hash = pwd_context.encrypt(password)
+
+    def verify_password(self, password):
+        return pwd_context.verify(password, self.password_hash)
+
+    def is_authenticated(self):
+        return True
 
 class PointsOfInterest(db.Model):
     """Points of Interest"""
@@ -16,7 +36,7 @@ class PointsOfInterest(db.Model):
 
     id = db.Column(db.Integer, unique=True, primary_key=True)
     name = db.Column(db.String, nullable=False)
-    data = db.Column(db.Date, nullable=False)
+    date = db.Column(db.Date, nullable=False)
     eventinfo = db.Column(db.String, nullable=False)
     year = db.Column(db.Integer, nullable=False)
     x_coord = db.Column(db.Float, nullable=False)
@@ -29,7 +49,7 @@ class PointsOfInterest(db.Model):
         return '<name {}>'.format(self.name)
 
     def toDict(self):
-        return {'id': self.id, 'name': self.name, 'data': self.data, 'event_info': self.eventinfo, 'year': self.year, 'x_coord': self.x_coord, 'y_coord': self.y_coord}
+        return {'id': self.id, 'name': self.name, 'date': self.date, 'event_info': self.eventinfo, 'year': self.year, 'x_coord': self.x_coord, 'y_coord': self.y_coord}
 
 
 class Maps(db.Model):
