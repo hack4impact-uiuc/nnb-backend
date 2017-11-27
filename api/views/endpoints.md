@@ -177,7 +177,7 @@ Note: Adding "year" parameter to GET request will return POIs for a certain year
       }, 
       "status": "success"
     }
-
+## Stories
 ***Endpoint***
         
     POST /stories
