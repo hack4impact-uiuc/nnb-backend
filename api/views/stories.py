@@ -21,6 +21,7 @@ def stories():
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
 
+# Add story
 @app.route('/stories', methods=['POST'])
 # @login_required
 def stories_post():
@@ -84,7 +85,7 @@ def stories_delete(id):
         return jsonify({'status': 'failed', 'message': str(ex)})
 
 # adds a POI to an existing story name aka story, POI must exist!!!!
-@app.route('/story_poi', methods=['POST'])
+@app.route('/stories/add', methods=['POST'])
 # @login_required  
 def story_point():
     if request.method == "POST":
@@ -105,18 +106,4 @@ def story_point():
 
 
 #Added this functionality to the /stories endpoint, so no need for it
-#adds a new story name aka story
-'''
-@app.route('/story', methods=["POST"])
-def new_story():
-    try:
-        json_dict = json.loads(request.data)
-        story_added = StoryNames(
-            story_name=json_dict['story_name'],
-        )
-        db.session.add(story_added)
-        db.session.commit()
-        return jsonify({'status': 'success', 'message': 'Added new Story'})
-    except Exception as ex:
-        return jsonify({'status': 'failed', 'message': str(ex)})
-'''
+#adds a new story name aka stor

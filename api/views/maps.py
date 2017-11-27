@@ -11,9 +11,10 @@ from datetime import date
 import uuid
 from flask_login import LoginManager, login_required, login_user, logout_user 
 
-mod = Blueprint('years', __name__)
+mod = Blueprint('maps', __name__)
 
-@app.route('/years', methods=['GET'])
+#Gets all maps
+@app.route('/maps', methods=['GET'])
 def getallyears():
     if request.method == 'GET':
         try:
@@ -23,28 +24,18 @@ def getallyears():
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /years, needs a GET request"})
 
-@app.route('/years/<input>/poi', methods=['GET'])
-def getpoiforyear(input):
+#Maps for certain year
+@app.route('/maps/<year>', methods=['GET'])
+def getmapsforyear(year):
     if request.method == 'GET':
         try:
-            return jsonify({'status': 'success', 'data': serializeList((PointsOfInterest.query.filter(PointsOfInterest.year==input)))})
-        except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})
-    else:
-        return jsonify({"status: ": "failed", "message: ": "Endpoint, /years/<input>/poi, needs a GET request"})
-
-@app.route('/maps', methods=['GET'])
-@login_required
-def getmapsforyear():
-    if request.method == 'GET':
-        try:
-            return jsonify({'status': 'success', 'data': serializeList((Maps.query.all()))})
+            return jsonify({'status': 'success', 'data': serializeList((Maps.query.filter(Maps.year==year)))})
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
 
-
+#Add a map
 @app.route('/maps', methods=['POST'])
 def addmapforyear():
     if request.method == 'POST':
@@ -64,7 +55,6 @@ def addmapforyear():
             return jsonify({"status: ": "failed", "message:": str(ex)})
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
-
 
 @app.route('/maps/<year>', methods=['GET'])
 def years4(year):
