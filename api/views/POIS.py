@@ -22,7 +22,7 @@ def handle_invalid_usage(error):
 def poiID(poi_id):
     if request.method == 'GET':
         try:
-            #year = request.args['year']
+            year = request.args['year']
             if year:
                 return jsonify({'status': 'success', 'data': serializeList((PointsOfInterest.query.filter(PointsOfInterest.year==input)))})
             else:
