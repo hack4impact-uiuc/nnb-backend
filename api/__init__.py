@@ -24,8 +24,8 @@ def load_user(user_id):
 from api.views import main
 app.register_blueprint(main.mod)
 
-from api.views import years
-app.register_blueprint(years.mod)
+from api.views import maps
+app.register_blueprint(maps.mod)
 
 from api.views import stories
 app.register_blueprint(stories.mod)

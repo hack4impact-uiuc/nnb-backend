@@ -14,24 +14,41 @@ from flask_login import LoginManager, login_required, login_user, logout_user
 
 mod = Blueprint('POIS', __name__)
 
-@app.route('/poi/<poi_id>', methods=['GET']) 
-def poiID(poi_id):
+#Get POI given a year or POI ID
+@app.route('/poi', methods=['GET']) 
+def poiID():
+    year = request.args.get('year')
+    poi_id = request.args.get('poi_id')
     if request.method == 'GET':
         try:
-            poi = PointsOfInterest.query.get(poi_id)
-            if poi is None:
-                return jsonify({'status': 'failed', 'message': '<poi '+ poi_id + "> does not exist"})
-            dict2 = poi.toDict()
-            dict2["additional_links"] = serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id))
-            dict2["content"] = serializeList((Content.query.filter(Content.poi_id==poi_id)))
-            dict = {'status': 'success', 'data': dict2}
-            return jsonify(dict)
+            if year:
+                poi_years = PointsOfInterest.query.filter(PointsOfInterest.year == year)
+                arr = []
+                if not poi_years:
+                    return jsonify({'status': 'failed', 'message': 'year '+ year + "> does not exist"})
+                for poi_year in poi_years:
+                    dict3 = poi_year.toDict()
+                    poi_year_id = dict3['id']
+                    dict3["additional_links"] = serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_year_id))
+                    dict3["content"] = serializeList((Content.query.filter(Content.poi_id==poi_year_id)))
+                    arr.append(dict3)
+                dict = {'status': 'success', 'data': arr}
+                return jsonify(dict)
+            if poi_id:
+                poi = PointsOfInterest.query.get(poi_id)
+                if poi is None:
+                    return jsonify({'status': 'failed', 'message': '<poi '+ poi_id + "> does not exist"})
+                dict2 = poi.toDict()
+                dict2["additional_links"] = serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id))
+                dict2["content"] = serializeList((Content.query.filter(Content.poi_id==poi_id)))
+                dict = {'status': 'success', 'data': dict2}
+                return jsonify(dict)
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi/<poi_id, needs a GET or POST request"})
 
-
+#Delete POI given POI ID
 @login_required
 @app.route('/poi/<poi_id>', methods=['DELETE']) 
 def poi_delete(poi_id):
@@ -49,8 +66,8 @@ def poi_delete(poi_id):
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi/<poi_id, needs a GET or POST request"})
 
-
-@app.route('/poi', methods=['GET']) 
+#Returns all POIs
+@app.route('/pois', methods=['GET']) 
 def poi_get():
     if request.method == "GET":
         try:
@@ -58,6 +75,7 @@ def poi_get():
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})
 
+#Add POI
 @login_required
 @app.route('/poi', methods=['POST'])
 def poi():
