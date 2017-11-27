@@ -22,7 +22,7 @@ def stories():
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
 
 @app.route('/stories', methods=['POST'])
-@login_required
+# @login_required
 def stories_post():
     if request.method == 'POST':
         try:
@@ -56,7 +56,7 @@ def stories_get(id):
 
 # adds a POI to an existing story name aka story, POI must exist!!!!
 @app.route('/story_poi', methods=['POST'])
-@login_required  
+# @login_required  
 def story_point():
     if request.method == "POST":
         try:

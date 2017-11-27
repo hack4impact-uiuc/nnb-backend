@@ -49,7 +49,7 @@ class PointsOfInterest(db.Model):
         return '<name {}>'.format(self.name)
 
     def toDict(self):
-        return {'id': self.id, 'name': self.name, 'data': self.data, 'event_info': self.eventinfo, 'year': self.year, 'x_coord': self.x_coord, 'y_coord': self.y_coord}
+        return {'id': self.id, 'name': self.name, 'date': self.date, 'event_info': self.eventinfo, 'year': self.year, 'x_coord': self.x_coord, 'y_coord': self.y_coord}
 
 
 class Maps(db.Model):

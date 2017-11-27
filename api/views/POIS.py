@@ -66,7 +66,7 @@ def poi():
             json_dict = json.loads(request.data)
             result = PointsOfInterest(
                 name=json_dict['name'],
-                data = date((int)(json_dict['year']), (int)(json_dict['month']), (int)(json_dict['day'])),
+                date = date((int)(json_dict['year']), (int)(json_dict['month']), (int)(json_dict['day'])),
                 eventinfo = json_dict['info'],
                 year = (int)(json_dict['year']),
                 x_coord = (int)(json_dict['x_coor']),
