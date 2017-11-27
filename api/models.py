@@ -64,7 +64,7 @@ class Maps(db.Model):
         return '<map {}>'.format(self.year)
 
     def toDict(self):
-        return {'year': self.year, 'image_url': self.image_url}
+        return {'id':self.id,'year': self.year, 'image_url': self.image_url}
 
 
 class Content(db.Model):

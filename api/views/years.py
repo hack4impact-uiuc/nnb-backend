@@ -83,9 +83,9 @@ def years4(year):
 def delete_map(id):
     try:
         map_to_delete = Maps.query.get(id)
-        year = map_to_delete.year
         if map_to_delete is None:
             return jsonify({'status':'failed','message':"maps doesn't exist"})
+        year = map_to_delete.year
         poi_to_delete = PointsOfInterest.query.filter(PointsOfInterest.year == year)
         for obj in poi_to_delete:
             for s in obj.stories:
@@ -95,5 +95,6 @@ def delete_map(id):
             db.session.commit()
         db.session.delete(map_to_delete)
         db.session.commit()
+        return jsonify({"status":'success','message':'successfully deleted'})
     except Exception as ex:
         return jsonify({"status: ": "failed", "message:": str(ex)})
