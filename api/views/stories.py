@@ -42,16 +42,45 @@ def stories_post():
 # Returns all POIS for a specific Story Name aka story
 @app.route('/stories/<id>', methods=['GET'])
 def stories_get(id):
+    if request.method == 'GET':
+        try:
+            arry = []
+            storyname = StoryNames.query.get(id)
+            if storyname is None:
+                        return jsonify({'status':'failed','message':'Story Name with ' + id + " doesn't exist"})
+            stories = storyname.story_id
+            if stories is None:
+                return jsonify({'status':'failed','message':'Story Name ' + id + " doesn't have POIs"})
+            
+            for story in stories:
+                if story.poi_id is None:
+                    db.session.delete(story)
+                    db.session.commit()
+                    continue
+                arry.append(PointsOfInterest.query.get(story.poi_id))
+            ret_dict = {'story_name_id': id, 'story_name': StoryNames.query.get(id).story_name, 'pois': serializeList(arry)}
+            return jsonify(ret_dict)
+            # return jsonify({'status': 'success', 'data': serializeList((Stories.query.filter(func.lower(StoryNames.story_name)==func.lower(inputStoryName))))})
+        except Exception as ex:
+            return jsonify({'status': 'failed', 'message': str(ex)})
+    else:
+        return jsonify({'status': 'failed', 'message': 'You can only GET or DELETE'})
+
+@app.route('/stories/<id>', methods=['DELETE'])
+# @login_required
+def stories_delete(id):
     try:
-        arry = []
-        stories = StoryNames.query.get(id).story_id
-        if stories is None:
-            return jsonify({'status':'failed','message':'Story Name with ' + id + " doesn't exist"})
-        for story in stories:
-            arry.append(PointsOfInterest.query.get(story.poi_id))
-        ret_dict = {'story_name_id': id, 'story_name': StoryNames.query.get(id).story_name, 'pois': serializeList(arry)}
-        return jsonify(ret_dict)
-        # return jsonify({'status': 'success', 'data': serializeList((Stories.query.filter(func.lower(StoryNames.story_name)==func.lower(inputStoryName))))})
+        storyname = StoryNames.query.get(id)
+        if storyname:
+            stories = storyname.story_id
+            for s in stories:
+                db.session.delete(s)
+                db.session.commit()
+            db.session.delete(storyname)
+            db.session.commit()
+            return jsonify({'status':'success','message':'Successfully deleted Story ' + id})
+        else:
+            return jsonify({'status':'failed','message':"Story " + id+" doesn't exist"})
     except Exception as ex:
         return jsonify({'status': 'failed', 'message': str(ex)})
 

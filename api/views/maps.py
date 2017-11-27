@@ -54,5 +54,37 @@ def addmapforyear():
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})
     else:
-        return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a POST request"})
-     
+        return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
+
+@app.route('/maps/<year>', methods=['GET'])
+def years4(year):
+    if request.method == 'GET':
+        try:
+            return jsonify({'status': 'success', 'data': serializeList((Maps.query.filter(Maps.year==year)))})
+            #return jsonify(serializeList((Maps.query.filter(Maps.year==year))))
+        except Exception as ex:
+            return jsonify({"status: ": "failed", "message:": str(ex)})
+    else:
+        return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps/<year>, needs a GET request"})
+
+
+# delete maps by id
+@app.route('/maps/<id>', methods=['DELETE'])
+def delete_map(id):
+    try:
+        map_to_delete = Maps.query.get(id)
+        if map_to_delete is None:
+            return jsonify({'status':'failed','message':"maps doesn't exist"})
+        year = map_to_delete.year
+        poi_to_delete = PointsOfInterest.query.filter(PointsOfInterest.year == year)
+        for obj in poi_to_delete:
+            for s in obj.stories:
+                db.session.delete(s)
+                db.session.commit()
+            db.session.delete(obj)
+            db.session.commit()
+        db.session.delete(map_to_delete)
+        db.session.commit()
+        return jsonify({"status":'success','message':'successfully deleted'})
+    except Exception as ex:
+        return jsonify({"status: ": "failed", "message:": str(ex)})
