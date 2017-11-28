@@ -75,6 +75,32 @@ def story_point():
     else:
         return jsonify({"status": "failed", "message": "POST request only"})
 
-
+# Adds POI to multiple stories, not sure what to call it
+@app.route('/stories/add/multiple', methods=['POST'])
+def addtomultiplestory():
+    if request.method == "POST":
+        try:
+            json_dict = json.loads(request.data)
+            if len(json_dict["input_story_name_id"]) == 1:
+                storynames = StoryNames.query.get(json_dict["input_story_name_id"]) #check if it is empty later
+                storynames.story_id.append(Stories()) #add new Stories() to storynames
+                db.session.commit()
+                # get poi and add the same story to it
+                poi = PointsOfInterest.query.get(json_dict["input_poi_id"])
+                poi.stories.append(storynames.story_id[-1]) # gets last index, which is the Stories() that was just added
+                db.session.commit()
+            else:
+                for i in range(len(json_dict["input_story_name_id"])):
+                    storynames = StoryNames.query.get(json_dict["input_story_name_id"][i]) #check if it is empty later
+                    storynames.story_id.append(Stories()) #add new Stories() to storynames
+                    db.session.commit()
+                    # get poi and add the same story to it
+                    poi = PointsOfInterest.query.get(json_dict["input_poi_id"])
+                    poi.stories.append(storynames.story_id[-1]) # gets last index, which is the Stories() that was just added
+                    db.session.commit()
+        except Exception as ex:
+            return jsonify({"status": "failed", "message": str(ex)})
+        return jsonify({"status": "success", "message": "new story poi added to existing story"})
+    else:
+        return jsonify({"status": "failed", "message": "POST request only"})
 #Added this functionality to the /stories endpoint, so no need for it
-#adds a new story name aka stor

@@ -110,3 +110,5 @@ def poi():
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})            
     return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a gGET or POST request"})
+
+
