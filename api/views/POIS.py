@@ -49,7 +49,7 @@ def poiID():
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi/<poi_id, needs a GET or POST request"})
 
 #Delete POI given POI ID
-@login_required
+# @login_required
 @app.route('/poi/<poi_id>', methods=['DELETE']) 
 def poi_delete(poi_id):
     if request.method == 'DELETE':
@@ -111,4 +111,58 @@ def poi():
             return jsonify({"status: ": "failed", "message:": str(ex)})            
     return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a gGET or POST request"})
 
+
+
+#Add POI
+@login_required
+@app.route('/poi/<poi_id>', methods=['PUT'])
+def poi_put(poi_id):
+    if request.method == "PUT":
+        try:
+            obj = PointsOfInterest.query.filter(PointsOfInterest.id==poi_id).first()
+            if (obj):
+                for s in obj.stories:
+                    db.session.delete(s)
+                    db.session.commit()
+                db.session.delete(obj)
+                db.session.commit()
+            json_dict = json.loads(request.data)
+            result = PointsOfInterest(
+                name=json_dict['name'],
+                date = date((int)(json_dict['year']), (int)(json_dict['month']), (int)(json_dict['day'])),
+                eventinfo = json_dict['info'],
+                year = (int)(json_dict['year']),
+                x_coord = (int)(json_dict['x_coor']),
+                y_coord = (int)(json_dict['y_coor']), 
+            )
+            db.session.add(result)
+            new_poi_id = result.id
+            for link in json_dict['content']:
+                result = Content(
+                    content_url=(link['content_url']),
+                    caption=(link['caption']),
+                    poi_id=new_poi_id
+                )
+                db.session.add(result)
+            for link in json_dict['additional_links']:
+                result = AdditionalLinks(
+                    url=(link['url']),
+                    poi_id=new_poi_id
+                )
+                db.session.add(result)
+            db.session.commit()
+            # db.session.commit()
+            return jsonify({"status:": "success"})
+        except Exception as ex:
+            return jsonify({"status: ": "failed", "message:": str(ex)})            
+    return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a PUT request"})
+
+@app.route('/pois/<name>', methods=['GET']) 
+def poi_search_name(name):
+    if request.method == "GET":
+        try:
+            return jsonify({'status': 'success', 'data': serializePOI(PointsOfInterest.query.filter(PointsOfInterest.name==name).first())})
+        except Exception as ex:
+            return jsonify({"status: ": "failed", "message:": str(ex)})
+    return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a GET request"})
 
