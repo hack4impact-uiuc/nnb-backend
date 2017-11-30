@@ -10,8 +10,9 @@ from flask import jsonify
 
 r = requests.get(url = "http://127.0.0.1:5000/")
 print(r.text == "<h1>HI THERE</h1>")
-
-# r = requests.post(url = "http://127.0.0.1:5000/",params=jsonify({'username':'admin', 'password': 'admin'}))
+app = Flask(__name__)
+with app.app_context():
+    r = requests.post(url = "http://127.0.0.1:5000/",params=jsonify({'username':'admin', 'password': 'admin'}))
 
 
  
