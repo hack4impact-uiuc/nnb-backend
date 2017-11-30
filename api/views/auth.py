@@ -14,8 +14,19 @@ from api.models import PointsOfInterest, AdditionalLinks, Content, User
 
 mod = Blueprint('auth', __name__)
 
-@app.route('/login', methods = ['POST'])
+@app.route('/signup', methods = ['POST'])
 def new_user():
+    json_dict = json.loads(request.data)
+    if User.query.filter_by(username = json_dict['username']).first() is None:
+        user = User(username = json_dict['username'], password_hash=pwd_context.encrypt(json_dict['password']))
+        db.session.add(user)
+        db.session.commit()
+        login_user(user)
+        return jsonify({'status':'suceeded', 'message': 'Signed up user'})
+    return jsonify({'status':'failed', 'message': 'User already exists'})
+
+@app.route('/login', methods = ['POST'])
+def login():
     json_dict = json.loads(request.data)
     username = json_dict['username']
     if User.query.filter_by(username = username).first() is not None:
@@ -25,11 +36,8 @@ def new_user():
             db.session.commit()
             return jsonify({'status':'success', 'username': json_dict['username']})
         else:
-            return jsonify({'status':'failed', 'username': json_dict['username']})
-    # user = User(username = username, password_hash=pwd_context.encrypt(json_dict['password']))
-    # db.session.add(user)
-    # db.session.commit()
-    # login_user(user)
+            return jsonify({'status':'failed', 'message': 'Wrong username and/or password'})
+
     return jsonify({'status':'failed', 'message': 'Wrong username and/or password'})
 
 @login_required
