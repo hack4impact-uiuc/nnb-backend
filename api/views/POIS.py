@@ -156,3 +156,13 @@ def poi_put(poi_id):
         except Exception as ex:
             return jsonify({"status: ": "failed", "message:": str(ex)})            
     return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a PUT request"})
+
+@app.route('/pois/<name>', methods=['GET']) 
+def poi_search_name(name):
+    if request.method == "GET":
+        try:
+            return jsonify({'status': 'success', 'data': serializePOI(PointsOfInterest.query.filter(PointsOfInterest.name==name).first())})
+        except Exception as ex:
+            return jsonify({"status: ": "failed", "message:": str(ex)})
+    return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a GET request"})
+
