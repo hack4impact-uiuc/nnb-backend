@@ -76,7 +76,7 @@ def delete_map(id):
         if map_to_delete is None:
             return jsonify({'status':'failed','message':"maps doesn't exist"})
         year = map_to_delete.year
-        poi_to_delete = PointsOfInterest.query.filter(PointsOfInterest.year == year)
+        poi_to_delete = PointsOfInterest.query.filter(PointsOfInterest.map_by_year == year)
         for obj in poi_to_delete:
             for s in obj.stories:
                 db.session.delete(s)

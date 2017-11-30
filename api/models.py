@@ -38,7 +38,7 @@ class PointsOfInterest(db.Model):
     name = db.Column(db.String, nullable=False)
     date = db.Column(db.Date, nullable=False)
     eventinfo = db.Column(db.String, nullable=False)
-    year = db.Column(db.Integer, nullable=False)
+    map_by_year = db.Column(db.Integer, nullable=False)
     x_coord = db.Column(db.Float, nullable=False)
     y_coord = db.Column(db.Float, nullable=False)
     stories = db.relationship('Stories', backref='poi', lazy=True)
@@ -49,7 +49,7 @@ class PointsOfInterest(db.Model):
         return '<name {}>'.format(self.name)
 
     def toDict(self):
-        return {'id': self.id, 'name': self.name, 'date': self.date, 'event_info': self.eventinfo, 'year': self.year, 'x_coord': self.x_coord, 'y_coord': self.y_coord}
+        return {'id': self.id, 'name': self.name, 'date': self.date, 'event_info': self.eventinfo, 'map_by_year': self.map_by_year, 'x_coord': self.x_coord, 'y_coord': self.y_coord}
 
 
 class Maps(db.Model):

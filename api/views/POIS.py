@@ -22,7 +22,7 @@ def poiID():
     if request.method == 'GET':
         try:
             if year:
-                poi_years = PointsOfInterest.query.filter(PointsOfInterest.year == year)
+                poi_years = PointsOfInterest.query.filter(PointsOfInterest.map_by_year == year)
                 arr = []
                 if not poi_years:
                     return jsonify({'status': 'failed', 'message': 'year '+ year + "> does not exist"})
