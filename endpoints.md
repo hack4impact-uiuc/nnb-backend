@@ -12,10 +12,12 @@
 {
   "data": [
     {
+      "id": 1,
       "image_url": "google.com", 
       "year": 2005
     }, 
     {
+      "id" : 2,
       "image_url": "facebook.com", 
       "year": 2000
     }
@@ -59,7 +61,16 @@
 
 Note: You can only have one map url per year
 
+**Endpoint**
 
+    DELETE /maps/<id>
+
+**Response**
+
+    {
+       "message": "successfully deleted",
+       "status": "success"
+    }
 
 
 ## POIs
@@ -73,6 +84,7 @@ Note: You can only have one map url per year
 |   Name   |  Type  | Description | Example |
 |:--------:|:------:|:-----------:|:-----------:|
 | name | string |   **Required** | Constitution was Signed
+| map_by_year | string |   **Required** | 1788
 | year | string |   **Required** | 1787
 | month | string |   **Required** | September
 | day | string |   **Required** | 17
@@ -82,11 +94,13 @@ Note: You can only have one map url per year
 | additional_links | array of strings |   **Required** | [{url1}, {url2}]
 | content | array of tuples (strings |   **Required** | [{url, caption}]
 
+Note: map_by_year is the link to Maps, which is the map the POI will be on. For the example above, the POI will be on the Map that has a year of 1788 but the POI's actual date is 1787, which is described with "year".
 
 ***Response***
 
     {
-        "status:": "success"
+        "status": "success",
+        "message": "Successfully added POI with id 32"
     }
 
 ***Endpoint***
@@ -107,13 +121,14 @@ Note: You can only have one map url per year
             "name": "Shreyas", 
             "x_coord": 23.0, 
             "y_coord": 32.0, 
-            "year": 1999
+            "map_by_year": 1999
           }, 
           "status": "success"
         }, 
           "data": {
             "additional_links": [
               {
+                "id": 2,
                 "poi_id": 9, 
                 "url": "gmail.com"
               }, 
@@ -136,7 +151,7 @@ Note: You can only have one map url per year
             "name": "Alvin", 
             "x_coord": 23.0, 
             "y_coord": 32.0, 
-            "year": 1998
+            "map_by_year": 1998
           }
       ],
       "status": "success"
@@ -145,9 +160,7 @@ Note: You can only have one map url per year
 
 ***Endpoint***
 
-    GET /poi/<poi_ID>
-
-Note: Adding "year" parameter to GET request will return POIs for a certain year
+    GET /pois/<poi_ID>
 
 ***Response***
 
@@ -155,6 +168,7 @@ Note: Adding "year" parameter to GET request will return POIs for a certain year
       "data": {
         "additional_links": [
           {
+            "id": 2,
             "poi_id": 1, 
             "url": "4"
           }
@@ -173,10 +187,57 @@ Note: Adding "year" parameter to GET request will return POIs for a certain year
         "name": "Aria", 
         "x_coord": 23.0, 
         "y_coord": 32.0, 
-        "year": 1998
+        "map_by_year": 1998
       }, 
       "status": "success"
     }
+
+***Endpoint***
+
+    GET /pois/year/<year>
+
+***Response***
+
+    {
+      "data": {
+        "additional_links": [
+          {
+            "id": 1,
+            "poi_id": 1, 
+            "url": "4"
+          }
+        ], 
+        "content": [
+          {
+            "caption": "this is my caption", 
+            "content_url": "google.com", 
+            "id": 1, 
+            "poi_link": 1
+          }
+        ], 
+        "data": "Wed, 22 Jul 1998 00:00:00 GMT", 
+        "event_info": "i was born", 
+        "id": 1, 
+        "name": "Aria", 
+        "x_coord": 23.0, 
+        "y_coord": 32.0, 
+        "map_by_year": 1998
+      }, 
+      "status": "success"
+    }
+    
+***Endpoint***
+       
+       DELETE /pois/<poi_id>
+       
+***Response***
+        
+    {
+        "message": "deleted 11 from database",
+        "status": "success"
+    }
+       
+
 ## Stories
 ***Endpoint***
         
@@ -254,5 +315,16 @@ Note: Adding "year" parameter to GET request will return POIs for a certain year
       ], 
       "story_name": "Civil Rights Movement", 
       "story_name_id": "1"
+    }
+    
+ ***Endpoint***
+
+     DELETE /stories/<story_ID>
+    
+***Response***
+
+    {
+        "message": "Successfully deleted Story 2",
+        "status": "success"
     }
 
