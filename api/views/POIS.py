@@ -15,7 +15,7 @@ from flask_login import LoginManager, login_required, login_user, logout_user
 mod = Blueprint('POIS', __name__)
 
 #Get POI given a year or POI ID
-@app.route('/poi', methods=['GET']) 
+@app.route('/pois', methods=['GET']) 
 def poiID():
     year = request.args.get('year')
     poi_id = request.args.get('poi_id')
@@ -50,7 +50,7 @@ def poiID():
 
 #Delete POI given POI ID
 # @login_required
-@app.route('/poi/<poi_id>', methods=['DELETE']) 
+@app.route('/pois/<poi_id>', methods=['DELETE']) 
 def poi_delete(poi_id):
     if request.method == 'DELETE':
         try:
@@ -77,7 +77,7 @@ def poi_get():
 
 #Add POI
 @login_required
-@app.route('/poi', methods=['POST'])
+@app.route('/pois', methods=['POST'])
 def poi():
     if request.method == "POST":
         try:
@@ -115,7 +115,7 @@ def poi():
 
 #Add POI
 @login_required
-@app.route('/poi/<poi_id>', methods=['PUT'])
+@app.route('/pois/<poi_id>', methods=['PUT'])
 def poi_put(poi_id):
     if request.method == "PUT":
         try:
