@@ -23,15 +23,9 @@ def poi_get():
         try:
             if year:
                 poi_years = PointsOfInterest.query.filter(PointsOfInterest.map_by_year == year)
-                arr = []
                 if not poi_years:
                     return jsonify({'status': 'failed', 'message': 'year '+ year + "> does not exist"})
-                for poi_year in poi_years:
-                    dict3 = poi_year.toDict()
-                    poi_year_id = dict3['id']
-                    dict3["additional_links"] = serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_year_id))
-                    dict3["content"] = serializeList((Content.query.filter(Content.poi_id==poi_year_id)))
-                    arr.append(dict3)
+                arr = serializePOI(poi_years)
                 dict = {'status': 'success', 'data': arr}
                 return jsonify(dict)
             elif poi_id:
@@ -92,9 +86,7 @@ def poi_get_with_id(poi_id):
         poi = PointsOfInterest.query.get(poi_id)
         if poi is None:
             return jsonify({'status': 'failed', 'message': '<poi '+ poi_id + "> does not exist"})
-        dict2 = poi.toDict()
-        dict2["additional_links"] = serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id))
-        dict2["content"] = serializeList((Content.query.filter(Content.poi_id==poi_id)))
+        dict2 = serializePOI([poi])
         dict = {'status': 'success', 'data': dict2}
         return jsonify(dict)
     except Exception as ex:
@@ -157,65 +149,59 @@ def poi_delete(poi_id):
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /pois/<poi_id, needs the correct request method"})
     
 
-#Add POI
-# @login_required
-@app.route('/pois/<poi_id>', methods=['PUT'])
-def poi_put(poi_id):
-    if request.method == "PUT":
-        try:
-            obj = PointsOfInterest.query.filter(PointsOfInterest.id==poi_id).first()
-            if (obj):
-                for s in obj.stories:
-                    db.session.delete(s)
-                    db.session.commit()
-                db.session.delete(obj)
-                db.session.commit()
-            json_dict = json.loads(request.data)
-            result = PointsOfInterest(
-                name=json_dict['name'],
-                date = date((int)(json_dict['year']), (int)(json_dict['month']), (int)(json_dict['day'])),
-                eventinfo = json_dict['info'],
-                map_by_year = (int)(json_dict['map_by_year']),
-                x_coord = (int)(json_dict['x_coor']),
-                y_coord = (int)(json_dict['y_coor']), 
-            )
-            db.session.add(result)
-            new_poi_id = result.id
-            for link in json_dict['content']:
-                result = Content(
-                    content_url=(link['content_url']),
-                    caption=(link['caption']),
-                    poi_id=new_poi_id
-                )
-                db.session.add(result)
-            for link in json_dict['additional_links']:
-                result = AdditionalLinks(
-                    url=(link['url']),
-                    poi_id=new_poi_id
-                )
-                db.session.add(result)
-            db.session.commit()
-            # db.session.commit()
-            return jsonify({"status:": "success"})
-        except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})            
-    return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a PUT request"})
+# #Add POI
+# # @login_required
+# @app.route('/pois/<poi_id>', methods=['PUT'])
+# def poi_put(poi_id):
+#     if request.method == "PUT":
+#         try:
+#             obj = PointsOfInterest.query.filter(PointsOfInterest.id==poi_id).first()
+#             if (obj):
+#                 for s in obj.stories:
+#                     db.session.delete(s)
+#                     db.session.commit()
+#                 db.session.delete(obj)
+#                 db.session.commit()
+#             json_dict = json.loads(request.data)
+#             result = PointsOfInterest(
+#                 name=json_dict['name'],
+#                 date = date((int)(json_dict['year']), (int)(json_dict['month']), (int)(json_dict['day'])),
+#                 eventinfo = json_dict['info'],
+#                 map_by_year = (int)(json_dict['map_by_year']),
+#                 x_coord = (int)(json_dict['x_coor']),
+#                 y_coord = (int)(json_dict['y_coor']), 
+#             )
+#             db.session.add(result)
+#             new_poi_id = result.id
+#             for link in json_dict['content']:
+#                 result = Content(
+#                     content_url=(link['content_url']),
+#                     caption=(link['caption']),
+#                     poi_id=new_poi_id
+#                 )
+#                 db.session.add(result)
+#             for link in json_dict['additional_links']:
+#                 result = AdditionalLinks(
+#                     url=(link['url']),
+#                     poi_id=new_poi_id
+#                 )
+#                 db.session.add(result)
+#             db.session.commit()
+#             # db.session.commit()
+#             return jsonify({"status:": "success"})
+#         except Exception as ex:
+#             return jsonify({"status: ": "failed", "message:": str(ex)})            
+#     return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a PUT request"})
 
 #Returns all POIs
 @app.route('/pois/year/<year>', methods=['GET']) 
 def poi_get_with_year(year):
     try:
         poi_years = PointsOfInterest.query.filter(PointsOfInterest.map_by_year == year)
-        arr = []
         if not poi_years:
             return jsonify({'status': 'failed', 'message': 'year '+ year + "> does not exist"})
-        for poi_year in poi_years:
-            dict3 = poi_year.toDict()
-            poi_year_id = dict3['id']
-            dict3["additional_links"] = serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_year_id))
-            dict3["content"] = serializeList((Content.query.filter(Content.poi_id==poi_year_id)))
-            arr.append(dict3)
-        map_obj = Maps.query.filter(Maps.year == poi_year.map_by_year)
+        arr = serializePOI(poi_years)
+        map_obj = Maps.query.filter(Maps.year == poi_years[0].map_by_year)
         ret_rect = {'map':serializeList(map_obj),'pois':arr}
         dict = {'status': 'success', 'data': ret_rect}
         return jsonify(dict)
