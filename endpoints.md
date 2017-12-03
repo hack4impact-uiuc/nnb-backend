@@ -50,12 +50,55 @@
 **Response**
 
     {
-      "data": [
-        {
-          "image_url": "google.com", 
-          "year": 2005
-        }
-      ], 
+      "data": {
+        "map": [
+            {
+              "image_url": "google.com", 
+              "year": 2005
+            },
+            {
+              "image_url": "google.com", 
+              "year": 2006
+            }
+        ],
+        "pois": [
+           { 
+              "additional_links": [
+              {
+                "id": 2,
+                "poi_id": 1, 
+                "url": "4"
+              }
+            ], 
+            "content": [
+              {
+                "caption": "this is my caption", 
+                "content_url": "google.com", 
+                "id": 1, 
+                "poi_link": 1
+              }
+            ], 
+            "data": "Wed, 22 Jul 1998 00:00:00 GMT", 
+            "event_info": "i was born", 
+            "id": 1, 
+            "name": "Aria", 
+            "x_coord": 23.0, 
+            "y_coord": 32.0, 
+            "map_by_year": 1998
+          },
+          {
+            "additional_links": [], 
+            "content": [], 
+            "date": "Mon, 15 Feb 2016 00:00:00 GMT", 
+            "event_info": "This is where the first walmart existed", 
+            "id": 13, 
+            "map_by_year": 2016, 
+            "name": "Walmart_MAPDELETE11111", 
+            "x_coord": 24.0, 
+            "y_coord": 26.0
+          } 
+        ]
+      }, 
       "status": "success"
     }
 
