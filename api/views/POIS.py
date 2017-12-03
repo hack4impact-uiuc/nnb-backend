@@ -1,7 +1,7 @@
 from api import app
 from flask import Blueprint, request
 from .. import db
-from api.models import PointsOfInterest, AdditionalLinks, Content, User
+from api.models import PointsOfInterest, AdditionalLinks, Content, User, Maps
 import json
 from flask import jsonify
 from api.utils import serializeList, serializePOI
@@ -216,7 +216,7 @@ def poi_get_with_year(year):
             dict3["content"] = serializeList((Content.query.filter(Content.poi_id==poi_year_id)))
             arr.append(dict3)
         map_obj = Maps.query.filter(Maps.year == poi_year.map_by_year)
-        ret_rect = {'map':map_obj.toDict(),'pois':arr}
+        ret_rect = {'map':serializeList(map_obj),'pois':arr}
         dict = {'status': 'success', 'data': ret_rect}
         return jsonify(dict)
     except Exception as ex:
