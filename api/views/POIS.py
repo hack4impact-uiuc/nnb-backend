@@ -215,7 +215,9 @@ def poi_get_with_year(year):
             dict3["additional_links"] = serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_year_id))
             dict3["content"] = serializeList((Content.query.filter(Content.poi_id==poi_year_id)))
             arr.append(dict3)
-        dict = {'status': 'success', 'data': arr}
+        map_obj = Maps.query.filter(Maps.year == poi_year.map_by_year)
+        ret_rect = {'map':map_obj.toDict(),'pois':arr}
+        dict = {'status': 'success', 'data': ret_rect}
         return jsonify(dict)
     except Exception as ex:
         return jsonify({"status: ": "failed", "message:": str(ex)})
