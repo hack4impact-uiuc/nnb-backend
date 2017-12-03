@@ -15,6 +15,5 @@ def serializePOI(items):
         dict2 = elm.toDict()
         dict2["additional_links"] = serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id))
         dict2["content"] = serializeList((Content.query.filter(Content.poi_id==poi_id)))
-        dict = {'status': 'success', 'data': dict2}
-        ret_list.append(dict)
+        ret_list.append(dict2)
     return ret_list
