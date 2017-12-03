@@ -1,7 +1,7 @@
 from api import app
 from flask import Blueprint, request
 from .. import db
-from api.models import PointsOfInterest, AdditionalLinks, Content,Maps
+from api.models import PointsOfInterest, AdditionalLinks, Content, Maps, InvalidUsage
 import json
 from flask import jsonify
 from api.utils import serializeList
@@ -13,6 +13,12 @@ from flask_login import LoginManager, login_required, login_user, logout_user
 
 mod = Blueprint('maps', __name__)
 
+@app.errorhandler(InvalidUsage)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+
 #Gets all maps
 @app.route('/maps', methods=['GET'])
 def getallyears():
@@ -20,7 +26,7 @@ def getallyears():
         try:
             return jsonify({'status': 'success', 'data': serializeList((Maps.query.all()))})
         except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /years, needs a GET request"})
 
@@ -31,7 +37,7 @@ def getmapsforyear(year):
         try:
             return jsonify({'status': 'success', 'data': serializeList((Maps.query.filter(Maps.year==year)))})
         except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
 
@@ -52,7 +58,7 @@ def addmapforyear():
             db.session.commit()
             return jsonify({"status:": "success", "message": "successfully added maps and year"})
         except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
 
@@ -63,7 +69,7 @@ def years4(year):
             return jsonify({'status': 'success', 'data': serializeList((Maps.query.filter(Maps.year==year)))})
             #return jsonify(serializeList((Maps.query.filter(Maps.year==year))))
         except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps/<year>, needs a GET request"})
 
@@ -87,4 +93,4 @@ def delete_map(id):
         db.session.commit()
         return jsonify({"status":'success','message':'successfully deleted'})
     except Exception as ex:
-        return jsonify({"status: ": "failed", "message:": str(ex)})
+        raise InvalidUsage('Error: ' + str(ex), status_code=404)

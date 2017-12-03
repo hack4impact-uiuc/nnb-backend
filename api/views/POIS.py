@@ -1,7 +1,7 @@
 from api import app
 from flask import Blueprint, request
 from .. import db
-from api.models import PointsOfInterest, AdditionalLinks, Content, User
+from api.models import PointsOfInterest, AdditionalLinks, Content, User, InvalidUsage
 import json
 from flask import jsonify
 from api.utils import serializeList, serializePOI
@@ -14,6 +14,12 @@ from flask_login import LoginManager, login_required, login_user, logout_user
 
 mod = Blueprint('POIS', __name__)
 
+@app.errorhandler(InvalidUsage)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+
 #Get POI given a year or POI ID
 @app.route('/pois', methods=['GET']) 
 def poiID():
@@ -25,7 +31,7 @@ def poiID():
                 poi_years = PointsOfInterest.query.filter(PointsOfInterest.map_by_year == year)
                 arr = []
                 if not poi_years:
-                    return jsonify({'status': 'failed', 'message': 'year '+ year + "> does not exist"})
+                    raise InvalidUsage('Error: Year, ' + poi_years + ' does not exist', status_code=404)
                 for poi_year in poi_years:
                     dict3 = poi_year.toDict()
                     poi_year_id = dict3['id']
@@ -44,7 +50,7 @@ def poiID():
                 dict = {'status': 'success', 'data': dict2}
                 return jsonify(dict)
         except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi/<poi_id, needs a GET or POST request"})
 
@@ -62,7 +68,7 @@ def poi_delete(poi_id):
             db.session.commit()
             return jsonify({'status':'success', 'message': 'deleted '+ poi_id + " from database"})
         except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi/<poi_id, needs a GET or POST request"})
 
@@ -73,7 +79,7 @@ def poi_get():
         try:
             return jsonify({'status': 'success', 'data': serializePOI((PointsOfInterest.query.all()))})
         except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
 
 #Add POI
 @login_required
@@ -108,7 +114,7 @@ def poi():
             db.session.commit()
             return jsonify({"status:": "success"})
         except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})            
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)         
     return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a gGET or POST request"})
 
 
@@ -154,7 +160,7 @@ def poi_put(poi_id):
             # db.session.commit()
             return jsonify({"status:": "success"})
         except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})            
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)       
     return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a PUT request"})
 
 @app.route('/pois/<name>', methods=['GET']) 
@@ -163,6 +169,6 @@ def poi_search_name(name):
         try:
             return jsonify({'status': 'success', 'data': serializePOI(PointsOfInterest.query.filter(PointsOfInterest.name==name).first())})
         except Exception as ex:
-            return jsonify({"status: ": "failed", "message:": str(ex)})
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
     return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a GET request"})
 

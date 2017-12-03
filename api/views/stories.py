@@ -1,7 +1,7 @@
 from api import app
 from flask import Blueprint, request
 from .. import db
-from api.models import PointsOfInterest, StoryNames, Stories
+from api.models import PointsOfInterest, StoryNames, Stories, InvalidUsage
 import json
 from flask import jsonify
 from api.utils import serializeList
@@ -10,6 +10,13 @@ from flask_login import LoginManager, login_required, login_user, logout_user
 
 mod = Blueprint('stories', __name__)
 
+
+@app.errorhandler(InvalidUsage)
+def handle_invalid_usage(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+
 # Returns all story names aka stories
 @app.route('/stories', methods=['GET'])
 def stories():
@@ -17,7 +24,7 @@ def stories():
         try:
             return jsonify({'status': 'success', 'data': serializeList(StoryNames.query.all())})
         except Exception as ex:
-            return jsonify({'status': 'failed', 'message': str(ex)})
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
 
@@ -35,7 +42,7 @@ def stories_post():
             db.session.commit()
             return jsonify({'status': 'success', 'message': 'Added new Story'})
         except Exception as ex:
-            return jsonify({'status': 'failed', 'message': str(ex)})
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
 
@@ -47,10 +54,10 @@ def stories_get(id):
             arry = []
             storyname = StoryNames.query.get(id)
             if storyname is None:
-                        return jsonify({'status':'failed','message':'Story Name with ' + id + " doesn't exist"})
+                raise InvalidUsage('Error: <storyname ' + id + '> does not exist', status_code=404)
             stories = storyname.story_id
             if stories is None:
-                return jsonify({'status':'failed','message':'Story Name ' + id + " doesn't have POIs"})
+                raise InvalidUsage('Error: <storyname ' + id + '> does not exist', status_code=404)
             
             for story in stories:
                 if story.poi_id is None:
@@ -62,7 +69,7 @@ def stories_get(id):
             return jsonify(ret_dict)
             # return jsonify({'status': 'success', 'data': serializeList((Stories.query.filter(func.lower(StoryNames.story_name)==func.lower(inputStoryName))))})
         except Exception as ex:
-            return jsonify({'status': 'failed', 'message': str(ex)})
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
         return jsonify({'status': 'failed', 'message': 'You can only GET or DELETE'})
 
@@ -80,9 +87,9 @@ def stories_delete(id):
             db.session.commit()
             return jsonify({'status':'success','message':'Successfully deleted Story ' + id})
         else:
-            return jsonify({'status':'failed','message':"Story " + id+" doesn't exist"})
+            raise InvalidUsage('Error: <Story ' + id + '> does not exist', status_code=404)
     except Exception as ex:
-        return jsonify({'status': 'failed', 'message': str(ex)})
+        raise InvalidUsage('Error: ' + str(ex), status_code=404)
 
 # adds a POI to an existing story name aka story, POI must exist!!!!
 @app.route('/stories/add', methods=['POST'])
@@ -99,7 +106,7 @@ def story_point():
             poi.stories.append(storynames.story_id[-1]) # gets last index, which is the Stories() that was just added
             db.session.commit()
         except Exception as ex:
-            return jsonify({"status": "failed", "message": str(ex)})
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
         return jsonify({"status": "success", "message": "new story poi added to existing story"})
     else:
         return jsonify({"status": "failed", "message": "POST request only"})
@@ -128,7 +135,7 @@ def addtomultiplestory():
                     poi.stories.append(storynames.story_id[-1]) # gets last index, which is the Stories() that was just added
                     db.session.commit()
         except Exception as ex:
-            return jsonify({"status": "failed", "message": str(ex)})
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
         return jsonify({"status": "success", "message": "new story poi added to existing story"})
     else:
         return jsonify({"status": "failed", "message": "POST request only"})
@@ -157,7 +164,7 @@ def story_point_edit(poi_id):
                 poi.stories.append(storynames.story_id[-1]) # gets last index, which is the Stories() that was just added
                 db.session.commit()
         except Exception as ex:
-            return jsonify({"status": "failed", "message": str(ex)})
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
         return jsonify({"status": "success", "message": "new story poi added to existing story"})
     else:
         return jsonify({"status": "failed", "message": "POST request only"})
