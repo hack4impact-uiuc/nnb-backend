@@ -394,5 +394,28 @@ Note: map_by_year is the link to Maps, which is the map the POI will be on. For 
     }
 
 ***Endpoint***
+
+    POST /stories/add/multiple
     
+***Input***
+
+|   Name   |  Type  | Description | Example |
+|:--------:|:------:|:-----------:|:-----------:|
+| input_story_name_id | array |   **Required** | [1, 5, 7]
+| input_poi_id | string |   **Required** | 5
+
+***Response***
+
+    {
+        "status": "success"
+        "message": "new story poi added to existing story"
+    }
     
+***Endpoint***
+    
+    PUT /stories/add/<poi_id>
+    
+***Input***
+
+
+
