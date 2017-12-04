@@ -89,7 +89,7 @@ def delete_map(id):
     try:
         map_to_delete = Maps.query.get(id)
         if map_to_delete is None:
-            raise Exception("map" + id + "doesn't exist"})
+            raise Exception("map" + id + "doesn't exist")
         year = map_to_delete.year
         poi_to_delete = PointsOfInterest.query.filter(PointsOfInterest.map_by_year == year)
         for obj in poi_to_delete:
