@@ -28,7 +28,7 @@ def getallyears():
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
-        return jsonify({"status: ": "failed", "message: ": "Endpoint, /years, needs a GET request"})
+        return jsonify({"status": "failed", "message": "Endpoint, /years, needs a GET request"})
 
 #Maps for certain year
 @app.route('/maps/years/<year>', methods=['GET'])
@@ -46,7 +46,7 @@ def getmapsforyear(year):
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
-        return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
+        return jsonify({"status": "failed", "message": "Endpoint, /maps, needs a GET or POST request"})
 
 #Add a map
 @app.route('/maps', methods=['POST'])
@@ -63,11 +63,11 @@ def addmapforyear():
                 db.session.commit()
             db.session.add(result)
             db.session.commit()
-            return jsonify({"status:": "success", "message": "successfully added maps and year"})
+            return jsonify({"status": "success", "message": "successfully added maps and year"})
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
-        return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
+        return jsonify({"status": "failed", "message": "Endpoint, /maps, needs a GET or POST request"})
 
 
 # delete maps by id

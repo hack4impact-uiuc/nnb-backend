@@ -26,7 +26,7 @@ def stories():
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
-        return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
+        return jsonify({"status": "failed", "message": "Endpoint, /maps, needs a GET or POST request"})
 
 # Add story
 @app.route('/stories', methods=['POST'])
@@ -44,7 +44,7 @@ def stories_post():
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
-        return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
+        return jsonify({"status": "failed", "message": "Endpoint, /maps, needs a GET or POST request"})
 
 # Returns all POIS for a specific Story Name aka story
 @app.route('/stories/<id>', methods=['GET'])
