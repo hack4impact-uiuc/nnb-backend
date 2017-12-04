@@ -25,7 +25,7 @@
   "status": "success"
 }
 ```
-**Enpoint**
+**Endpoint**
 
     POST /maps
 
@@ -45,7 +45,7 @@
 
 **Endpoint**
 
-    GET /maps/<year>
+    GET /maps/years/<year>
 
 **Response**
 
