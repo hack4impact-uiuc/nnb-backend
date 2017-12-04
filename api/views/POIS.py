@@ -215,7 +215,7 @@ def poi_get_with_year(year):
 def poi_search_name(name):
     if request.method == "GET":
         try:
-            return jsonify({'status': 'success', 'data': serializePOI(PointsOfInterest.query.filter(PointsOfInterest.name==name).first())})
+            return jsonify({'status': 'success', 'data': serializePOI(PointsOfInterest.query.filter(PointsOfInterest.name.contains(name)).first())})
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
     return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a GET request"})
