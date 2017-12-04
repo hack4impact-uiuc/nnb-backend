@@ -146,10 +146,10 @@ def poi_delete(poi_id):
                 )
                 db.session.add(result)
             db.session.commit()
-            return jsonify({"status:": "success"})
+            return jsonify({"status": "success"})
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)       
-    return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a PUT request"})
+    return jsonify({"status": "failed", "message": "Endpoint, /poi, needs a PUT request"})
 
 #Returns all POIs
 @app.route('/pois/year/<year>', methods=['GET']) 
@@ -173,5 +173,5 @@ def poi_search_name(name):
             return jsonify({'status': 'success', 'data': serializePOI(PointsOfInterest.query.filter(PointsOfInterest.name.contains(name)).first())})
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
-    return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a GET request"})
+    return jsonify({"status": "failed", "message": "Endpoint, /poi, needs a GET request"})
 
