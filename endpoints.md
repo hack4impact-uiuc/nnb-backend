@@ -111,6 +111,9 @@ Note: You can only have one map url per year
 **Response**
 
     {
+       "data": {
+          "id": 14
+       },
        "message": "successfully deleted",
        "status": "success"
     }
