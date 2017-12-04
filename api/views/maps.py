@@ -21,6 +21,7 @@ def handle_invalid_usage(error):
 
 #Gets all maps
 @app.route('/maps', methods=['GET'])
+# @login_required
 def getallyears():
     if request.method == 'GET':
         try:
@@ -32,6 +33,7 @@ def getallyears():
 
 #Maps for certain year
 @app.route('/maps/years/<year>', methods=['GET'])
+# @login_required
 def getmapsforyear(year):
     if request.method == 'GET':
         try:
@@ -51,6 +53,7 @@ def getmapsforyear(year):
 
 #Add a map
 @app.route('/maps', methods=['POST'])
+# @login_required
 def addmapforyear():
     if request.method == 'POST':
         try:
@@ -73,6 +76,7 @@ def addmapforyear():
 
 # delete maps by id
 @app.route('/maps/<id>', methods=['DELETE'])
+# @login_required
 def delete_map(id):
     try:
         map_to_delete = Maps.query.get(id)

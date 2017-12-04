@@ -21,7 +21,8 @@ def handle_invalid_usage(error):
     return response
 
 #Get POI given a year or POI ID
-@app.route('/pois', methods=['GET']) 
+@app.route('/pois', methods=['GET'])
+# @login_required 
 def poi_get():
     year = request.args.get('year')
     poi_id = request.args.get('poi_id')
@@ -51,13 +52,11 @@ def poi_get():
 #Add POI
 # @login_required
 @app.route('/pois', methods=['POST'])
+# @login_required
 def poi():
     if request.method == "POST":
         try:
             json_dict = json.loads(request.data)
-            # map_obj = Maps.query.all()
-            # for elm in map_obj:
-            #     elm.
             result = PointsOfInterest(
                 name=json_dict['name'],
                 date = date((int)(json_dict['year']), (int)(json_dict['month']), (int)(json_dict['day'])),
@@ -92,6 +91,7 @@ def poi():
 
 #Returns all POIs
 @app.route('/pois/<poi_id>', methods=['GET']) 
+# @login_required
 def poi_get_with_id(poi_id):
     try:
         poi = PointsOfInterest.query.get(poi_id)
@@ -105,8 +105,8 @@ def poi_get_with_id(poi_id):
         raise InvalidUsage('Error: ' + str(ex), status_code=404)
 
 #Delete POI given POI ID
-# @login_required
 @app.route('/pois/<poi_id>', methods=['DELETE','PUT']) 
+# @login_required
 def poi_delete(poi_id):
     if request.method == 'DELETE':
         try:
