@@ -1,7 +1,9 @@
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
-from api import db, app, set_heroku_config
+from api import db, app
 from api.models import PointsOfInterest, Maps, StoryNames, Stories, AdditionalLinks
+import os 
+
 
 manager = Manager(app)
 migrate = Migrate(app, db)
@@ -17,7 +19,6 @@ def runserver():
 @manager.command
 def runworker():
     app.run(debug=False)
-    set_heroku_config()
 
 
 @manager.command

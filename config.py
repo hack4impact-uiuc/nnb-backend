@@ -1,6 +1,6 @@
 import os
 
-basedir = os.path.abspath(os.path.dirname(__file__))
+
 class Config:
 
     SECRET_KEY = 'testkey'
@@ -14,20 +14,21 @@ class Config:
     }
 
     # SQLALCHEMY_DATABASE_URI = 'postgresql://nbb:password@127.0.0.1:5432/nbb_db'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
 class DevelopmentConfig(Config):
-    # SQLALCHEMY_DATABASE_URI = 'postgresql://nbb:password@127.0.0.1:5432/nbb_db'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://nbb:password@127.0.0.1:5432/nbb_db'
     DEBUG = True
 
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+    DEBUG = False
 
 
 config = {
-    'default': DevelopmentConfig,
+    'dev': DevelopmentConfig,
     'prod': ProductionConfig
 }

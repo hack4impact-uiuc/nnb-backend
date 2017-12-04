@@ -7,7 +7,10 @@ import os
 
 app = Flask(__name__)
 CORS(app)
-app.config.from_object(config['default'])
+os.environ['FLASK_ENV'] = "dev"
+env = os.environ.get('FLASK_ENV', 'dev')
+app.config.from_object(config[env])
+
 
 db = SQLAlchemy(app)
 db.create_all()
@@ -16,9 +19,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 
-
-def set_heroku_config():
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL')
 
 from api.models import User
 
