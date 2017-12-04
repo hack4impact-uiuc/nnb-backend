@@ -128,21 +128,20 @@ def poi_delete(poi_id):
             obj.map_by_year = (int)(json_dict['map_by_year'])
             obj.x_coor = (int)(json_dict['x_coor'])
             obj.y_coor = (int)(json_dict['y_coor'])
-            for s in obj.content:
+            # Content.query.filter(Content.poi_id == pod_id)
+            for s in Content.query.filter(Content.poi_id == poi_id):
                 db.session.delete(s)
-            for s in obj.additional_links:
+            for s in AdditionalLinks.query.filter(Content.poi_id == poi_id):
                 db.session.delete(s)
             for link in json_dict['content']:
                 result = Content(
                     content_url=(link['content_url']),
                     caption=(link['caption']),
-                    poi_id=new_poi_id
                 )
                 db.session.add(result)
             for link in json_dict['additional_links']:
                 result = AdditionalLinks(
                     url=(link['url']),
-                    poi_id=new_poi_id
                 )
                 db.session.add(result)
             db.session.commit()
