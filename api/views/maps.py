@@ -24,7 +24,10 @@ def handle_invalid_usage(error):
 def getallyears():
     if request.method == 'GET':
         try:
-            return jsonify({'status': 'success', 'data': serializeList((Maps.query.all()))})
+            obj = Maps.query.all()
+            if not obj:
+                raise Exception("Maps don't exists")
+            return jsonify({'status': 'success', 'data': serializeList((obj))})
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
