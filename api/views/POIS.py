@@ -44,9 +44,6 @@ def poi_get():
                 dict = {'status': 'success', 'data': dict2}
                 return jsonify(dict)
             else:
-                obj = PointsOfInterest.query.all()
-                if not obj:
-                    raise Exception('pois do not exist')
                 return jsonify({'status': 'success', 'data': serializePOI((obj))})
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
@@ -58,6 +55,9 @@ def poi():
     if request.method == "POST":
         try:
             json_dict = json.loads(request.data)
+            # map_obj = Maps.query.all()
+            # for elm in map_obj:
+            #     elm.
             result = PointsOfInterest(
                 name=json_dict['name'],
                 date = date((int)(json_dict['year']), (int)(json_dict['month']), (int)(json_dict['day'])),

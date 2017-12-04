@@ -8,7 +8,7 @@ def serializeList(items):
 
 def serializePOI(items):
     if not items:
-        return None
+        return []
     ret_list = []
     for elm in items:
         poi_id = elm.id
