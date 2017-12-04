@@ -124,7 +124,6 @@ class PointsOfInterestsTests(unittest.TestCase):
         self.assertEqual(stories.json()['story_name'],"Arias")
         self.assertEqual(stories.json()['pois'][0]['name'],"Aria Bot 1")
 
-        story_id = story_data.json()['data'][0]['id']
         poi = data2.json()['data'][1]['id']
 
         add_poi_json = {
@@ -138,6 +137,18 @@ class PointsOfInterestsTests(unittest.TestCase):
         self.assertEqual(stories.json()['story_name'],"Arias")
         self.assertEqual(stories.json()['pois'][1]['name'],"Aria Bot 2")
 
+        new_story = {
+            "story_name": "More Arias"
+        }
+        story_id = story_data.json()['data'][0]['id']
+
+        r = requests.put('http://127.0.0.1:5000/stories/' + str(story_id),data=json.dumps(new_story)  )
+        # self.assertEqual(r.status_code,200)
+        # stories = requests.get('http://127.0.0.1:5000/stories/' + str(story_id) )
+        # self.assertEqual(stories.status_code,200)
+        # self.assertEqual(stories.json()['story_name'],"More Arias")
+
+# /stories/<story_id>
 
         
 

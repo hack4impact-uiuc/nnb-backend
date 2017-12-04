@@ -113,6 +113,7 @@ def story_point():
 
 # Adds POI to multiple stories, not sure what to call it
 @app.route('/stories/add/multiple', methods=['POST'])
+# @login_required
 def addtomultiplestory():
     if request.method == "POST":
         try:
@@ -144,17 +145,17 @@ def addtomultiplestory():
 
 @app.route('/stories/<story_id>', methods=['PUT'])
 # @login_required  
-def story_point_edit(story_id):
+def story_name_edit(id):
     if request.method == "PUT":
         try:
-            storyname = StoryNames.query.get(story_id).first()
-            if storyname:
+            s = StoryNames.query.get(id)
+            if s:
                 json_dict = json.loads(request.data)
-                storyname.story_name_id = json_dict["story_name_id"]
+                s.story_name = json_dict["story_name"]
                 db.session.commit()
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
-        return jsonify({"status": "success", "message": "new story poi added to existing story"})
+            return jsonify({"status": "success", "message": "editted story name"})
     else:
         return jsonify({"status": "failed", "message": "POST request only"})
 
