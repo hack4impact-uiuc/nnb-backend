@@ -16,7 +16,7 @@ def runserver():
 
 @manager.command
 def runworker():
-    app.run()
+    app.run(debug=False)
     set_heroku_config()
 
 
