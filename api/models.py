@@ -123,7 +123,7 @@ class AdditionalLinks(db.Model):
         return '<additional_links poi_id = {}>'.format(self.poi_id)
 
     def toDict(self):
-        return {'url': self.url, 'poi_id': self.poi_id}
+        return {'id':self.id,'url': self.url, 'poi_id': self.poi_id}
 
 class InvalidUsage(Exception):
     status_code = 400

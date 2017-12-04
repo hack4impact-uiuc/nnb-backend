@@ -4,7 +4,7 @@ from .. import db
 from api.models import PointsOfInterest, AdditionalLinks, Content, Maps, InvalidUsage
 import json
 from flask import jsonify
-from api.utils import serializeList
+from api.utils import serializeList, serializePOI
 from sqlalchemy import func
 import time
 from datetime import date
@@ -35,7 +35,15 @@ def getallyears():
 def getmapsforyear(year):
     if request.method == 'GET':
         try:
-            return jsonify({'status': 'success', 'data': serializeList((Maps.query.filter(Maps.year==year)))})
+            poi_years = PointsOfInterest.query.filter(PointsOfInterest.map_by_year == year)
+
+            if not poi_years:
+                return jsonify({'status': 'failed', 'message': 'year '+ year + "> does not exist"})
+            arr = serializePOI(poi_years)
+            map_obj = Maps.query.filter(Maps.year == poi_years[0].map_by_year)
+            ret_rect = {'map': serializeList(map_obj), 'pois': arr}
+            dict = {'status': 'success', 'data': ret_rect}
+            return jsonify(dict)
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
