@@ -5,8 +5,7 @@ from flask import jsonify
 from api import app, db
 from flask import Flask, request
 from api.models import PointsOfInterest, AdditionalLinks, Content, User, Maps, InvalidUsage, StoryNames, Stories
-
-
+from datetime import date
 import requests
 from flask import jsonify
 import json
@@ -75,11 +74,52 @@ class PointsOfInterestsTests(unittest.TestCase):
         clear_database()
         requests.post('http://127.0.0.1:5000/pois', data=json.dumps(poi_add_json_1))
         data = requests.get('http://127.0.0.1:5000/pois')
-        print(len(data.json()['data']) == 1)
-        print(data.json()['data'][0]['name'] == "Aria Bot 1")
-        
+        self.assertEqual(len(data.json()['data']),1)
+        self.assertEqual(data.json()['data'][0]['name'],"Aria Bot 1")
+        self.assertEqual(data.json()['data'][0]['map_by_year'],2017)
+        self.assertEqual(data.json()['data'][0]['event_info'],"Test info")
+        self.assertEqual(data.json()['data'][0]['date'],'Fri, 01 Jan 2016 00:00:00 GMT')
+        self.assertEqual(data.json()['data'][0]['x_coord'],25)
+        self.assertEqual(data.json()['data'][0]['y_coord'],25)
+        self.assertEqual(data.json()['data'][0]['additional_links'][0]['url'],"test1.url.com")
+        self.assertEqual(data.json()['data'][0]['additional_links'][1]['url'],"test2.url.com")
+        self.assertEqual(data.json()['data'][0]['content'][0]['content_url'],"test3.url.com")
+        self.assertEqual(data.json()['data'][0]['content'][0]['caption'],"test caption")
 
+        requests.post('http://127.0.0.1:5000/pois', data=json.dumps(poi_add_json_2))
+        data2 = requests.get('http://127.0.0.1:5000/pois')
+        self.assertEqual(len(data2.json()['data']),2)
+        self.assertEqual(data2.json()['data'][1]['name'],"Aria Bot 2")
+        self.assertEqual(data2.json()['data'][1]['map_by_year'],2016)
+        self.assertEqual(data2.json()['data'][1]['event_info'],"Test info")
+        self.assertEqual(data2.json()['data'][1]['date'],'Fri, 01 Jan 2016 00:00:00 GMT')
+        self.assertEqual(data2.json()['data'][1]['x_coord'],25)
+        self.assertEqual(data2.json()['data'][1]['y_coord'],25)
+        self.assertEqual(data2.json()['data'][1]['additional_links'][0]['url'],"test1.url.com")
+        self.assertEqual(data2.json()['data'][1]['additional_links'][1]['url'],"test2.url.com")
+        self.assertEqual(data2.json()['data'][1]['content'][0]['content_url'],"test3.url.com")
+        self.assertEqual(data2.json()['data'][1]['content'][0]['caption'],"test caption")
 
+        story = {
+        "story_name": "Arias"
+        }
+
+        requests.post('http://127.0.0.1:5000/stories', data=json.dumps(story))
+        story_data = requests.get('http://127.0.0.1:5000/stories')
+        self.assertEqual(len(data.json()['data']),1)
+        self.assertEqual(story_data.json()['data'][0]['story_name'],"Arias")
+
+        story_id = story_data.json()['data'][0]['id']
+        poi = data2.json()['data'][0]['id']
+
+        add_poi_json = {
+            "input_story_name_id": str(story_id),
+            "input_poi_id": str(poi)
+        }
+
+        # requests.post('http://127.0.0.1:5000/stories/add', data=json.dumps(add_poi_json))
+        # stories = requests.get('http://127.0.0.1:5000/stories/' + story_id )
+        # self.assertEqual(len(stories.json()['data']),1)
 
 
 if __name__ == "__main__":
