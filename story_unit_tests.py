@@ -117,13 +117,29 @@ class PointsOfInterestsTests(unittest.TestCase):
             "input_story_name_id": str(story_id),
             "input_poi_id": str(poi)
         }
-        print(story_id)
 
         requests.post('http://127.0.0.1:5000/stories/add', data=json.dumps(add_poi_json))
         stories = requests.get('http://127.0.0.1:5000/stories/' + str(story_id) )
         self.assertEqual(stories.status_code,200)
         self.assertEqual(stories.json()['story_name'],"Arias")
         self.assertEqual(stories.json()['pois'][0]['name'],"Aria Bot 1")
+
+        story_id = story_data.json()['data'][0]['id']
+        poi = data2.json()['data'][1]['id']
+
+        add_poi_json = {
+            "input_story_name_id": str(story_id),
+            "input_poi_id": str(poi)
+        }
+
+        requests.post('http://127.0.0.1:5000/stories/add', data=json.dumps(add_poi_json))
+        stories = requests.get('http://127.0.0.1:5000/stories/' + str(story_id) )
+        self.assertEqual(stories.status_code,200)
+        self.assertEqual(stories.json()['story_name'],"Arias")
+        self.assertEqual(stories.json()['pois'][1]['name'],"Aria Bot 2")
+
+
+        
 
 
 if __name__ == "__main__":
