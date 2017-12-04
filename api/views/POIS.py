@@ -29,7 +29,7 @@ def poi_get():
         try:
             if year:
                 poi_years = PointsOfInterest.query.filter(PointsOfInterest.map_by_year == year)
-                if not poi_years.first():
+                if poi_years.count() == 0:
                     raise Exception(' Year, ' + year + ' does not exist')
                 arr = serializePOI(poi_years)
                 dict = {'status': 'success', 'data': arr}
@@ -44,7 +44,10 @@ def poi_get():
                 dict = {'status': 'success', 'data': dict2}
                 return jsonify(dict)
             else:
-                return jsonify({'status': 'success', 'data': serializePOI((PointsOfInterest.query.all()))})
+                obj = PointsOfInterest.query.all()
+                if not obj:
+                    raise Exception('pois do not exist')
+                return jsonify({'status': 'success', 'data': serializePOI((obj))})
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
 
