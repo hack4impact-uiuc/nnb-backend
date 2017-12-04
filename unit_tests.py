@@ -8,13 +8,16 @@ from flask import Flask, request
 import requests
 from flask import jsonify
 
-r = requests.get(url = "http://127.0.0.1:5000/")
-print(r.text == "<h1>HI THERE</h1>")
-app = Flask(__name__)
-with app.app_context():
-    r = requests.post(url = "http://127.0.0.1:5000/",params=jsonify({'username':'admin', 'password': 'admin'}))
+r = requests.get('http://127.0.0.1:5000/pois')
+print(r.json)
+r = requests.post('http://127.0.0.1:5000/pois',json="")
 
 
+
+
+# app = Flask(__name__)
+# with app.app_context():
+#     r = requests.post(url = "http://127.0.0.1:5000/",params=jsonify({'username':'admin', 'password': 'admin'}))
  
 # class BasicTests(unittest.TestCase):
 #     def setUp(self):
