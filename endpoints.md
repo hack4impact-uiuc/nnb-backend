@@ -393,3 +393,6 @@ Note: map_by_year is the link to Maps, which is the map the POI will be on. For 
         "status": "success"
     }
 
+***Endpoint***
+    
+    
