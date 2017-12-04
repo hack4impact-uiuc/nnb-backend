@@ -44,7 +44,7 @@ def poi_get():
                 dict = {'status': 'success', 'data': dict2}
                 return jsonify(dict)
             else:
-                return jsonify({'status': 'success', 'data': serializePOI((obj))})
+                return jsonify({'status': 'success', 'data': serializePOI((PointsOfInterest.query.all()))})
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
 
