@@ -123,7 +123,6 @@ Note: You can only have one map url per year
     POST /pois
 
 **Input**
-
 |   Name   |  Type  | Description | Example |
 |:--------:|:------:|:-----------:|:-----------:|
 | name | string |   **Required** | Constitution was Signed
@@ -134,8 +133,8 @@ Note: You can only have one map url per year
 | info | string |   **Required** | During convention...
 | x_coor | string |   **Required** | 45.7
 | y_coor | string |   **Required** | 54.8
-| additional_links | array of strings |   **Required** | [{url1}, {url2}]
-| content | array of tuples (strings |   **Required** | [{url, caption}]
+| additional_links | array of dictionaries |   **Required** | [{"url":"url1"}, {"url":"url2"}]
+| content | array of dictionaries |   **Required** | [{"content_url": "google.com, "caption": "google website"}]
 
 Note: map_by_year is the link to Maps, which is the map the POI will be on. For the example above, the POI will be on the Map that has a year of 1788 but the POI's actual date is 1787, which is described with "year".
 
@@ -280,6 +279,29 @@ Note: map_by_year is the link to Maps, which is the map the POI will be on. For 
         "status": "success"
     }
        
+***Endpoint***
+       
+       PUT /pois/<poi_id>
+       
+***Input***
+|   Name   |  Type  | Description | Example |
+|:--------:|:------:|:-----------:|:-----------:|
+| name | string |   **Required** | Constitution was Signed
+| map_by_year | string |   **Required** | 1788
+| year | string |   **Required** | 1787
+| month | string |   **Required** | September
+| day | string |   **Required** | 17
+| info | string |   **Required** | During convention...
+| x_coor | string |   **Required** | 45.7
+| y_coor | string |   **Required** | 54.8
+| additional_links | array of dictionaries |   **Required** | [{"url":"url1"}, {"url":"url2"}]
+| content | array of dictionaries |   **Required** | [{"content_url": "google.com, "caption": "google website"}]
+
+***Response***
+        
+    {
+        "status": "success"
+    }
 
 ## Stories
 ***Endpoint***
