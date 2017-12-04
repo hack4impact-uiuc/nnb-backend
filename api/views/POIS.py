@@ -22,7 +22,6 @@ def handle_invalid_usage(error):
 
 #Get POI given a year or POI ID
 @app.route('/pois', methods=['GET'])
-# @login_required 
 def poi_get():
     year = request.args.get('year')
     poi_id = request.args.get('poi_id')
@@ -91,7 +90,6 @@ def poi():
 
 #Returns all POIs
 @app.route('/pois/<poi_id>', methods=['GET']) 
-# @login_required
 def poi_get_with_id(poi_id):
     try:
         poi = PointsOfInterest.query.get(poi_id)

@@ -21,7 +21,6 @@ def handle_invalid_usage(error):
 
 #Gets all maps
 @app.route('/maps', methods=['GET'])
-# @login_required
 def getallyears():
     if request.method == 'GET':
         try:
@@ -33,7 +32,6 @@ def getallyears():
 
 #Maps for certain year
 @app.route('/maps/years/<year>', methods=['GET'])
-# @login_required
 def getmapsforyear(year):
     if request.method == 'GET':
         try:
