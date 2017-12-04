@@ -150,23 +150,6 @@ def poi_delete(poi_id):
             raise InvalidUsage('Error: ' + str(ex), status_code=404)       
     return jsonify({"status": "failed", "message": "Endpoint, /poi, needs a PUT request"})
 
-#Returns all POIs
-@app.route('/pois/year/<year>', methods=['GET']) 
-def poi_get_with_year(year):
-    try:
-        poi_years = PointsOfInterest.query.filter(PointsOfInterest.map_by_year == year)
-        if not poi_years.first():
-            dict = {'status': 'success', 'data': []}
-            return jsonify(dict)
-
-        arr = serializePOI(poi_years)
-        map_obj = Maps.query.filter(Maps.year == poi_years[0].map_by_year)
-        ret_rect = {'map':serializeList(map_obj),'pois':arr}
-        dict = {'status': 'success', 'data': ret_rect}
-        return jsonify(dict)
-    except Exception as ex:
-       raise InvalidUsage('Error: ' + str(ex), status_code=404)
-
 @app.route('/pois/<name>', methods=['GET']) 
 def poi_search_name(name):
     if request.method == "GET":
