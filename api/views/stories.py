@@ -142,26 +142,15 @@ def addtomultiplestory():
 #Added this functionality to the /stories endpoint, so no need for it
 #adds a new story name aka stor
 
-@app.route('/stories/add/<poi_id>', methods=['PUT'])
+@app.route('/stories/<story_id>', methods=['PUT'])
 # @login_required  
-def story_point_edit(poi_id):
+def story_point_edit(story_id):
     if request.method == "PUT":
         try:
-            storyname = StoryNames.query.get(id)
+            storyname = StoryNames.query.get(story_id).first()
             if storyname:
-                stories = storyname.story_id
-                for s in stories:
-                    db.session.delete(s)
-                    db.session.commit()
-                db.session.delete(storyname)
-                db.session.commit()
                 json_dict = json.loads(request.data)
-                storynames = StoryNames.query.get(json_dict["story_name_id"]) #check if it is empty later
-                storynames.story_id.append(Stories()) #add new Stories() to storynames
-                db.session.commit()
-                # get poi and add the same story to it
-                poi = PointsOfInterest.query.get(json_dict["poi_id"])
-                poi.stories.append(storynames.story_id[-1]) # gets last index, which is the Stories() that was just added
+                storyname.story_name_id = json_dict["story_name_id"]
                 db.session.commit()
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
