@@ -31,7 +31,7 @@ def getallyears():
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /years, needs a GET request"})
 
 #Maps for certain year
-@app.route('/maps/<year>', methods=['GET'])
+@app.route('/maps/years/<year>', methods=['GET'])
 def getmapsforyear(year):
     if request.method == 'GET':
         try:
