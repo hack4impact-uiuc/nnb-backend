@@ -66,7 +66,6 @@ def poi():
             )
             db.session.add(result)
             db.session.commit()
-            print(result.id)
             new_poi_id = result.id
             for link in json_dict['content']:
                 result = Content(
@@ -82,8 +81,7 @@ def poi():
                 )
                 db.session.add(result)
             db.session.commit()
-            
-            return jsonify({"status": "success", "message":"Successfully added POI"})
+            return jsonify({"status": "success", "data":{"id": new_poi_id},"message":"Successfully added POI"})
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)         
     return jsonify({"status": "failed", "message: ": "Endpoint, /poi, needs a GET or POST request"})
