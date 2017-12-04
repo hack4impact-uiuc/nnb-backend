@@ -29,15 +29,15 @@ def poi_get():
         try:
             if year:
                 poi_years = PointsOfInterest.query.filter(PointsOfInterest.map_by_year == year)
-                if not poi_years:
-                    raise InvalidUsage('Error: Year, ' + poi_years + ' does not exist', status_code=404)
+                if not poi_years.first():
+                    raise Exception(' Year, ' + year + ' does not exist')
                 arr = serializePOI(poi_years)
                 dict = {'status': 'success', 'data': arr}
                 return jsonify(dict)
             elif poi_id:
                 poi = PointsOfInterest.query.get(poi_id)
                 if poi is None:
-                    return jsonify({'status': 'failed', 'message': '<poi '+ poi_id + "> does not exist"})
+                    raise Exception('<poi '+ poi_id + "> does not exist")
                 dict2 = poi.toDict()
                 dict2["additional_links"] = serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id))
                 dict2["content"] = serializeList((Content.query.filter(Content.poi_id==poi_id)))
@@ -89,8 +89,9 @@ def poi():
 def poi_get_with_id(poi_id):
     try:
         poi = PointsOfInterest.query.get(poi_id)
+        print(poi)
         if poi is None:
-            return jsonify({'status': 'failed', 'message': '<poi '+ poi_id + "> does not exist"})
+            raise Exception(' <poi ' + poi_id + "> does not exist")
         dict2 = serializePOI([poi])
         dict = {'status': 'success', 'data': dict2}
         return jsonify(dict)
@@ -201,8 +202,8 @@ def poi_delete(poi_id):
 def poi_get_with_year(year):
     try:
         poi_years = PointsOfInterest.query.filter(PointsOfInterest.map_by_year == year)
-        if not poi_years:
-            return jsonify({'status': 'failed', 'message': 'year '+ year + "> does not exist"})
+        if not poi_years.first():
+            raise Exception(' Year, ' + year + ' does not exist')
         arr = serializePOI(poi_years)
         map_obj = Maps.query.filter(Maps.year == poi_years[0].map_by_year)
         ret_rect = {'map':serializeList(map_obj),'pois':arr}

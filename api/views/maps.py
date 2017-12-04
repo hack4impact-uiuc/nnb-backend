@@ -36,9 +36,8 @@ def getmapsforyear(year):
     if request.method == 'GET':
         try:
             poi_years = PointsOfInterest.query.filter(PointsOfInterest.map_by_year == year)
-
-            if not poi_years:
-                return jsonify({'status': 'failed', 'message': 'year '+ year + "> does not exist"})
+            if not poi_years.first():
+                raise Exception('year,  <'+ year + "> does not exist")
             arr = serializePOI(poi_years)
             map_obj = Maps.query.filter(Maps.year == poi_years[0].map_by_year)
             ret_rect = {'map': serializeList(map_obj), 'pois': arr}
@@ -74,6 +73,8 @@ def addmapforyear():
 def years4(year):
     if request.method == 'GET':
         try:
+            if not Maps.query.filter(Maps.year==year).first():
+                raise Exception("Map for " + year + " does not exist")
             return jsonify({'status': 'success', 'data': serializeList((Maps.query.filter(Maps.year==year)))})
             #return jsonify(serializeList((Maps.query.filter(Maps.year==year))))
         except Exception as ex:
@@ -88,7 +89,7 @@ def delete_map(id):
     try:
         map_to_delete = Maps.query.get(id)
         if map_to_delete is None:
-            return jsonify({'status':'failed','message':"maps doesn't exist"})
+            raise Exception("map" + id + "doesn't exist"})
         year = map_to_delete.year
         poi_to_delete = PointsOfInterest.query.filter(PointsOfInterest.map_by_year == year)
         for obj in poi_to_delete:
