@@ -12,6 +12,6 @@ POSTGRES = {
     'port': '5432',
 }
 
-SQLALCHEMY_DATABASE_URI = 'postgresql://nbb:password@127.0.0.1:5432/nbb_db'
-# SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
+# SQLALCHEMY_DATABASE_URI = 'postgresql://nbb:password@127.0.0.1:5432/nbb_db'
+SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
