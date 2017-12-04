@@ -37,7 +37,8 @@ def getmapsforyear(year):
         try:
             poi_years = PointsOfInterest.query.filter(PointsOfInterest.map_by_year == year)
             if not poi_years.first():
-                raise Exception('year,  <'+ year + "> does not exist")
+                dict = {'status': 'success', 'data': []}
+                return jsonify(dict)
             arr = serializePOI(poi_years)
             map_obj = Maps.query.filter(Maps.year == poi_years[0].map_by_year)
             ret_rect = {'map': serializeList(map_obj), 'pois': arr}
