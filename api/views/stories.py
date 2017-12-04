@@ -54,10 +54,10 @@ def stories_get(id):
             arry = []
             storyname = StoryNames.query.get(id)
             if storyname is None:
-                raise InvalidUsage('Error: <storyname ' + id + '> does not exist', status_code=404)
+                raise Exception('Story with ID: ' + id + ' does not exist')
             stories = storyname.story_id
             if stories is None:
-                raise InvalidUsage('Error: <storyname ' + id + '> does not exist', status_code=404)
+                raise Exception('Storyname ' + id + '> does not exist')
             
             for story in stories:
                 if story.poi_id is None:
