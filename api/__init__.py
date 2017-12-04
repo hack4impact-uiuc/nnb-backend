@@ -7,7 +7,6 @@ import os
 
 app = Flask(__name__)
 CORS(app)
-os.environ['FLASK_ENV'] = "dev"
 env = os.environ.get('FLASK_ENV', 'dev')
 app.config.from_object(config[env])
 
