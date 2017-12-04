@@ -68,9 +68,10 @@ def clear_database():
         Maps.query.delete()
         db.session.commit()
 
+
 class PointsOfInterestsTests(unittest.TestCase):
 
-    def test_add_poi(self):
+    def test_story(self):
         clear_database()
         requests.post('http://127.0.0.1:5000/pois', data=json.dumps(poi_add_json_1))
         data = requests.get('http://127.0.0.1:5000/pois')
@@ -116,10 +117,13 @@ class PointsOfInterestsTests(unittest.TestCase):
             "input_story_name_id": str(story_id),
             "input_poi_id": str(poi)
         }
+        print(story_id)
 
-        # requests.post('http://127.0.0.1:5000/stories/add', data=json.dumps(add_poi_json))
-        # stories = requests.get('http://127.0.0.1:5000/stories/' + story_id )
-        # self.assertEqual(len(stories.json()['data']),1)
+        requests.post('http://127.0.0.1:5000/stories/add', data=json.dumps(add_poi_json))
+        stories = requests.get('http://127.0.0.1:5000/stories/' + str(story_id) )
+        self.assertEqual(stories.status_code,200)
+        self.assertEqual(stories.json()['story_name'],"Arias")
+        self.assertEqual(stories.json()['pois'][0]['name'],"Aria Bot 1")
 
 
 if __name__ == "__main__":
