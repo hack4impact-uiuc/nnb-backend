@@ -69,19 +69,6 @@ def addmapforyear():
     else:
         return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
 
-@app.route('/maps/<year>', methods=['GET'])
-def years4(year):
-    if request.method == 'GET':
-        try:
-            if not Maps.query.filter(Maps.year==year).first():
-                raise Exception("Map for " + year + " does not exist")
-            return jsonify({'status': 'success', 'data': serializeList((Maps.query.filter(Maps.year==year)))})
-            #return jsonify(serializeList((Maps.query.filter(Maps.year==year))))
-        except Exception as ex:
-            raise InvalidUsage('Error: ' + str(ex), status_code=404)
-    else:
-        return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps/<year>, needs a GET request"})
-
 
 # delete maps by id
 @app.route('/maps/<id>', methods=['DELETE'])
