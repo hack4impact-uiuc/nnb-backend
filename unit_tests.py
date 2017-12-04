@@ -46,6 +46,8 @@ class PointsOfInterestsTests(unittest.TestCase):
         r = requests.post('http://127.0.0.1:5000/pois', data=json.dumps(poi_add_json))
         self.assertEqual(r.status_code,200)
         json_dict = r.json()
+        print(json_dict)
+        self.assertEqual(json_dict["status"], "success")
     def test_add_multiple_poi(self):
         
         r = requests.post('http://127.0.0.1:5000/pois', data=json.dumps(poi_add_json))

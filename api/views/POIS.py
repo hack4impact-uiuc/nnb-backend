@@ -21,7 +21,7 @@ def handle_invalid_usage(error):
     return response
 
 #Get POI given a year or POI ID
-@app.route('/pois', methods=['GET']) 
+@app.route('/pois', methods=['GET'])
 def poi_get():
     year = request.args.get('year')
     poi_id = request.args.get('poi_id')
@@ -51,13 +51,11 @@ def poi_get():
 #Add POI
 # @login_required
 @app.route('/pois', methods=['POST'])
+# @login_required
 def poi():
     if request.method == "POST":
         try:
             json_dict = json.loads(request.data)
-            # map_obj = Maps.query.all()
-            # for elm in map_obj:
-            #     elm.
             result = PointsOfInterest(
                 name=json_dict['name'],
                 date = date((int)(json_dict['year']), (int)(json_dict['month']), (int)(json_dict['day'])),
@@ -85,10 +83,10 @@ def poi():
                 db.session.add(result)
             db.session.commit()
             
-            return jsonify({"status:": "success", "message":"Successfully added POI"})
+            return jsonify({"status": "success", "message":"Successfully added POI"})
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)         
-    return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a GET or POST request"})
+    return jsonify({"status": "failed", "message: ": "Endpoint, /poi, needs a GET or POST request"})
 
 #Returns all POIs
 @app.route('/pois/<poi_id>', methods=['GET']) 
@@ -105,15 +103,14 @@ def poi_get_with_id(poi_id):
         raise InvalidUsage('Error: ' + str(ex), status_code=404)
 
 #Delete POI given POI ID
-# @login_required
 @app.route('/pois/<poi_id>', methods=['DELETE','PUT']) 
+# @login_required
 def poi_delete(poi_id):
     if request.method == 'DELETE':
         try:
             obj = PointsOfInterest.query.get(poi_id)
             for s in obj.stories:
                 db.session.delete(s)
-                db.session.commit()
             db.session.delete(obj)
             db.session.commit()
             return jsonify({'status':'success', 'message': 'deleted '+ poi_id + " from database"})
@@ -122,108 +119,41 @@ def poi_delete(poi_id):
     if request.method == "PUT":
         try:
             obj = PointsOfInterest.query.filter(PointsOfInterest.id==poi_id).first()
-            if (obj):
-                for s in obj.stories:
-                    db.session.delete(s)
-                    db.session.commit()
-                db.session.delete(obj)
-                db.session.commit()
             json_dict = json.loads(request.data)
-            result = PointsOfInterest(
-                name=json_dict['name'],
-                date = date((int)(json_dict['year']), (int)(json_dict['month']), (int)(json_dict['day'])),
-                eventinfo = json_dict['info'],
-                map_by_year = (int)(json_dict['map_by_year']),
-                x_coord = (int)(json_dict['x_coor']),
-                y_coord = (int)(json_dict['y_coor']), 
-            )
-            db.session.add(result)
-            new_poi_id = result.id
+            obj.name = json_dict['name']
+            obj.date = date((int)(json_dict['year']), (int)(json_dict['month']), (int)(json_dict['day']))
+            obj.eventinfo = json_dict['info']
+            obj.map_by_year = (int)(json_dict['map_by_year'])
+            obj.x_coor = (int)(json_dict['x_coor'])
+            obj.y_coor = (int)(json_dict['y_coor'])
+            # Content.query.filter(Content.poi_id == pod_id)
+            for s in Content.query.filter(Content.poi_id == poi_id):
+                db.session.delete(s)
+            for s in AdditionalLinks.query.filter(Content.poi_id == poi_id):
+                db.session.delete(s)
             for link in json_dict['content']:
                 result = Content(
                     content_url=(link['content_url']),
                     caption=(link['caption']),
-                    poi_id=new_poi_id
                 )
                 db.session.add(result)
             for link in json_dict['additional_links']:
                 result = AdditionalLinks(
                     url=(link['url']),
-                    poi_id=new_poi_id
                 )
                 db.session.add(result)
             db.session.commit()
-            # db.session.commit()
-            return jsonify({"status:": "success"})
+            return jsonify({"status": "success"})
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)       
-    return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a PUT request"})
+    return jsonify({"status": "failed", "message": "Endpoint, /poi, needs a PUT request"})
 
-# #Add POI
-# # @login_required
-# @app.route('/pois/<poi_id>', methods=['PUT'])
-# def poi_put(poi_id):
-#     if request.method == "PUT":
-#         try:
-#             obj = PointsOfInterest.query.filter(PointsOfInterest.id==poi_id).first()
-#             if (obj):
-#                 for s in obj.stories:
-#                     db.session.delete(s)
-#                     db.session.commit()
-#                 db.session.delete(obj)
-#                 db.session.commit()
-#             json_dict = json.loads(request.data)
-#             result = PointsOfInterest(
-#                 name=json_dict['name'],
-#                 date = date((int)(json_dict['year']), (int)(json_dict['month']), (int)(json_dict['day'])),
-#                 eventinfo = json_dict['info'],
-#                 map_by_year = (int)(json_dict['map_by_year']),
-#                 x_coord = (int)(json_dict['x_coor']),
-#                 y_coord = (int)(json_dict['y_coor']), 
-#             )
-#             db.session.add(result)
-#             new_poi_id = result.id
-#             for link in json_dict['content']:
-#                 result = Content(
-#                     content_url=(link['content_url']),
-#                     caption=(link['caption']),
-#                     poi_id=new_poi_id
-#                 )
-#                 db.session.add(result)
-#             for link in json_dict['additional_links']:
-#                 result = AdditionalLinks(
-#                     url=(link['url']),
-#                     poi_id=new_poi_id
-#                 )
-#                 db.session.add(result)
-#             db.session.commit()
-#             # db.session.commit()
-#             return jsonify({"status:": "success"})
-#         except Exception as ex:
-#             return jsonify({"status: ": "failed", "message:": str(ex)})            
-#     return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a PUT request"})
-
-#Returns all POIs
-@app.route('/pois/year/<year>', methods=['GET']) 
-def poi_get_with_year(year):
-    try:
-        poi_years = PointsOfInterest.query.filter(PointsOfInterest.map_by_year == year)
-        if not poi_years.first():
-            raise Exception(' Year, ' + year + ' does not exist')
-        arr = serializePOI(poi_years)
-        map_obj = Maps.query.filter(Maps.year == poi_years[0].map_by_year)
-        ret_rect = {'map':serializeList(map_obj),'pois':arr}
-        dict = {'status': 'success', 'data': ret_rect}
-        return jsonify(dict)
-    except Exception as ex:
-       raise InvalidUsage('Error: ' + str(ex), status_code=404)
-
-@app.route('/pois/<name>', methods=['GET']) 
+@app.route('/pois/search/<name>', methods=['GET']) 
 def poi_search_name(name):
     if request.method == "GET":
         try:
-            return jsonify({'status': 'success', 'data': serializePOI(PointsOfInterest.query.filter(PointsOfInterest.name.contains(name)).first())})
+            return jsonify({'status': 'success', 'data': serializePOI(PointsOfInterest.query.filter(func.lower(PointsOfInterest.name).contains(func.lower(name))))})
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
-    return jsonify({"status: ": "failed", "message: ": "Endpoint, /poi, needs a GET request"})
+    return jsonify({"status": "failed", "message": "Endpoint, /poi, needs a GET request"})
 

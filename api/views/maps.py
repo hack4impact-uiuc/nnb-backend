@@ -28,7 +28,7 @@ def getallyears():
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
-        return jsonify({"status: ": "failed", "message: ": "Endpoint, /years, needs a GET request"})
+        return jsonify({"status": "failed", "message": "Endpoint, /years, needs a GET request"})
 
 #Maps for certain year
 @app.route('/maps/years/<year>', methods=['GET'])
@@ -37,8 +37,9 @@ def getmapsforyear(year):
         try:
             poi_years = PointsOfInterest.query.filter(PointsOfInterest.map_by_year == year)
             if not poi_years.first():
-                raise Exception('year,  <'+ year + "> does not exist")
-            arr = serializePOI(poi_years)
+                 arr = []
+            else:
+                arr = serializePOI(poi_years)
             map_obj = Maps.query.filter(Maps.year == poi_years[0].map_by_year)
             ret_rect = {'map': serializeList(map_obj), 'pois': arr}
             dict = {'status': 'success', 'data': ret_rect}
@@ -46,10 +47,11 @@ def getmapsforyear(year):
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
-        return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
+        return jsonify({"status": "failed", "message": "Endpoint, /maps, needs a GET or POST request"})
 
 #Add a map
 @app.route('/maps', methods=['POST'])
+# @login_required
 def addmapforyear():
     if request.method == 'POST':
         try:
@@ -63,15 +65,16 @@ def addmapforyear():
                 db.session.commit()
             db.session.add(result)
             db.session.commit()
-            return jsonify({"status:": "success", "message": "successfully added maps and year"})
+            return jsonify({"status": "success", "message": "successfully added maps and year"})
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
     else:
-        return jsonify({"status: ": "failed", "message: ": "Endpoint, /maps, needs a GET or POST request"})
+        return jsonify({"status": "failed", "message": "Endpoint, /maps, needs a GET or POST request"})
 
 
 # delete maps by id
 @app.route('/maps/<id>', methods=['DELETE'])
+# @login_required
 def delete_map(id):
     try:
         map_to_delete = Maps.query.get(id)
