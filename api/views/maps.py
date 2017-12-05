@@ -40,7 +40,9 @@ def getmapsforyear(year):
                  arr = []
             else:
                 arr = serializePOI(poi_years)
-            map_obj = Maps.query.filter(Maps.year == poi_years[0].map_by_year)
+            map_obj = Maps.query.filter(Maps.year == year)
+            if not map_obj.first():
+                raise Exception("Maps with year " + year + " doesn't exist")
             ret_rect = {'map': serializeList(map_obj), 'pois': arr}
             dict = {'status': 'success', 'data': ret_rect}
             return jsonify(dict)
