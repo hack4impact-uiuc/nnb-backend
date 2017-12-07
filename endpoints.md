@@ -126,8 +126,9 @@ Note: You can only have one map url per year
     POST /pois
 
 **Input**
+
 |   Name   |  Type  | Description | Example |
-|:--------:|:------:|:-----------:|:-----------:|
+|--------|:------:|:-----------:|:-----------:|
 | name | string |   **Required** | Constitution was Signed
 | map_by_year | string |   **Required** | 1788
 | year | string |   **Required** | 1787
@@ -136,8 +137,8 @@ Note: You can only have one map url per year
 | info | string |   **Required** | During convention...
 | x_coor | string |   **Required** | 45.7
 | y_coor | string |   **Required** | 54.8
-| additional_links | array of dictionaries |   **Required** | [{"url":"url1"}, {"url":"url2"}]
-| content | array of dictionaries |   **Required** | [{"content_url": "google.com, "caption": "google website"}]
+| additional_links | array of dictionaries |   **Required** | \[{"url":"url1"}, {"url":"url2"}]
+| content | array of dictionaries |   **Required** | \[{"content_url": "google.com, "caption": "google website"}]
 
 Note: map_by_year is the link to Maps, which is the map the POI will be on. For the example above, the POI will be on the Map that has a year of 1788 but the POI's actual date is 1787, which is described with "year".
 
