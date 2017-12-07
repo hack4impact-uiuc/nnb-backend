@@ -77,6 +77,7 @@ def poi():
             for link in json_dict['additional_links']:
                 result = AdditionalLinks(
                     url=(link['url']),
+                    url_name=(link['url_name']),
                     poi_id=new_poi_id
                 )
                 db.session.add(result)

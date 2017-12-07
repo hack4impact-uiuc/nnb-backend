@@ -117,13 +117,14 @@ class AdditionalLinks(db.Model):
 
     id = db.Column (db.Integer, unique=True, primary_key=True)
     url = db.Column(db.String)
+    url_name = db.Column(db.String)
     poi_id = db.Column(db.Integer, db.ForeignKey('poi.id', ondelete='SET NULL'), nullable=True)
 
     def __repr__(self):
         return '<additional_links poi_id = {}>'.format(self.poi_id)
 
     def toDict(self):
-        return {'id':self.id,'url': self.url, 'poi_id': self.poi_id}
+        return {'id':self.id,'url': self.url, 'url_name': self.url_name, 'poi_id': self.poi_id}
 
 class InvalidUsage(Exception):
     status_code = 400
