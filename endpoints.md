@@ -55,10 +55,6 @@
             {
               "image_url": "google.com", 
               "year": 2005
-            },
-            {
-              "image_url": "google.com", 
-              "year": 2006
             }
         ],
         "pois": [
@@ -111,9 +107,6 @@ Note: You can only have one map url per year
 **Response**
 
     {
-       "data": {
-          "id": 14
-       },
        "message": "successfully deleted",
        "status": "success"
     }
@@ -145,6 +138,9 @@ Note: map_by_year is the link to Maps, which is the map the POI will be on. For 
 ***Response***
 
     {
+        "data": {
+          "id": 14
+        },
         "status": "success",
         "message": "Successfully added POI with id 32"
     }
