@@ -7,7 +7,7 @@ from flask import Flask, request
 import requests
 from flask import jsonify
 import json
-from api.models import 
+from api.models import PointsOfInterest, AdditionalLinks, Content, User, Maps, InvalidUsage, StoryNames, Stories
 
 poi_add_json = {
   "name": "Endpoint test",
@@ -48,39 +48,58 @@ dict3["name"] = "Endpoint test3"
 
 
 def post_with_json_body(url, j):
-    r = requests.post('http://127.0.0.1:5000' + url, data=j)
+    r = requests.post('http://127.0.0.1:5000' + url, data=json.dumps(j))
     return r
 
-class PointsOfInterestsTests(unittest.TestCase):
+def assert_status_good(obj, req):
+    obj.assertEqual(req.status_code,200)
 
-    def test_add_poi(self):
-        r = requests.post('http://127.0.0.1:5000/pois', data=json.dumps(poi_add_json))
-        self.assertEqual(r.status_code,200)
-        json_dict = r.json()
-        print(json_dict)
-        self.assertEqual(json_dict["status"], "success")
-    def test_add_multiple_poi(self):
-        
-        r = requests.post('http://127.0.0.1:5000/pois', data=json.dumps(poi_add_json))
-        r2 = requests.post('http://127.0.0.1:5000/pois', data=json.dumps(poi_add_json))
-        self.assertEqual(r.status_code,200)
-        self.assertEqual(r2.status_code,200)
-    # def get_poi_with_id(self):
-
-
-class Maps(unittest.TestCase):
+class MapsTest(unittest.TestCase):
 
     def test_add_map(self):
+        # r = requests.post('http://127.0.0.1:5000/maps',data=json.dumps(map_add_json))
         r = post_with_json_body('/maps', map_add_json)
         r2 = post_with_json_body('/maps', map_add_json2)
-        self.assertEqual(r.status_code,200)
-        self.assertEqual(r2.status_code,200)
+        assert_status_good(self,r)
+        assert_status_good(self,r2)
         json_dict = r.json()
         json_dict2 = r2.json()
         self.assertEqual(json_dict["message"], 'successfully added maps and year')
         self.assertEqual(json_dict2["message"], 'successfully added maps and year')
+        elm2 = Maps.query.all()[-1]
+        self.assertEqual(elm2.image_url,map_add_json2["image_url"])
+        self.assertEqual(elm2.year,2016)
+
+    def test_poi_in_map(self):
+        r = post_with_json_body('/maps', map_add_json)
+        r2 = post_with_json_body('/maps', map_add_json2)
+        poi_r = post_with_json_body('/pois', poi_add_json)
+        assert_status_good(self,r)
+        assert_status_good(self,r2)
+        assert_status_good(self,poi_r)
+        year_req = requests.get('http://127.0.0.1:5000/maps/years/2016')
+        assert_status_good(self,year_req)
+        json_dict = year_req.json()
+        self.assertTrue(json_dict["data"])
+        self.assertTrue(len(json_dict["data"]["map"]) == 1)
+        self.assertIsNotNone(json_dict["data"]["pois"])
+
+    def test_delete_map(self):
+        r = post_with_json_body('/maps', map_add_json)
+        assert_status_good(self, r)
+        elm = Maps.query.all()[-1]
+        print('http://127.0.0.1:5000/maps/' +str(elm.id))
+        r = requests.delete('http://127.0.0.1:5000/maps/' +str(elm.id))
+        assert_status_good(self, r)
+        json_dict = r.json()
+        self.assertEqual(json_dict["message"], 'successfully deleted')
+        r2 = requests.delete('http://127.0.0.1:5000/maps/' + str(elm.id))
+        self.assertEqual(r2.status_code, 404)
         
 
+
+
 if __name__ == "__main__":
-    suite = unittest.TestLoader().loadTestsFromTestCase(PointsOfInterestsTests)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    # unittest.main()
+    suite = unittest.TestLoader().loadTestsFromTestCase(MapsTest)
+    unittest.TextTestRunner(verbosity=3).run(suite)
