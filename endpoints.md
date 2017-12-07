@@ -288,6 +288,7 @@ Note: map_by_year is the link to Maps, which is the map the POI will be on. For 
        PUT /pois/<poi_id>
        
 ***Input***
+
 |   Name   |  Type  | Description | Example |
 |:--------:|:------:|:-----------:|:-----------:|
 | name | string |   **Required** | Constitution was Signed
@@ -298,8 +299,8 @@ Note: map_by_year is the link to Maps, which is the map the POI will be on. For 
 | info | string |   **Required** | During convention...
 | x_coor | string |   **Required** | 45.7
 | y_coor | string |   **Required** | 54.8
-| additional_links | array of dictionaries |   **Required** | [{"url":"url1"}, {"url":"url2"}]
-| content | array of dictionaries |   **Required** | [{"content_url": "google.com, "caption": "google website"}]
+| additional_links | array of dictionaries |   **Required** | \[{"url":"url1"}, {"url":"url2"}]
+| content | array of dictionaries |   **Required** | \[{"content_url": "google.com, "caption": "google website"}]
 
 ***Response***
         
