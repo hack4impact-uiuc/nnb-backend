@@ -55,10 +55,6 @@
             {
               "image_url": "google.com", 
               "year": 2005
-            },
-            {
-              "image_url": "google.com", 
-              "year": 2006
             }
         ],
         "pois": [
