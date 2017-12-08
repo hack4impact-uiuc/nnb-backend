@@ -130,7 +130,7 @@ Note: You can only have one map url per year
 | info | string |   **Required** | During convention...
 | x_coor | string |   **Required** | 45.7
 | y_coor | string |   **Required** | 54.8
-| additional_links | array of dictionaries |   **Required** | \[{"url":"url1"}, {"url":"url2"}]
+| additional_links | array of dictionaries |   **Required** | \[{"url":"url1", "url_name": "urlname"}]
 | content | array of dictionaries |   **Required** | \[{"content_url": "google.com, "caption": "google website"}]
 
 Note: map_by_year is the link to Maps, which is the map the POI will be on. For the example above, the POI will be on the Map that has a year of 1788 but the POI's actual date is 1787, which is described with "year".
@@ -172,11 +172,13 @@ Note: map_by_year is the link to Maps, which is the map the POI will be on. For 
               {
                 "id": 2,
                 "poi_id": 9, 
-                "url": "gmail.com"
+                "url": "gmail.com",
+                "url_name": "Gmail"
               }, 
               {
                 "poi_id": 9, 
-                "url": "2ndone.com"
+                "url": "2ndone.com",
+                "url_name": "Name2"
               }
             ], 
             "content": [
@@ -295,7 +297,7 @@ Note: map_by_year is the link to Maps, which is the map the POI will be on. For 
 | info | string |   **Required** | During convention...
 | x_coor | string |   **Required** | 45.7
 | y_coor | string |   **Required** | 54.8
-| additional_links | array of dictionaries |   **Required** | \[{"url":"url1"}, {"url":"url2"}]
+| additional_links | array of dictionaries |   **Required** | \[{"url":"url1", "url_name": "Name"}]
 | content | array of dictionaries |   **Required** | \[{"content_url": "google.com, "caption": "google website"}]
 
 ***Response***
