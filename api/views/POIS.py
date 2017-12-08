@@ -139,6 +139,7 @@ def poi_delete(poi_id):
             for link in json_dict['additional_links']:
                 result = AdditionalLinks(
                     url=(link['url']),
+                    url_name=(link['url_name'])
                 )
                 db.session.add(result)
             db.session.commit()
