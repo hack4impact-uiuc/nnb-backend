@@ -4,7 +4,7 @@ import unittest
 from flask import jsonify
 from api import app, db
 from flask import Flask, request
-
+from models import PointsOfInterest
 import requests
 from flask import jsonify
 import json
@@ -52,6 +52,28 @@ class PointsOfInterestsTests(unittest.TestCase):
         
         r = requests.post('http://127.0.0.1:5000/pois', data=json.dumps(poi_add_json))
         r = requests.post('http://127.0.0.1:5000/pois', data=json.dumps(poi_add_json))
+
+
+    def test_get_poi_by_id(self):
+        r = requests.get('http://127.0.0.1:5000/pois/60')
+        self.assertEqual(r.status_code,200)
+        json_dict = r.json()
+        poi = PointsOfInterest.query.get(60)
+        print("POI name")
+        print(poi)
+        name = poi.name
+        print(name)
+        self.assertEqual(json_dict['data'][0]["name"], name)
+
+    def test_delete_poi(self):
+        r2 = requests.post('http://127.0.0.1:5000/pois', data=json.dumps(poi_add_json))
+        self.assertEqual(r.status_code,200)
+        json_dict = r2.json()
+        ID = json_dict['data']['id']
+        r = requests.delete('http://127.0.0.1:5000/pois/' + ID)
+        self.assertEqual(r.status_code,200)
+        json_dict = r.json()
+        self.assertEqual(json_dict['status'], "success")
     # def get_poi_with_id(self):
       
 
