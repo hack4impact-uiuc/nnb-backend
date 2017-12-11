@@ -13,7 +13,7 @@ from passlib.apps import custom_app_context as pwd_context
 from api.models import PointsOfInterest, AdditionalLinks, Content, User
 
 mod = Blueprint('auth', __name__)
-
+#
 @app.route('/signup', methods = ['POST'])
 def new_user():
     json_dict = json.loads(request.data)
