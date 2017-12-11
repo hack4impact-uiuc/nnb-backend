@@ -4,7 +4,7 @@ from .. import db
 from api.models import PointsOfInterest, StoryNames, Stories, InvalidUsage
 import json
 from flask import jsonify
-from api.utils import serializeList
+from api.utils import serializeList,serializePOI
 from sqlalchemy import func
 from flask_login import LoginManager, login_required, login_user, logout_user 
 
@@ -65,7 +65,7 @@ def stories_get(id):
                     db.session.commit()
                     continue
                 arry.append(PointsOfInterest.query.get(story.poi_id))
-            ret_dict = {'story_name_id': id, 'story_name': StoryNames.query.get(id).story_name, 'pois': serializeList(arry)}
+            ret_dict = {'story_name_id': id, 'story_name': StoryNames.query.get(id).story_name, 'pois': serializePOI(arry)}
             return jsonify(ret_dict)
             # return jsonify({'status': 'success', 'data': serializeList((Stories.query.filter(func.lower(StoryNames.story_name)==func.lower(inputStoryName))))})
         except Exception as ex:

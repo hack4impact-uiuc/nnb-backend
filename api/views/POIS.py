@@ -38,9 +38,7 @@ def poi_get():
                 poi = PointsOfInterest.query.get(poi_id)
                 if poi is None:
                     raise Exception('<poi '+ poi_id + "> does not exist")
-                dict2 = poi.toDict()
-                dict2["additional_links"] = serializeList(AdditionalLinks.query.filter(AdditionalLinks.poi_id==poi_id))
-                dict2["content"] = serializeList((Content.query.filter(Content.poi_id==poi_id)))
+                serializePOI([poi])
                 dict = {'status': 'success', 'data': dict2}
                 return jsonify(dict)
             else:
