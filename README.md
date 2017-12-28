@@ -175,6 +175,8 @@ A pretty neat command to go into the heroku postgres CLI is:
 $ heroku pg:psql
 ```
 Finally, open up your live app by clicking the "Open App" button on the top-right corner of your Heroku dashboard!
+#### Backup your Database
+https://devcenter.heroku.com/articles/heroku-postgres-backups
 ## Git Flow 
 Before you start making changes, make sure you have the most recently updated version of `master`:
 ```
