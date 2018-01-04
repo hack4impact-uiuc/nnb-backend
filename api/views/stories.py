@@ -143,7 +143,7 @@ def addtomultiplestory():
 #Added this functionality to the /stories endpoint, so no need for it
 #adds a new story name aka stor
 
-@app.route('/stories/<story_id>', methods=['PUT'])
+@app.route('/stories/<id>', methods=['PUT'])
 # @login_required  
 def story_name_edit(id):
     if request.method == "PUT":
