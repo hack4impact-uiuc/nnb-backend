@@ -153,9 +153,12 @@ def story_name_edit(id):
                 json_dict = json.loads(request.data)
                 s.story_name = json_dict["story_name"]
                 db.session.commit()
+                return jsonify({'status':"success","message":"successfully changed story name."})
+            else:
+                raise InvalidUsage('Error: ' + str(ex), status_code=404)
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
-            return jsonify({"status": "success", "message": "editted story name"})
+            return jsonify({"status": "success", "message": "edited story name"})
     else:
         return jsonify({"status": "failed", "message": "POST request only"})
 
