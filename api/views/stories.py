@@ -162,3 +162,16 @@ def story_name_edit(id):
     else:
         return jsonify({"status": "failed", "message": "POST request only"})
 
+# Returns stories that a given poi is in
+@app.route('/getstories/<poi_id>', methods = ['GET'])
+def get_stories(poi_id):
+    poi = PointsOfInterest.query.get(poi_id)
+    if not poi:
+        raise Exception(' <poi ' + poi_id + "> does not exist")
+    else:
+        stories = Stories.query.filter(Stories.poi_id == poi_id)
+        arr = []
+        for row in stories:
+            arr.append(row.story_names_id)
+        d = {'status': 'success', 'story_ids': arr}
+        return jsonify(d) 

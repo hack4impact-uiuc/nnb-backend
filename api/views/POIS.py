@@ -1,7 +1,7 @@
 from api import app
 from flask import Blueprint, request
 from .. import db
-from api.models import PointsOfInterest, AdditionalLinks, Content, User, Maps, InvalidUsage
+from api.models import PointsOfInterest, AdditionalLinks, Content, User, Maps, InvalidUsage, Stories
 import json
 from flask import jsonify
 from api.utils import serializeList, serializePOI
@@ -154,4 +154,4 @@ def poi_search_name(name):
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
     return jsonify({"status": "failed", "message": "Endpoint, /poi, needs a GET request"})
-
+ 
