@@ -121,8 +121,8 @@ def poi_delete(poi_id):
             obj.date = date((int)(json_dict['year']), (int)(json_dict['month']), (int)(json_dict['day']))
             obj.eventinfo = json_dict['info']
             obj.map_by_year = (int)(json_dict['map_by_year'])
-            obj.x_coor = (float)(json_dict['x_coor'])
-            obj.y_coor = (float)(json_dict['y_coor'])
+            obj.x_coord = (float)(json_dict['x_coor'])
+            obj.y_coord = (float)(json_dict['y_coor'])
             # Content.query.filter(Content.poi_id == pod_id)
             for s in Content.query.filter(Content.poi_id == poi_id):
                 db.session.delete(s)
