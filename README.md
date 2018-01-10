@@ -2,8 +2,8 @@
 Restful API using Flask and Postgres for Neighborhood News Bureau's interactive map tool. check out the frontend, which uses React and calls this API. For deployment, Heroku is utilized for it's ease and simplicity for making changes. 
 
 ## Development Docs
-Development Docs are <a href="docs/other.md">here.</a>
-The List of endpoints and its functionality are located <a href="docs/endpoints.md">here.</a>
+- Development Docs are <a href="docs/other.md">here.</a><br>
+- The List of endpoints and its functionality are located <a href="docs/endpoints.md">here.</a>
 
 ## Making Changes
 Any changes that are pushed to master while be reflected in Heroku! Thus, just clone the repo and commit the changes.
