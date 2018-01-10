@@ -10,7 +10,7 @@ from flask_login import LoginManager, login_required, login_user, logout_user
 
 mod = Blueprint('stories', __name__)
 
-
+ 
 @app.errorhandler(InvalidUsage)
 def handle_invalid_usage(error):
     response = jsonify(error.to_dict())
