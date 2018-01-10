@@ -1,3 +1,9 @@
+# Development Docs
+Dependencies:
+- Python 3.x
+- pip 9.0
+- PostgreSQL 
+
 ## Setup 
 If your developing with Windows, ¯\\_(ツ)_/¯ <br>
 To install Postgres with Homebrew([postgresapp](http://postgresapp.com/) also works):

@@ -1,11 +1,7 @@
 # NNB Map Board 
+Restful API using Flask and Postgres for Neighborhood News Bureau's interactive map tool. check out the frontend, which uses React and calls this API. For deployment, Heroku is utilized for it's ease and simplicity for making changes. 
 
-Restful API using Flask <br>
-Dependencies:
-- Python 3.x
-- pip 9.0
-- PostgreSQL 
-
+## Development Docs
 Development Docs are <a href="docs/other.md">here.</a>
 
 ## Making Changes
