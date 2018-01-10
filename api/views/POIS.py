@@ -115,7 +115,7 @@ def poi_delete(poi_id):
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
     if request.method == "PUT":
         try:
-            obj = PointsOfInterest.query.filter(PointsOfInterest.id==poi_id).first()
+            obj = PointsOfInterest.query.get(poi_id)
             json_dict = json.loads(request.data)
             obj.name = json_dict['name']
             obj.date = date((int)(json_dict['year']), (int)(json_dict['month']), (int)(json_dict['day']))
@@ -144,7 +144,7 @@ def poi_delete(poi_id):
             return jsonify({"status": "success"})
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)       
-    return jsonify({"status": "failed", "message": "Endpoint, /poi, needs a PUT request"})
+    return jsonify({"status": "failed", "message": "Endpoint, /poi, needs a PUT/DELETE request"})
 
 @app.route('/pois/search/<name>', methods=['GET']) 
 def poi_search_name(name):
