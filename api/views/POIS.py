@@ -126,8 +126,11 @@ def poi_delete(poi_id):
             # Content.query.filter(Content.poi_id == pod_id)
             for s in Content.query.filter(Content.poi_id == poi_id):
                 db.session.delete(s)
+                db.session.commit()
             for s in AdditionalLinks.query.filter(Content.poi_id == poi_id):
                 db.session.delete(s)
+                db.session.commit()
+            
             for link in json_dict['content']:
                 result = Content(
                     content_url=(link['content_url']),
