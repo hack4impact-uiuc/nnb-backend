@@ -158,7 +158,7 @@ def story_name_edit(id):
                 raise InvalidUsage('Error: ' + str(ex), status_code=404)
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
-            return jsonify({"status": "success", "message": "edited story name"})
+        return jsonify({"status": "success", "message": "edited story name"})
     else:
         return jsonify({"status": "failed", "message": "POST request only"})
 
@@ -175,3 +175,28 @@ def get_stories(poi_id):
             arr.append(row.story_names_id)
         d = {'status': 'success', 'story_ids': arr}
         return jsonify(d) 
+
+@app.route('/stories/edit/multiple/<poi_id>', methods= ['POST'])
+def edit_stories_with_poi(poi_id):
+    try:
+        poi = PointsOfInterest.query.get(poi_id)
+        if not poi:
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
+        json_dict = json.loads(request.data)
+        for story_id in json_dict["stories"]:
+            story = StoryNames.query.get(story_id)
+            if not story:
+                raise Exception(' <story_names ' + story_id + "> does not exist")
+            flag = False
+            for x in story.story_id:
+                if x.poi_id == poi_id:
+                    flag = True
+                    db.session.delete(x)
+                    break
+            if not flag:
+                s = Stories(story_names_id=story_id,poi_id=poi_id)
+                story.story_id.append(s)
+            db.session.commit()
+        return jsonify({"status":"success"})
+    except Exception as ex:
+        raise InvalidUsage('Error: ' + str(ex), status_code=404)
