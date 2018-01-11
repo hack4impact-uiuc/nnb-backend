@@ -191,7 +191,7 @@ def edit_stories_with_poi():
                     db.session.commit()
                     break
             if story.id in json_dict["stories"]:
-                s = Stories(story_names_id=story_id,poi_id=poi_id)
+                s = Stories(story_names_id=story.id,poi_id=poi_id)
                 story.story_id.append(s)
             db.session.commit()
         return jsonify({"status":"success"})
