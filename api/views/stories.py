@@ -184,18 +184,13 @@ def edit_stories_with_poi():
         poi = PointsOfInterest.query.get(poi_id)
         if not poi:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
-        
-        for story_id in json_dict["stories"]:
-            story = StoryNames.query.get(story_id)
-            if not story:
-                raise Exception(' <story_names ' + story_id + "> does not exist")
-            flag = False
+        for story in StoryNames.query.all():
             for x in story.story_id:
                 if x.poi_id == poi_id:
-                    flag = True
                     db.session.delete(x)
+                    db.session.commit()
                     break
-            if not flag:
+            if story.id in json_dict["stories"]:
                 s = Stories(story_names_id=story_id,poi_id=poi_id)
                 story.story_id.append(s)
             db.session.commit()
