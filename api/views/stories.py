@@ -177,10 +177,11 @@ def get_stories(poi_id):
         return jsonify(d) 
 
 @app.route('/stories/edit/multiple', methods= ['POST'])
-def edit_stories_with_poi(poi_id):
+def edit_stories_with_poi():
     try:
         json_dict = json.loads(request.data)
-        poi = PointsOfInterest.query.get(json_dict["poi_id"])
+        poi_id = json_dict["poi_id"]
+        poi = PointsOfInterest.query.get(poi_id)
         if not poi:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
         
