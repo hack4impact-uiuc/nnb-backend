@@ -137,12 +137,14 @@ def poi_delete(poi_id):
                     caption=(link['caption']),
                 )
                 db.session.add(result)
+                db.session.commit()
             for link in json_dict['additional_links']:
                 result = AdditionalLinks(
                     url=(link['url']),
                     url_name=(link['url_name'])
                 )
                 db.session.add(result)
+                db.session.commit()
             db.session.commit()
             return jsonify({"status": "success"})
         except Exception as ex:
