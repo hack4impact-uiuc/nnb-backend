@@ -135,13 +135,15 @@ def poi_delete(poi_id):
                 result = Content(
                     content_url=(link['content_url']),
                     caption=(link['caption']),
+                    poi_id=poi_id
                 )
                 db.session.add(result)
                 db.session.commit()
             for link in json_dict['additional_links']:
                 result = AdditionalLinks(
                     url=(link['url']),
-                    url_name=(link['url_name'])
+                    url_name=(link['url_name']),
+                    poi_id=poi_id
                 )
                 db.session.add(result)
                 db.session.commit()
