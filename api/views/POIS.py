@@ -10,7 +10,7 @@ import time
 from datetime import date
 import uuid
 from flask_httpauth import HTTPBasicAuth
-from flask_login import LoginManager, login_required, login_user, logout_user 
+from flask_login import LoginManager, login_required, login_user, logout_user
 
 mod = Blueprint('POIS', __name__)
 
@@ -60,7 +60,7 @@ def poi():
                 eventinfo = json_dict['info'],
                 map_by_year = (int)(json_dict['map_by_year']),
                 x_coord = (int)(json_dict['x_coor']),
-                y_coord = (int)(json_dict['y_coor']), 
+                y_coord = (int)(json_dict['y_coor']),
             )
             db.session.add(result)
             db.session.commit()
@@ -82,11 +82,11 @@ def poi():
             db.session.commit()
             return jsonify({"status": "success", "data":{"id": new_poi_id},"message":"Successfully added POI"})
         except Exception as ex:
-            raise InvalidUsage('Error: ' + str(ex), status_code=404)         
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
     return jsonify({"status": "failed", "message: ": "Endpoint, /poi, needs a GET or POST request"})
 
 #Returns all POIs
-@app.route('/pois/<poi_id>', methods=['GET']) 
+@app.route('/pois/<poi_id>', methods=['GET'])
 def poi_get_with_id(poi_id):
     try:
         poi = PointsOfInterest.query.get(poi_id)
@@ -100,7 +100,7 @@ def poi_get_with_id(poi_id):
         raise InvalidUsage('Error: ' + str(ex), status_code=404)
 
 #Delete POI given POI ID
-@app.route('/pois/<poi_id>', methods=['DELETE','PUT']) 
+@app.route('/pois/<poi_id>', methods=['DELETE','PUT'])
 # @login_required
 def poi_delete(poi_id):
     if request.method == 'DELETE':
@@ -127,10 +127,10 @@ def poi_delete(poi_id):
             for s in Content.query.filter(Content.poi_id == poi_id):
                 db.session.delete(s)
                 db.session.commit()
-            for s in AdditionalLinks.query.filter(Content.poi_id == poi_id):
+            for s in AdditionalLinks.query.filter(AdditionalLinks.poi_id == poi_id):
                 db.session.delete(s)
                 db.session.commit()
-            
+
             for link in json_dict['content']:
                 result = Content(
                     content_url=(link['content_url']),
@@ -150,10 +150,10 @@ def poi_delete(poi_id):
             db.session.commit()
             return jsonify({"status": "success"})
         except Exception as ex:
-            raise InvalidUsage('Error: ' + str(ex), status_code=404)       
+            raise InvalidUsage('Error: ' + str(ex), status_code=404)
     return jsonify({"status": "failed", "message": "Endpoint, /poi, needs a PUT/DELETE request"})
 
-@app.route('/pois/search/<name>', methods=['GET']) 
+@app.route('/pois/search/<name>', methods=['GET'])
 def poi_search_name(name):
     if request.method == "GET":
         try:
@@ -161,4 +161,4 @@ def poi_search_name(name):
         except Exception as ex:
             raise InvalidUsage('Error: ' + str(ex), status_code=404)
     return jsonify({"status": "failed", "message": "Endpoint, /poi, needs a GET request"})
- 
+
