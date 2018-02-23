@@ -2,7 +2,7 @@
 
 ## Schema Design
 
-**POIS**
+**POI**
 
 |   id   |  name  | date | description | map_year | x_coord | y_coord |
 |:--------:|:------:|:-----------:|:-----------:|:-----------:|:-----------:|:-----------:|  
@@ -13,22 +13,22 @@
 |   id   |  poi_id | content_url | caption |  
 |:--------:|:------:|:-----------:|:-----------:|
 
-**LINKS**
+**LINK**
 
 |   id   |  poi_id | display_name |
 |:--------:|:------:|:-----------:|
 
-**MAPS**
+**MAP**
 
 |   id   |  image_url | map_year | 
 |:--------:|:------:|:-----------:|
 
-**STORIES**
+**STORY**
 
 |   id   |  story_name | story_id | 
 |:--------:|:------:|:-----------:|
 
-**STORY_POIS**
+**STORY_POI**
 
 |   id   |  story_id | poi_id | 
 |:--------:|:------:|:-----------:|
