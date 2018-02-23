@@ -115,7 +115,7 @@ Create a new POI and:
 **Description**
 
 Edit the data of a POI:
-* edit POI modal attributes (name, date, description)
+* edit POI model attributes (name, date, description)
 * add/edit stories for this POI (param: [story_id])
 * edit links (param: [link_id])
 * edit media (param: [media_id])
